@@ -84,15 +84,15 @@
                 @foreach($basics as $basic)
                 <tr>
                     <th scope="row">
-                        @if($basic->bimester == 1)
+                        @if($basic->bimester = 1)
                         {{'Enero-Febrero'}}
-                        @elseif($basic->status == 2)
+                        @elseif($basic->status = 2)
                         {{'Marzo-Abril'}}
-                        @elseif($basic->status == 3)
+                        @elseif($basic->status = 3)
                         {{'Mayo-Junio'}}
-                        @elseif($basic->status == 4)
+                        @elseif($basic->status = 4)
                         {{'Septiembre-Octubre'}}
-                        @elseif($basic->status == 5)
+                        @elseif($basic->status = 5)
                         {{'Noviembre-Diciembre'}}
                         @endif
                     </th>
@@ -112,7 +112,7 @@
                     </td>
                     <td>
                         <div class="row justify-content-center">
-                            <a class="btn btn-primary mr-1" href="{{url('/basicEducation/'.$basics->id.'/edit')}}">Editar</a>
+                            <a class="btn btn-primary mr-1" href="{{url('/basicEducation/'.$basic->id.'/edit')}}">Editar</a>
                             <form method="post" action="">
                                 @csrf
                                 {{method_field('DELETE')}}

@@ -14,7 +14,14 @@ class CreateLocalitiesTable extends Migration
     public function up()
     {
         Schema::create('localities', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id');
+            $table->primary('id');
+            $table->integer('keyLocality')->nullable();
+            $table->string('nameLocality', 100)->nullable();
+            $table->integer('municipality_id')->nullable()
+            ->foreign('municipality_id')->references('id')->on('municipalities')
+            ->onUpdate('set null')
+            ->onDelete('set null');
             $table->timestamps();
         });
     }
