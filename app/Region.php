@@ -10,7 +10,7 @@ class Region extends Model
     
     public function municipalities()
     {
-        return $this->hasMany(Locality::class);
+        return $this->hasMany(Municipality::class);
     }
 
     public function scopeIdRegion($query, $id){

@@ -36,4 +36,39 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeNameUser($query, $nameUser)
+    {
+        if ($nameUser) {
+            return $query->where('nameUser', 'LIKE', "%$nameUser%");
+        }
+    }
+
+    public function scopeFirstSurnameUser($query, $firstSurnameUser)
+    {
+        if ($firstSurnameUser) {
+            return $query->where('firstSurname', 'LIKE', "%$firstSurnameUser%");
+        }
+    }
+
+    public function scopeSecondSurnameUser($query, $secondSurnameUser)
+    {
+        if ($secondSurnameUser) {
+            return $query->where('secondSurname', 'LIKE', "%$secondSurnameUser%");
+        }
+    }
+
+    public function scopeRol($query, $rol)
+    {
+        if ($rol) {
+            return $query->where('rol', 'LIKE', "%$rol%");
+        }
+    }
+
+    public function scopeEmail($query, $email)
+    {
+        if ($email) {
+            return $query->where('email', 'LIKE', "%$email%");
+        }
+    }
 }

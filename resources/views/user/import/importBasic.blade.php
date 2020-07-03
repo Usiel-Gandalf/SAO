@@ -49,7 +49,7 @@
                                     <option name="0" value="0">Pendientes</option>
                                     <option name="1" value="1">Entregados</option>
                                     <option name="2" value="2">No entregado/no localizado</option>
-                                    <option name="4" value="4">No entregado/por baja</option>
+                                    <option name="3" value="3">No entregado/por baja</option>
                                 </select>
                                 @error('status')
                                 <div class="alert alert-danger" role="alert">

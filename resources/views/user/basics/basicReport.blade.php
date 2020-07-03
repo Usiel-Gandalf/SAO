@@ -11,9 +11,9 @@
         </div>
         @endif
         @if(session('alertConsignment'))
-            <div class="alert alert-danger">
-                <h4>{{session('alertConsignment')}}</h4>
-            </div>
+        <div class="alert alert-danger">
+            <h4>{{session('alertConsignment')}}</h4>
+        </div>
         @endif
     </div>
     <div class="row">

@@ -1,23 +1,23 @@
 @extends('plantillas.adminApp')
-
 @section('main')
+
 <div class="row justify-content-md-center mb-4">
-    <h1>EDUCACION BASICA</h1>
+    <h1>JOVENES ESCRIBIENDO EL FUTURO</h1>
 </div>
-@if(session('saveBasic'))
+@if(session('saveHiger'))
 <div class="row justify-content-center">
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <h5><strong>{{session('saveBasic')}}</strong></h5>
+        <h5><strong>{{session('saveHiger')}}</strong></h5>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 </div>
 @endif
-@if(session('updateBasic'))
+@if(session('updateHiger'))
 <div class="row justify-content-center">
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <h5><strong>{{session('saveBasic')}}</strong></h5>
+        <h5><strong>{{session('saveHiger')}}</strong></h5>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -35,8 +35,6 @@
     @endif
 </div>
 
-
-
 <div class="container table-bordered mt-2">
     <div class="row">
         <table class="table table-bordered">
@@ -51,38 +49,38 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($basics as $basic)
+                @foreach($higers as $higer)
                 <tr>
                     <th scope="row">
-                        @if($basic->bimester == 1)
+                        @if($higer->bimester == 1)
                         {{'Enero-Febrero'}}
-                        @elseif($basic->bimester == 2)
+                        @elseif($higer->bimester == 2)
                         {{'Marzo-Abril'}}
-                        @elseif($basic->bimester == 3)
+                        @elseif($higer->bimester == 3)
                         {{'Mayo-Junio'}}
-                        @elseif($basic->bimester == 4)
+                        @elseif($higer->bimester == 4)
                         {{'Septiembre-Octubre'}}
-                        @elseif($basic->bimester == 5)
+                        @elseif($higer->bimester == 5)
                         {{'Noviembre-Diciembre'}}
                         @endif
                     </th>
-                    <td>{{$basic->consignment}}</td>
-                    <td>{{$basic->locality->nameLocality}}</td>
-                    <td>{{$basic->titular_id}}</td>
+                    <td>{{$higer->consignment}}</td>
+                    <td>{{$higer->school->nameSchool}}</td>
+                    <td>{{$higer->titular_id}}</td>
                     <td>
-                        @if($basic->status == 0)
+                        @if($higer->status == 0)
                         {{'Pendiente'}}
-                        @elseif($basic->status == 1)
+                        @elseif($higer->status == 1)
                         {{'Entregado'}}
-                        @elseif($basic->status == 2)
+                        @elseif($higer->status == 2)
                         {{'No Entregado | No localizado'}}
-                        @elseif($basic->status == 3)
+                        @elseif($higer->status == 3)
                         {{'no entregado por baja'}}
                         @endif
                     </td>
                     <td>
                         <div class="row justify-content-center">
-                            <a class="btn btn-primary mr-1" href="{{url('/basicEducation/'.$basic->id.'/edit')}}">Editar</a>
+                            <a class="btn btn-primary mr-1" href="{{url('/higerEducation/'.$higer->id.'/edit')}}">Editar</a>
                             <form method="post" action="">
                                 @csrf
                                 {{method_field('DELETE')}}
@@ -97,17 +95,12 @@
     </div>
     <div class="row">
         <div class="col">
-            {{ $basics->links() }}
+            {{ $higers->links() }}
         </div>
         <div class="col foat-right">
-            <a class="btn btn-success float-right" href="{{url('/basicEducation/create')}}">Crear Registro</a>
+            <a class="btn btn-success float-right" href="{{url('/higerEducation/create')}}">Crear Escuela</a>
         </div>
     </div>
 </div>
-
-@include('user.basics.basicCerm.basicCermGeneral')
-@include('user.basics.basicDelivery.basicDeliveryGeneral')
-
+@include('user.higers.higerCerm.higerCermGeneral')
 @endsection
-
-

@@ -1,82 +1,124 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="col-my-5 mt-5">
-  <div class="row justify-content-center">
-    <br><br>
-    <h2 class="">Usuarios</h2>
-  </div>
-  @if(session('saveUser'))
-  <div class="row justify-content-center">
-    <div class="alert alert-success">
-      {{session('saveUser')}}
-    </div>
-  </div>
-  @endif
-  @if(session('deleteUser'))
-  <div class="row justify-content-center">
-    <div class="alert alert-danger">
-      {{session('deleteUser')}}
-    </div>
+<div class="row justify-content-md-center mb-4">
+  <h1>Usuarios</h1>
+</div>
+<div class="row justify-content-md-center">
+  @if(session('notFound'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>{{session('notFound')}}</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   @endif
-  @if(session('updateUser'))
-  <div class="row justify-content-center">
-    <div class="alert alert-primary">
-      {{session('updateUser')}}
-    </div>
-  </div>
-  @endif
-  <table class="table table-bordered">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Primer Apellido</th>
-        <th scope="col">Segundo Apellido</th>
-        <th scope="col">Rol</th>
-        <th scope="col">Correo</th>
-        <th scope="col">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach($users as $usuario)
-      <tr>
-        <th scope="row">{{$usuario->id}}</th>
-        <td>{{$usuario->name}}</td>
-        <td>{{$usuario->firstLastName}}</td>
-        <td>{{$usuario->secondLastName}}</td>
-        <td>
-          @if ($usuario->rol == 1)
-          Administrador
-          @endif
-          @if ($usuario->rol == 0)
-          Jefe Juar
-          @endif
-        </td>
-        <td>{{$usuario->email}}</td>
-        <td>
-          <div class="row justify-content-center">
-            <a class="btn btn-primary" href="{{url('/user/'.$usuario->id.'/edit')}}">Editar</a>
-            <form method="post" action="{{url('/user/'.$usuario->id)}}">
-              @csrf
-              {{method_field('DELETE')}}
-              <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar al usuario?');">Borrar</button>
-            </form>
-          </div>
-        </td>
-      </tr>
-      @endforeach
-    </tbody>
+</div>
 
-  </table>
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <form action="{{route('searchUser')}}" method="get" class="form-inline float-right">
+        @csrf
+        <div class="form-group">
+          <input id="nameUser" class="form-control mx-1" type="text" name="nameUser" placeholder="Buscar por nombre">
+        </div>
+        <div class="form-group">
+          <input id="firstSurnameUser" class="form-control mx-1" type="text" name="firstSurnameUser" placeholder="Primer apellido">
+        </div>
+        <div class="form-group">
+          <input id="secondSurnameUser" class="form-control mx-1" type="text" name="secondSurnameUser" placeholder="Segundo apellido">
+        </div>
+        <div class="form-group">
+          <select id="rol" name="rol" class="form-control">
+            <option selected value="{{null}}">Rol</option>
+            <option name="0" value="0">Administrador</option>
+            <option name="1" value="1">Jefes Juar</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <input id="email" class="form-control mx-1" type="text" name="email" placeholder="E-mail">
+        </div>
+        <div class="form-group">
+          <input type="submit" class="btn btn-primary" value="Buscar">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container table-bordered mt-2">
   <div class="row">
-    <div class="col">
+    @if(session('saveUser'))
+    <div class="row justify-content-center">
+      <div class="alert alert-success">
+        {{session('saveUser')}}
+      </div>
+    </div>
+    @endif
+    @if(session('deleteUser'))
+    <div class="row justify-content-center">
+      <div class="alert alert-danger">
+        {{session('deleteUser')}}
+      </div>
+    </div>
+    @endif
+    @if(session('updateUser'))
+    <div class="row justify-content-center">
+      <div class="alert alert-primary">
+        {{session('updateUser')}}
+      </div>
+    </div>
+    @endif
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Primer Apellido</th>
+          <th scope="col">Segundo Apellido</th>
+          <th scope="col">Rol</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($users as $user)
+        <tr>
+          <th scope="row">{{$user->id}}</th>
+          <td>{{$user->name}}</td>
+          <td>{{$user->firstLastName}}</td>
+          <td>{{$user->secondLastName}}</td>
+          <td>
+            @if($user->rol == 1)
+            Administrador
+            @endif
+            @if ($user->rol == 0)
+            Jefe Juar
+            @endif
+          </td>
+          <td>{{$user->email}}</td>
+          <td>
+            <div class="row justify-content-center">
+              <a class="btn btn-primary" href="{{url('/user/'.$user->id.'/edit')}}">Editar</a>
+              <form method="post" action="{{url('/user/'.$user->id)}}">
+                @csrf
+                {{method_field('DELETE')}}
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar al usuario?');">Borrar</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col-sm">
       {{ $users->links() }}
     </div>
-    <div class="col">
-      <a class=" btn btn-success float-right" href="{{url('/user/create')}}">Crear Usuario</a>
+    <div class="col-sm">
+      <a class="btn btn-success float-right" href="{{url('/user/create')}}">Crear Usuario</a>
     </div>
-
   </div>
 </div>
 @endsection

@@ -14,6 +14,11 @@ class School extends Model
         return $this->belongsTo(Locality::class);
     }
 
+    public function mediums()
+    {
+        return $this->hasMany(Medium::class);
+    }
+
     public function scopeIdSchool($query, $idSchool)
     {
         if ($idSchool) {

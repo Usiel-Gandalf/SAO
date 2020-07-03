@@ -37,6 +37,7 @@
         </div>
     </div>
 </div>
+
 <div class="container table-bordered mt-2">
     <div class="row">
         @if(session('saveTitular'))
@@ -87,7 +88,7 @@
                     <td>{{$titular->gender}}</td>
                     <td>{{'Sin formato'}}</td>
                     <td>
-                        <div class="row justify-content-center mx-1">
+                        <div class="row justify-content-center">
                             <a class="btn btn-primary mr-1" href="{{url('/titular/'.$titular->id.'/edit')}}">Editar</a>
                             <form method="post" action="{{url('/titular/'.$titular->id)}}">
                                 @csrf

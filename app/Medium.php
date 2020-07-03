@@ -8,8 +8,8 @@ class Medium extends Model
 {
     protected $fillable = ['id',  'scholar_id', 'school_id', 'consignment', 'fol_form', 'bimester', 'year', 'status'];
 
-    public function locality()
+    public function school()
     {
-        return $this->belongsTo(locality::class);
+        return $this->belongsTo(School::class);
     }
 }

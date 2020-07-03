@@ -53,9 +53,9 @@ height:100%;">
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{route('importEntities')}}">Entidades</a>
                         <a class="dropdown-item" href="{{route('importScholars')}}">Becarios/Titulares</a>
-                        <a class="dropdown-item" href="{{route('importBasic')}}">Educacion basica</a>
-                        <a class="dropdown-item" href="{{route('importMedium')}}">Media superior</a>
-                        <a class="dropdown-item" href="{{route('importHiger')}}">Educacion superior</a>
+                        <a class="dropdown-item" href="{{route('importBasics')}}">Educacion basica</a>
+                        <a class="dropdown-item" href="{{route('importMediums')}}">Media superior</a>
+                        <a class="dropdown-item" href="{{route('importHigers')}}">Educacion superior</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -64,8 +64,11 @@ height:100%;">
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{url('/basicEducation')}}">Educacion basica</a>
-                        <a class="dropdown-item" href="">Educacion media superior</a>
-                        <a class="dropdown-item" href="">Jovenes escribiendo el futuro</a>
+                        <a class="dropdown-item" href="{{url('/mediumEducation')}}">Educacion media superior</a>
+                        <a class="dropdown-item" href="{{url('/higerEducation')}}">Jovenes escribiendo el futuro</a>
+                        <a class="dropdown-item" href="">Reporte EB</a>
+                        <a class="dropdown-item" href="">Reporte EMS</a>
+                        <a class="dropdown-item" href="">Reporte JEF</a>
                     </div>
                 </li>
                 <li class="nav-item">

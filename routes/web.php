@@ -31,6 +31,8 @@ Route::resource('school', 'SchoolController');
 Route::resource('scholar', 'ScholarController');
 Route::resource('titular', 'TitularController');
 Route::resource('basicEducation', 'BasicController');
+Route::resource('mediumEducation', 'MediumController');
+Route::resource('higerEducation', 'HigerController');
 //Fin de la ruta de recursos
 
 //Rutas de busqueda 
@@ -40,33 +42,18 @@ Route::get('searchLocality', 'LocalityController@show')->name('searchLocality');
 Route::get('searchSchool', 'SchoolController@show')->name('searchSchool');
 Route::get('searchScholar', 'ScholarController@show')->name('searchScholar');
 Route::get('searchTitular', 'TitularController@show')->name('searchTitular');
+Route::get('searchUser', 'UserController@show')->name('searchUser');
 Route::get('searchBasic', 'BasicController@show')->name('searchBasic');
+Route::get('searchMedium', 'MediumController@show')->name('searchMedium');
+Route::get('searchHiger', 'HigerController@show')->name('searchHiger');
 //Fin de las rutas de busqueda
 
-//Rutas para ir a los formularios de importacion de archivos excel
-Route::get('importEntities', function () {
-    return view('user.import.importEntities');
-})->name('importEntities');
-
-Route::get('importScholars', function () {
-    return view('user.import.importScholars');
-})->name('importScholars');
-
-Route::get('importBasic', function () {
-    return view('user.import.importBasic');
-})->name('importBasic');
-
-Route::get('importMedium', function () {
-    return view('user.import.importMedium');
-})->name('importMedium');
-
-Route::get('importHiger', function () {
-    return view('user.import.importHiger');
-})->name('importHiger');
-
-Route::get('basicReport', function () {
-    return view('user.universes.basicReport');
-})->name('basicReport');
+//Rutas para ir a los formularios de importacion de archivos excel y los reportes o graficas
+Route::get('importEntities', 'RouteController@importEntities')->name('importEntities');
+Route::get('importScholars', 'RouteController@importScholars')->name('importScholars');
+Route::get('importBasics', 'RouteController@importBasics')->name('importBasics');
+Route::get('importMediums', 'RouteController@importMediums')->name('importMediums');
+Route::get('importHigers', 'RouteController@importHigers')->name('importHigers');
 //Fin de las rutas de formularios
 
 //Rutas de importacion de las entidades, becarios, titulares y archivos excel en general
@@ -81,6 +68,11 @@ Route::post('importHiger', 'importController@importHiger')->name('importHiger');
 //Fin de las rutas de importacion de archivos excel 
 
 //Rutas para ver informacion de los niveles educativos
-Route::get('basicReport', 'BasicController@basicReport')->name('basicReport');
-Route::post('basicSearch', 'BasicController@basicSearch')->name('basicSearch');
+Route::get('basicReport', 'RouteController@basicReport')->name('basicReport');
+Route::post('basicSearch', 'RouteController@basicSearch')->name('basicSearch');
 
+//rutas para ver los bimestres de los diferentes niveles educativos
+Route::get('basicBimestersCerm', 'RouteController@basicBimestersCerm')->name('basicBimestersCerm');
+Route::get('basicBimestersDelivery', 'RouteController@basicBimestersDelivery')->name('basicBimestersDelivery');
+Route::get('mediumBimestersDelivery', 'RouteController@mediumBimestersDelivery')->name('mediumBimestersDelivery');
+Route::get('higerBimestersDelivery', 'RouteController@higerBimestersDelivery')->name('higerBimestersDelivery');

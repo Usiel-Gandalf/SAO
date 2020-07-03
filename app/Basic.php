@@ -34,10 +34,10 @@ class Basic extends Model
         }
     }
 
-    public function scopeTitular($query, $titular_id)
+    public function scopeType($query, $type)
     {
-        if ($titular_id) {
-            return $query->where('titular_id', 'LIKE', "%$titular_id%");
+        if ($type) {
+            return $query->where('type', 'LIKE', "%$type%");
         }
     }
 }

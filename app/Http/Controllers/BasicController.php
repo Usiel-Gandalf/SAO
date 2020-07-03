@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Basic;
 use App\Locality;
+use App\Region;
+use Illuminate\Validation\Rules\Unique;
 
 class BasicController extends Controller
 {
@@ -15,8 +17,22 @@ class BasicController extends Controller
      */
     public function index()
     {
-        $basics = Basic::with('locality')->paginate(10);
-        return view('user.basics.index', compact('basics'));
+        $basics = Basic::with('locality')->paginate(5);
+        // Informacion de los estados de entrega de la educacion basica
+        $pending = Basic::where('status', 0)->get();
+        $pendingEntities = $pending->unique('loacality_id')->load('locality.municipality.region');
+        $cermYes = Basic::where('status', 1)->get();
+        $cermYesEntities = $cermYes->unique('locality_id')->load('locality.municipality.region');
+        $cermNot = Basic::where('status', 2)->get();
+        $cermNotEntities = $cermNot->unique('locality_id')->load('locality.municipality.region');
+        $cermDrop = Basic::where('status', 3)->get();
+        $cermDropEntities = $cermDrop->unique('locality_id')->load('locality.municipality.region');
+        //fin de la informacion de la entrega de educacion basica
+
+        //return $pendingEntities;
+
+        return view('user.basics.index', compact('basics', 'pending', 'cermYes', 'cermNot', 'cermDrop', 
+        'pendingEntities', 'cermYesEntities', 'cermNotEntities', 'cermDropEntities'));
     }
 
     /**
@@ -74,13 +90,13 @@ class BasicController extends Controller
         $consignment = $request->get('consignment');
         $status = $request->get('status');
         $bimester = $request->get('bimester');
-        $titular_id = $request->get('titular_id');
+        $type = $request->get('type');
 
         $basics = Basic::orderBy('id', 'ASC')
             ->consignment($consignment)
             ->status($status)
             ->bimester($bimester)
-            ->titular($titular_id)
+            ->type($type)
             ->paginate(10);
 
         if (count($basics) == 0) {

@@ -10,7 +10,13 @@ use App\Region;
 use Illuminate\Support\Facades\DB;
 
 class BasicqueryController extends Controller
-{  public function basicReport()
+{
+    public function index()
+    {
+        return view('user.basics.basicReport');
+    }
+
+    public function basicReport()
     {
         $regions = Region::all();
         $municipalities = Municipality::all();
