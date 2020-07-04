@@ -70,7 +70,9 @@
                     <th scope="col">Apellido materno</th>
                     <th scope="col">Genero</th>
                     <th scope="col">Fecha de nacimiento</th>
+                    @if(Auth::user()->rol == 1)
                     <th scope="col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -82,6 +84,7 @@
                     <td>{{$scholar->secondSurname}}</td>
                     <td>{{$scholar->gender}}</td>
                     <td>{{'Sin formato'}}</td>
+                    @if(Auth::user()->rol == 1)
                     <td>
                         <div class="row justify-content-center mx-1">
                             <a class="btn btn-primary mr-1" href="{{url('/scholar/'.$scholar->id.'/edit')}}">Editar</a>
@@ -92,6 +95,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
@@ -102,11 +106,13 @@
         <div class="col-sm">
             {{ $scholars->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
         <div class="col-sm">
             <a class="btn btn-success float-right" href="{{url('/scholar/create')}}">Crear Becario</a>
         </div>
+        @endif
     </div>
 </div>
 
 
-    @endsection
+@endsection

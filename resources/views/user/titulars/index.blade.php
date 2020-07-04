@@ -70,7 +70,9 @@
                     <th scope="col">Apellido materno</th>
                     <th scope="col">Genero</th>
                     <th scope="col">Fecha de nacimiento</th>
+                    @if(Auth::user()->rol == 1)
                     <th scope="col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -87,6 +89,7 @@
                     <td>{{$titular->secondSurname}}</td>
                     <td>{{$titular->gender}}</td>
                     <td>{{'Sin formato'}}</td>
+                    @if(Auth::user()->rol == 1)
                     <td>
                         <div class="row justify-content-center">
                             <a class="btn btn-primary mr-1" href="{{url('/titular/'.$titular->id.'/edit')}}">Editar</a>
@@ -97,6 +100,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
@@ -106,9 +110,11 @@
         <div class="col-sm">
             {{ $titulars->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
         <div class="col-sm">
             <a class="btn btn-success float-right" href="{{url('/titular/create')}}">Crear Titular</a>
         </div>
+        @endif
     </div>
 </div>
 @endsection

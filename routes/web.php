@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,12 +13,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
-    return view('login');
+    return view('auth.login');
 });
 
-//Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -70,6 +72,10 @@ Route::post('importHiger', 'importController@importHiger')->name('importHiger');
 //Rutas para ver informacion de los niveles educativos
 Route::get('basicReport', 'RouteController@basicReport')->name('basicReport');
 Route::post('basicSearch', 'RouteController@basicSearch')->name('basicSearch');
+
+//Editar pasword y perfiles
+Route::get('user/{id}/editPassword', 'UserController@editPassword');
+Route::post('user/{id}/updatePassword', 'UserController@updatePassword');
 
 //rutas para ver los bimestres de los diferentes niveles educativos
 Route::get('basicBimestersCerm', 'RouteController@basicBimestersCerm')->name('basicBimestersCerm');

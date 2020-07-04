@@ -64,7 +64,9 @@
                     <th scope="col">Clave</th>
                     <th scope="col">Nombre del municipio</th>
                     <th scope="col">Region</th>
+                    @if(Auth::user()->rol == 1)
                     <th scope="col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -73,6 +75,7 @@
                     <th scope="row">{{$municipio->id}}</th>
                     <td>{{$municipio->nameMunicipality}}</td>
                     <td>{{$municipio->region->nameRegion}}</td>
+                    @if(Auth::user()->rol == 1)
                     <td>
                         <div class="row justify-content-center">
                             <a class="btn btn-primary mr-1" href="{{url('/municipality/'.$municipio->id.'/edit')}}">Editar</a>
@@ -83,6 +86,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
@@ -92,9 +96,11 @@
         <div class="col-sm">
             {{ $municipalities->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
         <div class="col-sm">
             <a class="btn btn-success float-right" href="{{url('/municipality/create')}}">Crear Municipio</a>
         </div>
+        @endif
     </div>
 </div>
 @endsection

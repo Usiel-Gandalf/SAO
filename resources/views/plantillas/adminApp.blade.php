@@ -25,14 +25,17 @@ height:100%;">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand">Bienestar Oaxaca</a>
+            <a class="navbar-brand">SAO</a>
+
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0 ">
                 <li class="nav-item active">
-                    <a class="nav-link text-white" href="{{url('/')}}">Inicio<span class="sr-only">(current)</span></a>
+                    <a class="nav-link text-white" href="{{url('/home')}}">Inicio<span class="sr-only">(current)</span></a>
                 </li>
+                @if(Auth::user()->rol == 1)
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{url('/user')}}">Usuarios</a>
                 </li>
+                @endif
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Ver
@@ -46,6 +49,7 @@ height:100%;">
                         <a class="dropdown-item" href="{{url('/titular')}}">Titulares</a>
                     </div>
                 </li>
+                @if(Auth::user()->rol == 1)
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Subir
@@ -58,6 +62,7 @@ height:100%;">
                         <a class="dropdown-item" href="{{route('importHigers')}}">Educacion superior</a>
                     </div>
                 </li>
+                @endif
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Universos
@@ -71,16 +76,30 @@ height:100%;">
                         <a class="dropdown-item" href="">Reporte JEF</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Perfil</a>
-                </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <button class="btn btn-danger my-2 my-sm-0" type="submit">Cerrar sesion</button>
-            </form>
+            <div class="form-inline my-2 my-lg-0">
+                <div class="navbar-nav ml-auto">
+                    <!-- Authentication Links -->
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <span class="caret text-light">{{ Auth::user()->name }}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" class="">
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                {{ __('Cerrar Sesion') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                            <a class="dropdown-item" href="">Perfil</a>
+                        </div>
+                    </li>
+                </div>
+            </div>
         </div>
     </nav>
-
     <section style="margin:20px;">
         <div class="container">
             @yield('main')

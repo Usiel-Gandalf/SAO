@@ -65,7 +65,9 @@
                     <th scope="col">Clave</th>
                     <th scope="col">Nombre de la escuela</th>
                     <th scope="col">localidad</th>
+                    @if(Auth::user()->rol == 1)
                     <th scope="col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +76,7 @@
                     <th scope="row">{{$school->id}}</th>
                     <td>{{$school->nameSchool}}</td>
                     <td>{{ $school->locality->nameLocality }}</td>
+                    @if(Auth::user()->rol == 1)
                     <td>
                         <div class="row justify-content-center">
                             <a class="btn btn-primary mr-1" href="{{url('/school/'.$school->id.'/edit')}}">Editar</a>
@@ -84,6 +87,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
@@ -94,9 +98,11 @@
         <div class="col">
             {{ $schools->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
         <div class="col foat-right">
             <a class="btn btn-success float-right" href="{{url('/school/create')}}">Crear Escuela</a>
         </div>
+        @endif
     </div>
 </div>
 @endsection

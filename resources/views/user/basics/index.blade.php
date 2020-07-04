@@ -24,6 +24,16 @@
     </div>
 </div>
 @endif
+@if(session('deleteBasic'))
+<div class="row justify-content-center">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h5><strong>{{session('deleteBasic')}}</strong></h5>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+@endif
 <div class="row justify-content-md-center">
     @if(session('notFound'))
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -47,7 +57,9 @@
                     <th scope="col">localidad</th>
                     <th scope="col">Titular</th>
                     <th scope="col">Estado</th>
+                    @if(Auth::user()->rol == 1)
                     <th scope="col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -80,16 +92,18 @@
                         {{'no entregado por baja'}}
                         @endif
                     </td>
+                    @if(Auth::user()->rol == 1)
                     <td>
                         <div class="row justify-content-center">
                             <a class="btn btn-primary mr-1" href="{{url('/basicEducation/'.$basic->id.'/edit')}}">Editar</a>
-                            <form method="post" action="">
+                            <form method="post" action="{{url('/basicEducation/'.$basic->id)}}">
                                 @csrf
-                                {{method_field('DELETE')}}
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar la escuela?');">Eliminar</button>
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar el registro?');">Eliminar</button>
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
@@ -99,9 +113,11 @@
         <div class="col">
             {{ $basics->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
         <div class="col foat-right">
             <a class="btn btn-success float-right" href="{{url('/basicEducation/create')}}">Crear Registro</a>
         </div>
+        @endif
     </div>
 </div>
 

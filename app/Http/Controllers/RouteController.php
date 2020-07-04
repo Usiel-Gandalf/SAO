@@ -9,6 +9,11 @@ use App\Higer;
 
 class RouteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function importEntities()
     {
         return view('user.import.importEntities');

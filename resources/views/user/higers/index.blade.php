@@ -43,9 +43,11 @@
                     <th scope="col">Bimestre</th>
                     <th scope="col">Remesa</th>
                     <th scope="col">localidad</th>
-                    <th scope="col">Titular</th>
+                    <th scope="col">Becario</th>
                     <th scope="col">Estado</th>
+                    @if(Auth::user()->rol == 1)
                     <th scope="col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -66,7 +68,7 @@
                     </th>
                     <td>{{$higer->consignment}}</td>
                     <td>{{$higer->school->nameSchool}}</td>
-                    <td>{{$higer->titular_id}}</td>
+                    <td>{{$higer->scholar_id}}</td>
                     <td>
                         @if($higer->status == 0)
                         {{'Pendiente'}}
@@ -78,6 +80,7 @@
                         {{'no entregado por baja'}}
                         @endif
                     </td>
+                    @if(Auth::user()->rol == 1)
                     <td>
                         <div class="row justify-content-center">
                             <a class="btn btn-primary mr-1" href="{{url('/higerEducation/'.$higer->id.'/edit')}}">Editar</a>
@@ -88,6 +91,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
@@ -97,9 +101,11 @@
         <div class="col">
             {{ $higers->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
         <div class="col foat-right">
             <a class="btn btn-success float-right" href="{{url('/higerEducation/create')}}">Crear Escuela</a>
         </div>
+        @endif
     </div>
 </div>
 @include('user.higers.higerCerm.higerCermGeneral')

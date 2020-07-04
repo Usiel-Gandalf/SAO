@@ -7,6 +7,10 @@ use App\User;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('uaer.users.create');
+        return view('user.users.create');
     }
 
     /**
@@ -40,8 +44,8 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:100',
-            'firstLastName' => 'required|string|max:100',
-            'secondLastName' => 'required|string|max:100',
+            'firstSurname' => 'required|string|max:100',
+            'secondSurname' => 'required|string|max:100',
             'rol' => 'required',
             'email' => 'required|email',
             'password' => 'required|confirmed|min:8',
@@ -49,17 +53,11 @@ class UserController extends Controller
 
         $rol  = request()->rol;
 
-        if ($rol == "administrador") {
-            $rol = 1;
-        } elseif ($rol == "jefe") {
-            $rol = 0;
-        }
-
         $user = new User();
         $user->name = $request->name;
-        $user->firstLastName = $request->firstLastName;
-        $user->secondLastName = $request->secondLastName;
-        $user->rol = $rol;
+        $user->firstSurname = $request->firstSurname;
+        $user->secondSurname = $request->secondSurname;
+        $user->rol = $request->rol;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
@@ -120,34 +118,47 @@ class UserController extends Controller
         $data = request()->except(['_token', '_method']);
         $request->validate([
             'name' => 'required|string|max:100',
-            'firstLastName' => 'required|string|max:100',
-            'secondLastName' => 'required|string|max:100',
-            'rol' => 'required',
+            'firstSurname' => 'required|string|max:100',
+            'secondSurname' => 'required|string|max:100',
+            'rol' => 'required|integer',
             'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
         ]);
-
-        $rol = request()->rol;
-
-        if ($rol == "administrador") {
-            $rol = 1;
-        } elseif ($rol == "jefe") {
-            $rol = 0;
-        }
 
         $user = new User();
         $name = $request->name;
-        $firstLastName = $request->firstLastName;
-        $secondLastName = $request->secondLastName;
+        $firstSurname = $request->firsSurname;
+        $secondSurname = $request->seconSurname;
         $email = $request->email;
-        $password = bcrypt($request->password);
+        $rol = $request->rol;
+        //$password = bcrypt($request->password);
 
-        $affected = User::where('id', $id)->update([
-            'name' => $name, 'firstLastName' => $firstLastName,
-            'secondLastName' => $secondLastName, 'rol' => $rol, 'email' => $email, 'password' => $password
+        User::where('id', $id)->update([
+            'name' => $name, 'firstSurname' => $firstSurname,
+            'secondSurname' => $secondSurname, 'rol' => $rol, 'email' => $email
         ]);
 
         return redirect()->action('UserController@index')->with('updateUser', 'Usuario actualizado');
+    }
+
+    public function editPassword($id)
+    {
+        $user = User::findOrfail($id);
+        return view('user.users.editPassword', compact('user'));
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|confirmed|string|min:8',
+        ]);
+        $password = $request->input('password');
+        $password = bcrypt($password);
+
+        User::where('id', $id)->update([
+            'password' => $password
+        ]);
+
+        return redirect()->action('UserController@index')->with('updatePassword', 'Contraseña del usuario actualizada correctamente');
     }
 
     /**
@@ -159,7 +170,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::destroy($id);
-        $users['users'] = User::paginate(10);
         return redirect()->action('UserController@index')->with('deleteUser', 'Usuario eliminado');
     }
 }

@@ -69,7 +69,9 @@
                     <th scope="col">Numero</th>
                     <th scope="col">Nombre de la localidad</th>
                     <th scope="col">Municipio</th>
+                    @if(Auth::user()->rol == 1)
                     <th scope="col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -79,6 +81,7 @@
                     <td>{{$locality->keyLocality}}</td>
                     <td>{{$locality->nameLocality}}</td>
                     <td>{{$locality->municipality->nameMunicipality}}</td>
+                    @if(Auth::user()->rol == 1)
                     <td>
                         <div class="row justify-content-center">
                             <a class="btn btn-primary mr-1" href="{{url('/locality/'.$locality->id.'/edit')}}">Editar</a>
@@ -89,6 +92,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
@@ -98,9 +102,11 @@
         <div class="col-sm">
             {{ $localities->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
         <div class="col-sm">
             <a class="btn btn-success float-right" href="{{url('/locality/create')}}">Crear Localidad</a>
         </div>
+        @endif
     </div>
 </div>
 @endsection

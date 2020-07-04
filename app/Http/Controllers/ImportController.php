@@ -16,6 +16,11 @@ use App\Imports\HigersImport;
 
 class ImportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function importScholar(Request $request)
     {
         $data = request()->except(['_token', '_method']);

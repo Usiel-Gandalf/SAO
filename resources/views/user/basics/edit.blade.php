@@ -156,7 +156,7 @@
             @enderror
 
             <div class="row justify-content-center">
-                <input type="submit" class="btn btn-success mr-1" value="Registrar">
+                <input type="submit" class="btn btn-success mr-1" value="Actualizar">
                 <a href="{{url('/basicEducation')}}" class="btn btn-primary">Regresar</a>
             </div>
             <br>

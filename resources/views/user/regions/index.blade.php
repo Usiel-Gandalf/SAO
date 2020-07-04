@@ -3,6 +3,7 @@
 <div class="row justify-content-md-center mb-4">
     <h1>Regiones</h1>
 </div>
+
 <div class="row justify-content-md-center">
     @if(session('notFound'))
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -13,6 +14,7 @@
     </div>
     @endif
 </div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="page-header">
@@ -64,7 +66,9 @@
                     <th scope="col">Clave</th>
                     <th scope="col">Numero</th>
                     <th scope="col">Nombre</th>
+                    @if(Auth::user()->rol == 1)
                     <th scope="col">Acciones</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -73,6 +77,7 @@
                     <th scope="row">{{$region->id}}</th>
                     <td>{{$region->region}}</td>
                     <td>{{$region->nameRegion}}</td>
+                    @if(Auth::user()->rol == 1)
                     <td>
                         <div class="row justify-content-center">
                             <a class="btn btn-primary mx-1" href="{{url('/region/'.$region->id.'/edit')}}">Editar</a>
@@ -83,6 +88,7 @@
                             </form>
                         </div>
                     </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>
@@ -92,9 +98,11 @@
         <div class="col">
             {{ $regions->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
         <div class="col">
             <a class="btn btn-success float-right" href="{{url('/region/create')}}">Crear Region</a>
         </div>
+        @endif
     </div>
 </div>
 @endsection
