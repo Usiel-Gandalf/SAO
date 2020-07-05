@@ -19,7 +19,7 @@ class LocalityController extends Controller
      */
     public function index()
     {
-        $localities = Locality::with('municipality')->paginate(10);
+        $localities = Locality::with('municipality')->paginate(5);
         return view('user.localities.index', compact('localities'));
     }
 
@@ -80,7 +80,7 @@ class LocalityController extends Controller
             ->numberLocality($numberLocality)
             ->nameLocality($nameLocality)
             ->idMunicipality($idMunicipality)
-            ->paginate(10);
+            ->paginate(5);
 
         if (count($localities) == 0) {
             return back()->with('notFound', 'No se encontraron resultados');

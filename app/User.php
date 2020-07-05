@@ -37,6 +37,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function rol(){
+        return User::get()->rol;
+    }
+
+    public function region(){
+        return $this->belongsTo(Region::class);
+    }
+
     public function scopeNameUser($query, $nameUser)
     {
         if ($nameUser) {

@@ -2,15 +2,18 @@
 
 @section('main')
 <div class="row justify-content-md-center">
-    <div class="col-7 mt-5">
-        <div class="col table-bordered">
+    <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
+        <div class="col border border-secondary">
             <div class="row justify-content-center">
                 <h2 class="mt-1">Editar contraseña</h2>
             </div>
             <div class="row justify-content-center">
-                <h5 class="mt-1">Usuario: {{$user->name}}</h5>
+                <h5 class="mt-1">
+                    Administrador: {{$admin->name}}
+                </h5>
             </div>
-            <form action="{{url('/user/'.$user->id.'/updatePassword')}}" method="post">
+
+            <form action="{{url('/admin/'.$admin->id.'/updatePasswordAdmin')}}" method="post">
                 @csrf
                 <div class="form-group">
                     <input type="password" class="form-control" name="password" id="password" placeholder="Ingresar nueva contraseña">
@@ -24,7 +27,7 @@
 
                 <div class="row justify-content-center">
                     <input type="submit" class="btn btn-success mr-1" value="Editar">
-                    <a href="{{url('/user')}}" class="btn btn-primary">Regresar</a>
+                    <a href="{{url('/admin')}}" class="btn btn-primary">Regresar</a>
                 </div>
                 <br>
             </form>

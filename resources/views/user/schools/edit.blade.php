@@ -2,8 +2,8 @@
 
 @section('main')
 <div class="row justify-content-md-center">
-    <div class="col-7">
-        <div class="col table-bordered mt-5">
+    <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
+        <div class="col border border-secondary">
             <div class="row justify-content-center mt-1">
                 <h2 class="">Editar Escuela</h2>
             </div>

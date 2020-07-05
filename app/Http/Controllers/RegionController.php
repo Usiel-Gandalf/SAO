@@ -18,7 +18,7 @@ class RegionController extends Controller
      */
     public function index()
     {
-        $regions = Region::paginate(10);
+        $regions = Region::paginate(5);
         $regions->sortBy('nameRegion');
         return view('user.regions.index', compact('regions'));
     }
@@ -74,7 +74,7 @@ class RegionController extends Controller
         ->idRegion($idRegion)
         ->numberRegion($numberRegion)
         ->nameRegion($nameRegion)
-        ->paginate(10);
+        ->paginate(5);
         
         if (count($regions) == 0) {
             return back()->with('notFound', 'No se encontraron resultados');

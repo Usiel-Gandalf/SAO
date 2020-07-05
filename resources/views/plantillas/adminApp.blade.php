@@ -32,8 +32,14 @@ height:100%;">
                     <a class="nav-link text-white" href="{{url('/home')}}">Inicio<span class="sr-only">(current)</span></a>
                 </li>
                 @if(Auth::user()->rol == 1)
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="{{url('/user')}}">Usuarios</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Usuarios
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{url('/admin')}}">Administradores</a>
+                        <a class="dropdown-item" href="{{url('/boss')}}">Jefes</a>
+                    </div>
                 </li>
                 @endif
                 <li class="nav-item dropdown">
@@ -85,7 +91,14 @@ height:100%;">
                             <span class="caret text-light">{{ Auth::user()->name }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" class="">
-                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            @if(Auth::user()->rol == 1)
+                            <a class="dropdown-item badge badge-success" href="{{route('adminProfile')}}">Perfil</a>
+                            @endif
+                            @if(Auth::user()->rol == 0)
+                            <a class="dropdown-item badge badge-success" href="{{route('bossProfile')}}">Perfil</a>
+                            @endif
+
+                            <a class="dropdown-item badge badge-danger" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                 {{ __('Cerrar Sesion') }}
                             </a>
@@ -93,7 +106,6 @@ height:100%;">
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
-                            <a class="dropdown-item" href="">Perfil</a>
                         </div>
                     </li>
                 </div>

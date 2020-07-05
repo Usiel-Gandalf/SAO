@@ -19,7 +19,7 @@ class MunicipalityController extends Controller
      */
     public function index()
     {
-        $municipalities = Municipality::with('region')->paginate(10);
+        $municipalities = Municipality::with('region')->paginate(5);
         //$municipalities = Municipality::orderBy('nameMunicipality', 'ASC')->with('region')->paginate(10);
         return view('user.municipalities.index', compact('municipalities'));
     }
@@ -77,7 +77,7 @@ class MunicipalityController extends Controller
        ->id($idMunicipality)
        ->nameMunicipality($nameMunicipality)
        ->idRegion($idRegion)
-       ->paginate(10);
+       ->paginate(5);
 
        if (count($municipalities) == 0) {
         return back()->with('notFound', 'No se encontraron resultados');

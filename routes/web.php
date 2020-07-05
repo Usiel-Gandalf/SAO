@@ -16,16 +16,14 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::get('/', function () {
-    return view('auth.login');
-});
-
-
+        return view('auth.login');
+})->middleware('auth');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
 //Rutas de recursos
-Route::resource('user', 'UserController');
+Route::resource('admin', 'AdminController');
+Route::resource('boss', 'BossController');
 Route::resource('region', 'RegionController');
 Route::resource('municipality', 'MunicipalityController');
 Route::resource('locality', 'LocalityController');
@@ -44,7 +42,8 @@ Route::get('searchLocality', 'LocalityController@show')->name('searchLocality');
 Route::get('searchSchool', 'SchoolController@show')->name('searchSchool');
 Route::get('searchScholar', 'ScholarController@show')->name('searchScholar');
 Route::get('searchTitular', 'TitularController@show')->name('searchTitular');
-Route::get('searchUser', 'UserController@show')->name('searchUser');
+Route::get('searchAdmin', 'AdminController@show')->name('searchAdmin');
+Route::get('searchBoss', 'BossController@show')->name('searchBoss');
 Route::get('searchBasic', 'BasicController@show')->name('searchBasic');
 Route::get('searchMedium', 'MediumController@show')->name('searchMedium');
 Route::get('searchHiger', 'HigerController@show')->name('searchHiger');
@@ -73,12 +72,22 @@ Route::post('importHiger', 'importController@importHiger')->name('importHiger');
 Route::get('basicReport', 'RouteController@basicReport')->name('basicReport');
 Route::post('basicSearch', 'RouteController@basicSearch')->name('basicSearch');
 
-//Editar pasword y perfiles
-Route::get('user/{id}/editPassword', 'UserController@editPassword');
-Route::post('user/{id}/updatePassword', 'UserController@updatePassword');
+//Editar pasword y perfiles de administradores y jefes juar por parte de los administradores
+Route::get('admin/{id}/editPasswordAdmin', 'AdminController@editPasswordAdmin');
+Route::post('admin/{id}/updatePasswordAdmin', 'AdminController@updatePasswordAdmin');
+Route::get('boss/{id}/editPasswordBoss', 'BossController@editPasswordBoss');
+Route::post('boss/{id}/updatePasswordBoss', 'BossController@updatePasswordBoss');
+
+// rutas para editar informacion y contraseña de los perfiles propios 
+
+
 
 //rutas para ver los bimestres de los diferentes niveles educativos
 Route::get('basicBimestersCerm', 'RouteController@basicBimestersCerm')->name('basicBimestersCerm');
 Route::get('basicBimestersDelivery', 'RouteController@basicBimestersDelivery')->name('basicBimestersDelivery');
 Route::get('mediumBimestersDelivery', 'RouteController@mediumBimestersDelivery')->name('mediumBimestersDelivery');
 Route::get('higerBimestersDelivery', 'RouteController@higerBimestersDelivery')->name('higerBimestersDelivery');
+
+//Rutas para el control de Jefes juar(CREAR, MODIFIFICAR, ELIMINAR)
+Route::get('adminProfile', 'AdminprofileController@adminProfile')->name('adminProfile');
+Route::get('bossProfile', 'BossprofileController@bossProfile')->name('bossProfile');

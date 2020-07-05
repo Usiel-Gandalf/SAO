@@ -19,7 +19,7 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $schools = School::with('locality')->paginate(10);
+        $schools = School::with('locality')->paginate(5);
         return view('user.schools.index', compact('schools'));
     }
 
@@ -76,7 +76,7 @@ class SchoolController extends Controller
             ->idSchool($idSchool)
             ->nameSchool($nameSchool)
             ->idLocality($idLocality)
-            ->paginate(10);
+            ->paginate(5);
 
         if (count($schools) == 0) {
             return back()->with('notFound', 'No se encontraron resultados');

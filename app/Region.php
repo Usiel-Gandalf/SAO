@@ -13,6 +13,10 @@ class Region extends Model
         return $this->hasMany(Municipality::class);
     }
 
+    public function users(){
+        return $this->hasMany(User::class);
+    }
+
     public function scopeIdRegion($query, $id){
         if($id)
         {
