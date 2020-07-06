@@ -6,7 +6,7 @@ use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckRole
+class OnlyAdmin
 {
     /**
      * Handle an incoming request.

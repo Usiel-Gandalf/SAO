@@ -14,42 +14,40 @@
                             <a class="nav-link" href="{{route('editBossProfile')}}">ACTUALIZAR PERFIL</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="{{route('editBossPassword')}}" tabindex="-1" aria-disabled="true">CAMBIAR CONTRASEÑA</a>
+                            <a class="nav-link" href="{{route('editBossPassword')}}" tabindex="-1" aria-disabled="true">CAMBIAR CONTRASEÑA</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('editBossEmail')}}" tabindex="-1" aria-disabled="true">CAMBIAR CORREO</a>
+                            <a class="nav-link active" href="{{route('editBossEmail')}}" tabindex="-1" aria-disabled="true">CAMBIAR CORREO</a>
                         </li>
                     </ul>
                 </div>
                 <div class="card-body">
-                    <h4 class="card-title">ACTUALIZAR CONTRASEÑA</h4>
+                    @if(session('emailUnique'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{session('emailUnique')}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @endif
+                    <h4 class="card-title">ACTUALIZAR CORREO ELECTRONICO</h4>
+                    <h6 class="card-title">Correo electronico actual: {{$boss->email}}</h6>
                     <div class="container border-danger">
-                        <form action="{{url('/editBossPassword/'.$idBoss.'/updateBossPassword')}}" method="post" enctype="multipart/form-data" class="">
+                        <form action="{{url('/editBossEmail/'.$boss->id.'/updateBossEmail')}}" method="post" enctype="multipart/form-data" class="">
                             @csrf
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="password">{{'Contraseña'}}</label>
-                                        <input type="password" class="form-control" name="password" id="password" placeholder="Ingresar la nueva contraseña">
-                                        @error('password')
+                                        <label for="email">{{'Correo electronico'}}</label>
+                                        <input type="mail" class="form-control" name="email" id="email" placeholder="Ingresar el nuevo correo electronico">
+                                        @error('email')
                                         <label for="email"class="text-danger">
-                                            Error en el nuevo password(minimo 8 caracteres), Asegurese de escribir correctamente las dos contraseñas
-                                        </label
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="password_confirmation">{{'Confirmar nueva contraseña'}}</label>
-                                        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="Confrimar la nueva contraseña">
-                                        @error('password_confirmation')
-                                        <div class="alert alert-danger">
-                                            Error en el primer apellido, comprobar nuevamente(nombre valido, no numeros, no vacio).
-                                        </div>
+                                            Error en el nuevo correo, verificar nuevamente
+                                        </label>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row justify-content-center">
                                 <input type="submit" class="btn btn-success mr-1" value="Actualizar">
                             </div>

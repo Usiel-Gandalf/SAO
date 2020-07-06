@@ -88,6 +88,25 @@ Route::get('basicBimestersDelivery', 'RouteController@basicBimestersDelivery')->
 Route::get('mediumBimestersDelivery', 'RouteController@mediumBimestersDelivery')->name('mediumBimestersDelivery');
 Route::get('higerBimestersDelivery', 'RouteController@higerBimestersDelivery')->name('higerBimestersDelivery');
 
-//Rutas para el control de Jefes juar(CREAR, MODIFIFICAR, ELIMINAR)
+//Rutas para el control de los perfiles como administrador
 Route::get('adminProfile', 'AdminprofileController@adminProfile')->name('adminProfile');
+Route::get('editAdminProfile', 'AdminprofileController@editAdminProfile')->name('editAdminProfile');
+Route::post('editAdminProfile/{id}/updateAdminProfile', 'AdminprofileController@updateAdminProfile');
+
+Route::get('editAdminPassword', 'AdminprofileController@editAdminPassword')->name('editAdminPassword');
+Route::post('editAdminPassword/{id}/updateAdminPassword', 'AdminprofileController@updateAdminPassword');
+
+Route::get('editAdminEmail', 'AdminprofileController@editAdminEmail')->name('editAdminEmail');
+Route::post('editAdminEmail/{id}/updateAdminEmail', 'AdminprofileController@updateAdminEmail');
+
+// Rutas para el control de los perfiles como jefes juar
 Route::get('bossProfile', 'BossprofileController@bossProfile')->name('bossProfile');
+Route::get('editBossProfile', 'BossprofileController@editBossProfile')->name('editBossProfile');
+Route::post('editBossProfile/{id}/updateBossProfile', 'BossprofileController@updateBossProfile');
+Route::get('editBossPassword', 'BossprofileController@editBossPassword')->name('editBossPassword');
+Route::post('editBossPassword/{id}/updateBossPassword', 'BossprofileController@updateBossPassword');
+Route::get('editBossEmail', 'BossprofileController@editBossEmail')->name('editBossEmail');
+Route::post('editBossEmail/{id}/updateBossEmail', 'BossprofileController@updateBossEmail');
+
+//ruta de reportes por entidades 
+Route::get('reportRegion/{id}/reportRegion', 'RegionController@reportRegion');

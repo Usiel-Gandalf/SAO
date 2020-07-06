@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Region;
+use App\Basic;
 
 class RegionController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('onlyAdmin')->except('index');
     }
     /**
      * Display a listing of the resource.
@@ -18,9 +21,16 @@ class RegionController extends Controller
      */
     public function index()
     {
-        $regions = Region::paginate(5);
-        $regions->sortBy('nameRegion');
-        return view('user.regions.index', compact('regions'));
+        if (Auth::user()->rol == 0) {
+            $region_id = Auth::user()->region_id;
+            $regions = Region::where('id', $region_id)->paginate(1);
+
+            return view('user.regions.index', compact('regions'));
+        }else{
+            $regions = Region::paginate(5);
+            $regions->sortBy('nameRegion');
+            return view('user.regions.index', compact('regions'));
+        }
     }
 
     /**
@@ -127,4 +137,24 @@ class RegionController extends Controller
         Region::destroy($id);
         return redirect()->action('RegionController@index')->with('deleteRegion', 'Region eliminada');
     }
+
+    // funciones para los reportes de regiones
+
+    public function reportRegion($id){
+        //return $id;
+       $pending = Basic::all();
+        $pending->load('locality.municipality.region');
+        foreach ($pending as $reg) {
+            if ($reg->locality->municipality->region->id == $id) {
+                print_r($reg->locality->municipality->region->nameRegion);
+                echo '<br>';
+            }
+            else{
+                echo 'el registro no coincide'; 
+            }
+        }
+        //$pendingEntities = $pending->load('locality.municipality.region');
+    }
+
+
 }

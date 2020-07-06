@@ -34,7 +34,7 @@ class BasicsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChu
     {
         if ($this->status == 0) {
             Basic::firstOrCreate(
-                ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form']],
+                ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form'] ?? $row['FOLIO_FORM'] ?? $row['folio_form']],
                 [
                     'titular_id' => $row['FAM_ID'] ?? $row['fam_id'] ?? null,
                     'locality_id' => $row['CLAVEOFI'] ?? $row['claveofi'] ?? null,
