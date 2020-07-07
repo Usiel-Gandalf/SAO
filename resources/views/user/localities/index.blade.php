@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded mt-5">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-4">
         <h1>Localidades</h1>
     </div>
@@ -15,24 +15,27 @@
         </div>
         @endif
         @if(session('saveLocality'))
-        <div class="row justify-content-center">
-            <div class="alert alert-success">
-                {{session('saveLocality')}}
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{session('saveLocality')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('deleteLocality'))
-        <div class="row justify-content-center">
-            <div class="alert alert-danger">
-                {{session('deleteLocality')}}
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{session('deleteLocality')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('updateLocality'))
-        <div class="row justify-content-center">
-            <div class="alert alert-primary">
-                {{session('updateLocality')}}
-            </div>
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>{{session('updateLocality')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
     </div>
@@ -84,14 +87,22 @@
                         <td>{{$locality->nameLocality}}</td>
                         <td>{{$locality->municipality->nameMunicipality}}</td>
                         @if(Auth::user()->rol == 1)
-                        <td>
-                            <div class="row justify-content-center">
-                                <a class="btn btn-primary mr-1" href="{{url('/locality/'.$locality->id.'/edit')}}">Editar</a>
-                                <form method="post" action="{{url('/locality/'.$locality->id)}}">
-                                    @csrf
-                                    {{method_field('DELETE')}}
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar la localidad?');">Borrar</button>
-                                </form>
+                        <td class="justify-content-center">
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Acciones
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="{{url('/locality/'.$locality->id.'/edit')}}">Editar</a>
+
+                                        <form method="post" action="{{url('/locality/'.$locality->id)}}">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="dropdown-item" onclick="return confirm('Esta seguro que quiere eliminar la localidad?');">Borrar</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                         @endif

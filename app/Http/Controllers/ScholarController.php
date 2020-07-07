@@ -44,7 +44,7 @@ class ScholarController extends Controller
         request()->except('_token');
 
         $request->validate([
-            'keyScholar' => 'required',
+            'id' => 'required|integer',
             'nameScholar' => 'required|string',
             'firstSurname' => 'required|string',
             'secondSurname' => 'required|string',
@@ -53,13 +53,13 @@ class ScholarController extends Controller
             'curp' => 'required|string',
         ]);
         $scholar = new Scholar();
+        $scholar->id = $request->id;
         $scholar->nameScholar = $request->nameScholar;
         $scholar->firstSurname = $request->firstSurname;
         $scholar->secondSurname = $request->secondSurname;
         $scholar->gender = $request->gender;
         $scholar->birthDate = $request->birthDate;
         $scholar->curp = $request->curp;
-        $scholar->keyScholar = $request->keyScholar;
         $scholar->save();
 
         return redirect()->action('ScholarController@index')->with('saveScholar', 'Nuevo becario agregado');
@@ -122,7 +122,7 @@ class ScholarController extends Controller
         $data = request()->except(['_token', '_method']);
 
         $request->validate([
-            'keyScholar' => 'required',
+            'id' => 'required|integer',
             'nameScholar' => 'required|string',
             'firstSurname' => 'required|string',
             'secondSurname' => 'required|string',

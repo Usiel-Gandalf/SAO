@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded mt-5">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-4">
         <h1>Becarios</h1>
     </div>
@@ -15,24 +15,27 @@
         </div>
         @endif
         @if(session('saveScholar'))
-        <div class="row justify-content-center">
-            <div class="alert alert-success">
-                {{session('saveScholar')}}
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{session('saveScholar')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('deleteScholar'))
-        <div class="row justify-content-center">
-            <div class="alert alert-danger">
-                {{session('deleteScholar')}}
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{session('deleteScholar')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('updateScholar'))
-        <div class="row justify-content-center">
-            <div class="alert alert-primary">
-                {{session('updateScholar')}}
-            </div>
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>{{session('updateScholar')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
     </div>
@@ -88,14 +91,22 @@
                         <td>{{$scholar->gender}}</td>
                         <td>{{'Sin formato'}}</td>
                         @if(Auth::user()->rol == 1)
-                        <td>
-                            <div class="row justify-content-center mx-1">
-                                <a class="btn btn-primary mr-1" href="{{url('/scholar/'.$scholar->id.'/edit')}}">Editar</a>
-                                <form method="post" action="{{url('/scholar/'.$scholar->id)}}">
-                                    @csrf
-                                    {{method_field('DELETE')}}
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar la escuela?');">Borrar</button>
-                                </form>
+                        <td class="justify-content-center">
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Acciones
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="{{url('/scholar/'.$scholar->id.'/edit')}}">Editar</a>
+
+                                        <form method="post" action="{{url('/scholar/'.$scholar->id)}}">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="dropdown-item" onclick="return confirm('Esta seguro que quiere eliminar la escuela?');">Borrar</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                         @endif

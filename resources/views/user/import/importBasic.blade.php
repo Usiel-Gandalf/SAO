@@ -1,6 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
 <div class="main shadow p-3 mb-5 bg-white rounded">
+    
     <div class="row justify-content-md-center mb-2">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Importante!</strong> Seccion para subir las cerms o avisos de cobro de educacion basica, asi como sus respectivas actualizaciones

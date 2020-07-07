@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-1 bg-white rounded">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center mt-5">
         <!-- endImportBasic -->
         <div class="col-8">

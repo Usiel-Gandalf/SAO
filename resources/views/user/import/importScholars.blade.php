@@ -2,10 +2,9 @@
 @section('main')
 <div class="main shadow p-3 mb-5 bg-white rounded">
 
-    <div class="row justify-content-md-center mb-4">
+    <div class="row justify-content-md-center mb-2">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Importante!</strong> Esto es solamente para registrar la pura informacion ya sea de los becarios o titulares,
-            solo para llevar el control de sus informaciones personales
+            <strong>Importante!</strong> Registro de informacion de los becarios o titulares
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -16,7 +15,9 @@
         <!-- Scholar -->
         <div class="col-7">
             <div class="card shadow-lg p-3 mb-5 bg-white rounded">
-                <center><h4 class="card-header">Becarios ó Titulares</h4></center>
+                <center>
+                    <h4 class="card-header">Becarios ó Titulares</h4>
+                </center>
                 <div class="card-body text-center">
                     <h5 class="card-title">Informacion personal</h5>
                     <p class="card-text">Se registrara la informacion de los becarios o titulares</p>

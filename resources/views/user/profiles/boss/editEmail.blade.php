@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center">
         <!-- endImportBasic -->
         <div class="col-8 mt-5">
@@ -41,7 +41,7 @@
                                         <label for="email">{{'Correo electronico'}}</label>
                                         <input type="mail" class="form-control" name="email" id="email" placeholder="Ingresar el nuevo correo electronico">
                                         @error('email')
-                                        <label for="email"class="text-danger">
+                                        <label for="email" class="text-danger">
                                             Error en el nuevo correo, verificar nuevamente
                                         </label>
                                         @enderror

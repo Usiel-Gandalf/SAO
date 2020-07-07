@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded mt-5">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
   <div class="row justify-content-md-center mb-4">
     <h1>Administradores</h1>
   </div>
@@ -78,11 +78,9 @@
       <table class="table table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Nombre</th>
             <th scope="col">Primer Apellido</th>
             <th scope="col">Segundo Apellido</th>
-            <th scope="col">Rol</th>
             <th scope="col">Estado</th>
             <th scope="col">Correo</th>
             <th scope="col">Acciones</th>
@@ -91,11 +89,9 @@
         <tbody>
           @foreach($admins as $admin)
           <tr>
-            <th scope="row">{{$admin->id}}</th>
             <td>{{$admin->name}}</td>
             <td>{{$admin->firstSurname}}</td>
             <td>{{$admin->secondSurname}}</td>
-            <td>Administrador</td>
             <td>
               @if($admin->status == 1)
               Activo
@@ -104,16 +100,22 @@
               @endif
             </td>
             <td>{{$admin->email}}</td>
-            <td>
-              <div class="row justify-content-center">
-                <a class="btn btn-primary mr-1" href="{{url('/admin/'.$admin->id.'/edit')}}">Editar Perfil</a>
-                <a class="btn btn-primary mr-1" href="{{url('/admin/'.$admin->id.'/editPasswordAdmin')}}">Editar Contraseña</a>
-
-                <form method="post" action="{{url('/admin/'.$admin->id)}}">
-                  @csrf
-                  {{method_field('DELETE')}}
-                  <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar al administrador?');">Borrar</button>
-                </form>
+            <td class="justify-content-center">
+              <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <div class="btn-group" role="group">
+                  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Acciones
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <a class="dropdown-item" href="{{url('/admin/'.$admin->id.'/edit')}}">Editar Perfil</a>
+                    <a class="dropdown-item" href="{{url('/admin/'.$admin->id.'/editPasswordAdmin')}}">Editar Contraseña</a>
+                    <form method="post" action="{{url('/admin/'.$admin->id)}}">
+                      @csrf
+                      {{method_field('DELETE')}}
+                      <button type="submit" class="dropdown-item" onclick="return confirm('Esta seguro que quiere eliminar al administrador?');">Borrar</button>
+                    </form>
+                  </div>
+                </div>
               </div>
             </td>
           </tr>
@@ -122,14 +124,14 @@
       </table>
     </div>
   </div>
-  
+
   <div class="row mt-1">
-      <div class="col">
-        {{ $admins->links() }}
-      </div>
-      <div class="col">
-        <a class="btn btn-success float-right mr-1" href="{{url('/admin/create')}}">Registrar Administrador</a>
-      </div>
+    <div class="col">
+      {{ $admins->links() }}
     </div>
+    <div class="col">
+      <a class="btn btn-success float-right mr-1" href="{{url('/admin/create')}}">Registrar Administrador</a>
+    </div>
+  </div>
 </div>
 @endsection

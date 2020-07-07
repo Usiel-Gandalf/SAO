@@ -2,7 +2,7 @@
 
 @section('main')
 <div class="row justify-content-md-center">
-    <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
+    <div class="col-5 shadow p-3 mb-5 bg-white rounded mt-4">
         <div class="col border border-secondary">
             <div class="row justify-content-center">
                 <h2 class="mt-1">Editar contraseña</h2>
@@ -22,7 +22,7 @@
                         Algo ha salido mal con la contraseña, revisa nuevamente(minima 8, confirmacion), asegurese de confirmar correctamente la contraseña
                     </div>
                     @enderror
-                    <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="Confirmar nueva contraseña">
+                    <input type="password" class="form-control mt-2" name="password_confirmation" id="password_confirmation" placeholder="Confirmar nueva contraseña">
                 </div>
 
                 <div class="row justify-content-center">

@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded mt-5">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     @if(Auth::user()->rol == 1)
     <div class="row justify-content-md-center mb-4">
         <h1>Regiones</h1>
@@ -16,24 +16,27 @@
         </div>
         @endif
         @if(session('saveRegion'))
-        <div class="row justify-content-center">
-            <div class="alert alert-success">
-                {{session('saveRegion')}}
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{session('saveRegion')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('deleteRegion'))
-        <div class="row justify-content-center">
-            <div class="alert alert-danger">
-                {{session('deleteRegion')}}
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{session('deleteRegion')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('updateRegion'))
-        <div class="row justify-content-center">
-            <div class="alert alert-primary">
-                {{session('updateRegion')}}
-            </div>
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>{{session('updateRegion')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
     </div>
@@ -85,15 +88,22 @@
                         <td>{{$region->region}}</td>
                         <td>{{$region->nameRegion}}</td>
                         @if(Auth::user()->rol == 1)
-                        <td>
-                            <div class="row justify-content-center">
-                                <a class="btn btn-primary mx-1" href="{{url('/region/'.$region->id.'/edit')}}">Editar</a>
-                                <a class="btn btn-primary mx-1" href="{{url('reportRegion/'.$region->id.'/reportRegion')}}">Reporte</a>
-                                <form method="post" action="{{url('/region/'.$region->id)}}">
-                                    @csrf
-                                    {{method_field('DELETE')}}
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar la region?');">Borrar</button>
-                                </form>
+                        <td class="justify-content-center">
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Acciones
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="{{url('/region/'.$region->id.'/edit')}}">Editar</a>
+                                        <a class="dropdown-item" href="{{url('reportRegion/'.$region->id.'/reportRegion')}}">Reporte</a>
+                                        <form method="post" action="{{url('/region/'.$region->id)}}">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="dropdown-item" onclick="return confirm('Esta seguro que quiere eliminar la region?');">Borrar</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                         @endif
@@ -103,7 +113,6 @@
             </table>
         </div>
     </div>
-
     <div class="row">
         <div class="col">
             {{ $regions->links() }}
@@ -111,19 +120,12 @@
         @if(Auth::user()->rol == 1)
         <div class="col">
             <a class="btn btn-success float-right" href="{{url('/region/create')}}">Crear Region</a>
-
             <a class="btn btn-success float-right mr-1" href="">Generar reporte general</a>
         </div>
         @endif
     </div>
 
-    @if(Auth::user()->rol == 1)
-    <div class="row">
-        <div class="col">Educacion basica</div>
-        <div class="col">Educacion Media superior</div>
-        <div class="col">Jovenes escribiendo el futuro</div>
-    </div>
-    @else
+    @if(Auth::user()->rol == 0)
     @include('user.regions.regionGeneral')
     @endif
 </div>

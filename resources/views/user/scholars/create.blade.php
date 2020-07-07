@@ -1,7 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
 <div class="row justify-content-md-center">
-    <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
+    <div class="col-6 shadow p-3 mb-5 bg-white rounded mt-4">
         <div class="col border border-secondary">
             <div class="row justify-content-center mt-1">
                 <h2 class="">Registrar Becario</h2>
@@ -9,9 +9,9 @@
             <form action="{{url('/scholar')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <label for="keyScholar">{{'Clave del becario'}}</label>
-                    <input type="text" class="form-control" name="keyScholar" id="keyScholar" value="{{old('keyScholar')}}">
-                    @error('keyScholar')
+                    <label for="id">{{'Clave del becario'}}</label>
+                    <input type="number" class="form-control" name="id" id="id" value="{{old('id')}}">
+                    @error('id')
                     <div class="alert alert-danger">
                         revisar nuevamente la clave del becario
                     </div>

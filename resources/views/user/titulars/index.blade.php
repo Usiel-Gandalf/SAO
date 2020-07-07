@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded mt-5">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-4">
         <h1>Titulares</h1>
     </div>
@@ -15,24 +15,27 @@
         </div>
         @endif
         @if(session('saveTitular'))
-        <div class="row justify-content-center">
-            <div class="alert alert-success">
-                {{session('saveTitular')}}
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{session('saveTitular')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('deleteTitular'))
-        <div class="row justify-content-center">
-            <div class="alert alert-danger">
-                {{session('deleteTitular')}}
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{session('deleteTitular')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('updateTitular'))
-        <div class="row justify-content-center">
-            <div class="alert alert-primary">
-                {{session('updateTitular')}}
-            </div>
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>{{session('updateTitular')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
     </div>
@@ -72,7 +75,6 @@
                         <th scope="col">Apellido paterno</th>
                         <th scope="col">Apellido materno</th>
                         <th scope="col">Genero</th>
-                        <th scope="col">Fecha de nacimiento</th>
                         @if(Auth::user()->rol == 1)
                         <th scope="col">Acciones</th>
                         @endif
@@ -91,16 +93,22 @@
                         <td>{{$titular->firstSurname}}</td>
                         <td>{{$titular->secondSurname}}</td>
                         <td>{{$titular->gender}}</td>
-                        <td>{{'Sin formato'}}</td>
                         @if(Auth::user()->rol == 1)
-                        <td>
-                            <div class="row justify-content-center">
-                                <a class="btn btn-primary mr-1" href="{{url('/titular/'.$titular->id.'/edit')}}">Editar</a>
-                                <form method="post" action="{{url('/titular/'.$titular->id)}}">
-                                    @csrf
-                                    {{method_field('DELETE')}}
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar el/la titular?');">Borrar</button>
-                                </form>
+                        <td class="justify-content-center">
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Acciones
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="{{url('/titular/'.$titular->id.'/edit')}}">Editar</a>
+                                        <form method="post" action="{{url('/titular/'.$titular->id)}}">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="dropdown-item" onclick="return confirm('Esta seguro que quiere eliminar el/la titular?');">Borrar</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                         @endif

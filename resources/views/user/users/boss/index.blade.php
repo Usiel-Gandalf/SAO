@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded mt-5">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
   <div class="row justify-content-md-center mb-4">
     <h1>Jefes Juar</h1>
   </div>
@@ -81,7 +81,6 @@
             <th scope="col">Nombre</th>
             <th scope="col">Primer Apellido</th>
             <th scope="col">Segundo Apellido</th>
-            <th scope="col">Rol</th>
             <th scope="col">Estado</th>
             <th scope="col">Correo</th>
             <th scope="col">Region</th>
@@ -94,7 +93,6 @@
             <td>{{$boss->name}}</td>
             <td>{{$boss->firstSurname}}</td>
             <td>{{$boss->secondSurname}}</td>
-            <td>Jefe Juar</td>
             <td>
               @if($boss->status == 1)
               Activo
@@ -104,16 +102,22 @@
             </td>
             <td>{{$boss->email}}</td>
             <td>{{$boss->region_id}}</td>
-            <td>
-              <div class="row justify-content-center">
-                <a class="btn btn-primary mr-1" href="{{url('/boss/'.$boss->id.'/edit')}}">Editar Perfil</a>
-                <a class="btn btn-primary mr-1" href="{{url('/boss/'.$boss->id.'/editPasswordBoss')}}">Editar Contraseña</a>
-
-                <form method="post" action="{{url('/boss/'.$boss->id)}}">
-                  @csrf
-                  {{method_field('DELETE')}}
-                  <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar al Jefe Juar?');">Borrar</button>
-                </form>
+            <td class="justify-content-center">
+              <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <div class="btn-group" role="group">
+                  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Acciones
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <a class="dropdown-item" href="{{url('/boss/'.$boss->id.'/edit')}}">Editar Perfil</a>
+                    <a class="dropdown-item" href="{{url('/boss/'.$boss->id.'/editPasswordBoss')}}">Editar Contraseña</a>
+                    <form method="post" action="{{url('/boss/'.$boss->id)}}">
+                      @csrf
+                      {{method_field('DELETE')}}
+                      <button type="submit" class="dropdown-item" onclick="return confirm('Esta seguro que quiere eliminar al Jefe Juar?');">Borrar</button>
+                    </form>
+                  </div>
+                </div>
               </div>
             </td>
           </tr>
@@ -124,12 +128,12 @@
   </div>
 
   <div class="row">
-      <div class="col">
-        {{ $bosses->links() }}
-      </div>
-      <div class="col">
-        <a class="btn btn-success float-right mr-1" href="{{url('/boss/create')}}">Registrar Jefe Juar</a>
-      </div>
+    <div class="col">
+      {{ $bosses->links() }}
     </div>
+    <div class="col">
+      <a class="btn btn-success float-right mr-1" href="{{url('/boss/create')}}">Registrar Jefe Juar</a>
+    </div>
+  </div>
 </div>
 @endsection

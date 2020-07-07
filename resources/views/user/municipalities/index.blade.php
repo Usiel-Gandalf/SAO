@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded mt-5">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-4">
         <h1>Municipios</h1>
     </div>
@@ -15,24 +15,27 @@
         </div>
         @endif
         @if(session('saveMunicipality'))
-        <div class="row justify-content-center">
-            <div class="alert alert-success">
-                {{session('saveMunicipality')}}
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{session('saveMunicipality')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('deleteMunicipality'))
-        <div class="row justify-content-center">
-            <div class="alert alert-danger">
-                {{session('deleteMunicipality')}}
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{session('deleteMunicipality')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
         @if(session('updateMunicipality'))
-        <div class="row justify-content-center">
-            <div class="alert alert-primary">
-                {{session('updateMunicipality')}}
-            </div>
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>{{session('updateMunicipality')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
         @endif
     </div>
@@ -79,14 +82,22 @@
                         <td>{{$municipio->nameMunicipality}}</td>
                         <td>{{$municipio->region->nameRegion}}</td>
                         @if(Auth::user()->rol == 1)
-                        <td>
-                            <div class="row justify-content-center">
-                                <a class="btn btn-primary mr-1" href="{{url('/municipality/'.$municipio->id.'/edit')}}">Editar</a>
-                                <form method="post" action="{{url('/municipality/'.$municipio->id)}}">
-                                    @csrf
-                                    {{method_field('DELETE')}}
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Esta seguro que quiere eliminar el municipio?');">Borrar</button>
-                                </form>
+                        <td class="justify-content-center">
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Acciones
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="{{url('/municipality/'.$municipio->id.'/edit')}}">Editar</a>
+
+                                        <form method="post" action="{{url('/municipality/'.$municipio->id)}}">
+                                            @csrf
+                                            {{method_field('DELETE')}}
+                                            <button type="submit" class="dropdown-item" onclick="return confirm('Esta seguro que quiere eliminar el municipio?');">Borrar</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                         @endif
@@ -98,14 +109,14 @@
     </div>
 
     <div class="row">
-            <div class="col-sm">
-                {{ $municipalities->links() }}
-            </div>
-            @if(Auth::user()->rol == 1)
-            <div class="col-sm">
-                <a class="btn btn-success float-right" href="{{url('/municipality/create')}}">Crear Municipio</a>
-            </div>
-            @endif
+        <div class="col-sm">
+            {{ $municipalities->links() }}
         </div>
+        @if(Auth::user()->rol == 1)
+        <div class="col-sm">
+            <a class="btn btn-success float-right" href="{{url('/municipality/create')}}">Crear Municipio</a>
+        </div>
+        @endif
+    </div>
 </div>
 @endsection

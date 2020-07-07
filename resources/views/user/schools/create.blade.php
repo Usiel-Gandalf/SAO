@@ -1,7 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
 <div class="row justify-content-md-center">
-    <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
+    <div class="col-6 shadow p-3 mb-5 bg-white rounded mt-4">
         <div class="col border border-secondary">
             <div class="row justify-content-center mt-1">
                 <h2 class="">Registrar Escuela</h2>
@@ -19,7 +19,7 @@
                 @enderror
 
                 <div class="form-group">
-                    <label for="nameMunicipality">{{'Nombre de la localidad'}}</label>
+                    <label for="nameMunicipality">{{'Nombre de la escuela'}}</label>
                     <input type="text" class="form-control" name="nameSchool" id="nameSchool" value="{{old('nameSchool')}}">
                 </div>
                 @error('nameSchool')
@@ -43,11 +43,10 @@
                 </div>
                 @enderror
 
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mb-3">
                     <input type="submit" class="btn btn-success mr-1" value="Registrar">
                     <a href="{{url('/school')}}" class="btn btn-primary">Regresar</a>
                 </div>
-                <br>
             </form>
         </div>
     </div>

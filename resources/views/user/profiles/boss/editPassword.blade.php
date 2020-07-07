@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center">
         <!-- endImportBasic -->
         <div class="col-8 mt-5">
@@ -32,13 +32,9 @@
                                         <label for="password">{{'Contraseña'}}</label>
                                         <input type="password" class="form-control" name="password" id="password" placeholder="Ingresar la nueva contraseña">
                                         @error('password')
-                                        <label for="email"class="text-danger">
+                                        <label for="email" class="text-danger">
                                             Error en el nuevo password(minimo 8 caracteres), Asegurese de escribir correctamente las dos contraseñas
-                                        </label
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group">
+                                        </label @enderror </div> <div class="form-group">
                                         <label for="password_confirmation">{{'Confirmar nueva contraseña'}}</label>
                                         <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="Confrimar la nueva contraseña">
                                         @error('password_confirmation')

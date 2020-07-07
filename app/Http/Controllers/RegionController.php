@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\PDF;
 use App\Region;
 use App\Basic;
 use App\Medium;
 use App\Higer;
 use App\User;
+use Illuminate\Support\Facades\App;
 
 class RegionController extends Controller
 {
@@ -30,7 +32,7 @@ class RegionController extends Controller
             $regions = Region::where('id', $region_id)->paginate(1);
 
             return view('user.regions.index', compact('regions'));
-        }else{
+        } else {
             $regions = Region::paginate(5);
             $regions->sortBy('nameRegion');
             return view('user.regions.index', compact('regions'));
@@ -85,14 +87,14 @@ class RegionController extends Controller
         $nameRegion = $request->get('nameRegion');
 
         $regions = Region::orderBy('id', 'ASC')
-        ->idRegion($idRegion)
-        ->numberRegion($numberRegion)
-        ->nameRegion($nameRegion)
-        ->paginate(5);
-        
+            ->idRegion($idRegion)
+            ->numberRegion($numberRegion)
+            ->nameRegion($nameRegion)
+            ->paginate(5);
+
         if (count($regions) == 0) {
             return back()->with('notFound', 'No se encontraron resultados');
-        }else{
+        } else {
             return view('user.regions.index', compact('regions'));
         }
     }
@@ -118,7 +120,7 @@ class RegionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = request()->except(['_token','_method']);
+        $data = request()->except(['_token', '_method']);
         $request->validate([
             'id' => 'required|numeric',
             'region' => 'required|integer',
@@ -144,40 +146,42 @@ class RegionController extends Controller
 
     // funciones para los reportes de regiones
 
-    public function reportRegion($id){
-       // $regionInfo = Region::where('id', $id)->get();
+    public function reportRegion($id)
+    {
 
         $bossRegion = User::where('region_id', $id)->get();
         $regionInfo = Region::where('id', $id)->get();
 
         $basics = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
-        ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
-        ->join('basics', 'localities.id', '=', 'basics.locality_id')
-        ->where('region_id', $id)
-        ->where(function($query){
-            $query->select(Basic::get());
-        })->get();
+            ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', 'localities.id', '=', 'basics.locality_id')
+            ->where('region_id', $id)
+            ->where(function ($query) {
+                $query->select(Basic::get());
+            })->get();
 
         $mediums = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
-        ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
-        ->join('schools', 'localities.id', '=', 'schools.locality_id')
-        ->join('media', 'schools.id', '=', 'media.school_id')
-        ->where('region_id', $id)
-        ->where(function($query){
-            $query->select(Medium::get());
-        })->get();
+            ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('media', 'schools.id', '=', 'media.school_id')
+            ->where('region_id', $id)
+            ->where(function ($query) {
+                $query->select(Medium::get());
+            })->get();
 
-         $higers = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
-        ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
-        ->join('schools', 'localities.id', '=', 'schools.locality_id')
-        ->join('higers', 'schools.id', '=', 'higers.school_id')
-        ->where('region_id', $id)
-        ->where(function($query){
-            $query->select(Higer::get());
-        })->get();
+        $higers = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
+            ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('higers', 'schools.id', '=', 'higers.school_id')
+            ->where('region_id', $id)
+            ->where(function ($query) {
+                $query->select(Higer::get());
+            })->get();
 
-      return view('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+        $pdf = App::make('dompdf.wrapper');
+        //$pdf->loadView('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            $pdf->loadView('user.regions.pdf', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+        // return view('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+       return $pdf->stream();
     }
-
-
 }
