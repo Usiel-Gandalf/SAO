@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Region;
 use App\Basic;
+use App\Medium;
+use App\Higer;
+use App\User;
 
 class RegionController extends Controller
 {
@@ -141,19 +145,38 @@ class RegionController extends Controller
     // funciones para los reportes de regiones
 
     public function reportRegion($id){
-        //return $id;
-       $pending = Basic::all();
-        $pending->load('locality.municipality.region');
-        foreach ($pending as $reg) {
-            if ($reg->locality->municipality->region->id == $id) {
-                print_r($reg->locality->municipality->region->nameRegion);
-                echo '<br>';
-            }
-            else{
-                echo 'el registro no coincide'; 
-            }
-        }
-        //$pendingEntities = $pending->load('locality.municipality.region');
+       // $regionInfo = Region::where('id', $id)->get();
+
+        $bossRegion = User::where('region_id', $id)->get();
+        $regionInfo = Region::where('id', $id)->get();
+
+        $basics = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
+        ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+        ->join('basics', 'localities.id', '=', 'basics.locality_id')
+        ->where('region_id', $id)
+        ->where(function($query){
+            $query->select(Basic::get());
+        })->get();
+
+        $mediums = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
+        ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+        ->join('schools', 'localities.id', '=', 'schools.locality_id')
+        ->join('media', 'schools.id', '=', 'media.school_id')
+        ->where('region_id', $id)
+        ->where(function($query){
+            $query->select(Medium::get());
+        })->get();
+
+         $higers = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
+        ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+        ->join('schools', 'localities.id', '=', 'schools.locality_id')
+        ->join('higers', 'schools.id', '=', 'higers.school_id')
+        ->where('region_id', $id)
+        ->where(function($query){
+            $query->select(Higer::get());
+        })->get();
+
+      return view('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
     }
 
 
