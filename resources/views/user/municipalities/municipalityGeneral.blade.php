@@ -6,40 +6,56 @@
         <img src="https://qroo.gob.mx/sites/default/files/inline-images/BECAS_COORDINACION_logo.png" class="img-fluid" alt="Responsive image" width="40%" height="40%">
     </div>
 
-    <div class="row justify-content-md-center mb-1">
+    <div class="row justify-content-md-center">
         <h4><b>SUBDIRECCION DE ATENCION OPERATIVA</b></h4>
     </div>
 
-    <div class="row justify-content-md-center mb-3">
-        <h5>REPORTE GENERAL-REGION | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h5>
+    <div class="row justify-content-md-center">
+        <h6>REPORTE GENERAL-MUNICIPIO | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h6>
     </div>
 
-    <div class="row justify-content-md-center mb-0">
-        <div class="col-13">
+    <div class="row justify-content-md-center">
+        <div class="col-10">
             <table class="table table-bordered text-center">
                 <thead class="thead-light">
                     <tr>
-                        @foreach($regionInfo as $region)
-                        <td scope="col"><b>REGION:</b> {{$region->nameRegion}}</td>
-                        <td scope="col"><b>CLAVE:</b> {{$region->id}}</td>
-                        <td scope="col"><b>NUMERO:</b> {{$region->region}}</td>
+                        @foreach($municipalityInfo as $municipality)
+                        <td scope="col"><b>MUNICIPIO:</b> {{$municipality->nameMunicipality}}</td>
+                        <td scope="col"><b>NUMERO:</b> {{$municipality->id}}</td>
+                        @endforeach
+
+                        <td>
+                            <a class="btn btn-primary" href="{{url('reportMunicipality/'.$municipality->id.'/reportMunicipality/1')}}" target="_blank">PDF</a>
+                            <a class="btn btn-success" href="{{url('/municipality')}}">Regresar</a>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center mb-0">
+        <div class="col-7">
+            <table class="table table-bordered text-center">
+                <thead class="thead-light">
+                    <tr>
+                        @foreach($municipalityInfo as $municipality)
+                        <td scope="col"><b>REGION:</b> {{$municipality->region->nameRegion}}</td>
+                        <td scope="col"><b>CLAVE:</b> {{$municipality->region->id}}</td>
+                        <td scope="col"><b>NUMERO:</b> {{$municipality->region->region}}</td>
                         @endforeach
                         <td>
                             @if(count($bossRegion) == 0)
-                            {{'Sin Jefe'}}
+                            {{'Sin Jefe asignado'}}
                             @elseif(count($bossRegion) >= 2)
                             @foreach($bossRegion as $boss)
                             <b>{{'Responsables de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}},
                             @endforeach
                             @else
                             @foreach($bossRegion as $boss)
-                          <b>{{'Responsable de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
+                            <b>{{'Responsable de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
                             @endforeach
                             @endif
-                        </td>
-                        <td>
-                            <a class="btn btn-primary" href="{{url('reportRegion/'.$region->id.'/reportRegion/1')}}" target="_blank">PDF</a>
-                            <a class="btn btn-success" href="{{url('/region')}}">Regresar</a>
                         </td>
                     </tr>
                 </thead>
@@ -48,7 +64,6 @@
     </div>
 
     <hr style="color: #0056b2;" width="100%" />
-
     <div class="row justify-content-md-center mt-3">
         <h5>EDUCACION BASICA - CERM</h5>
     </div>
@@ -281,9 +296,13 @@
         </div>
     </div>
 
+
+
+
+
+
     <div class="row justify-content-md-center mb-4">
         <p>&copy; {{@date('Y')}} {{'Subdireccion de atencion operativa - Oaxaca, Todos los derechos reservados'}}</p>
     </div>
-
 </div>
 @endsection

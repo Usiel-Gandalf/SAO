@@ -7,7 +7,7 @@
 </center>
 
 <center>
-  <h6>REPORTE GENERAL | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h6>
+  <h6>REPORTE GENERAL-REGION | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h6>
 </center>
 <br>
 <center>

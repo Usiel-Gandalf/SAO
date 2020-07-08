@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Municipality;
 use App\Region;
+use App\User;
 
 class MunicipalityController extends Controller
 {
@@ -72,19 +74,19 @@ class MunicipalityController extends Controller
         $idMunicipality = $request->get('id');
         $nameMunicipality = $request->get('nameMunicipality');
         $idRegion = $request->get('idRegion');
-       // return $request;
+        // return $request;
 
-       $municipalities = Municipality::orderBy('id', 'ASC')
-       ->id($idMunicipality)
-       ->nameMunicipality($nameMunicipality)
-       ->idRegion($idRegion)
-       ->paginate(5);
+        $municipalities = Municipality::orderBy('id', 'ASC')
+            ->id($idMunicipality)
+            ->nameMunicipality($nameMunicipality)
+            ->idRegion($idRegion)
+            ->paginate(5);
 
-       if (count($municipalities) == 0) {
-        return back()->with('notFound', 'No se encontraron resultados');
-       } else {
-        return view('user.municipalities.index', compact('municipalities'));
-       }
+        if (count($municipalities) == 0) {
+            return back()->with('notFound', 'No se encontraron resultados');
+        } else {
+            return view('user.municipalities.index', compact('municipalities'));
+        }
     }
 
     /**
@@ -132,5 +134,41 @@ class MunicipalityController extends Controller
     {
         Municipality::destroy($id);
         return redirect()->action('MunicipalityController@index')->with('deleteMunicipality', 'Municipio eliminado');
+    }
+
+    public function reportMunicipality($id, $type)
+    {
+         $municipalityInfo = Municipality::where('id', $id)->with('region')->get();
+        foreach ($municipalityInfo as $municipality) {
+            $idReg =  $municipality->region->id;
+            $bossRegion = User::where('region_id', $idReg)->get();
+        }
+         $bossRegion;
+
+        $basics = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', 'localities.id', '=', 'basics.locality_id')
+            ->where('municipality_id', $id)->get();
+
+             $mediums = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('media', 'schools.id', '=', 'media.school_id')
+            ->where('municipality_id', $id)
+            ->get();
+
+         $higers = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('higers', 'schools.id', '=', 'higers.school_id')
+            ->where('municipality_id', $id)
+            ->get();
+
+        if ($type == 0) {
+            return view('user.municipalities.municipalityGeneral', compact('municipalityInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+        } elseif ($type == 1) {
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('user.municipalities.municipalityPdf', compact('municipalityInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            return $pdf->stream();
+        } else {
+            return back();
+        }
     }
 }

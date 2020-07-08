@@ -1,5 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
+@if(Auth::user()->rol == 1)
 <div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-4">
         <h1>Municipios</h1>
@@ -70,18 +71,15 @@
                         <th scope="col">Clave</th>
                         <th scope="col">Nombre del municipio</th>
                         <th scope="col">Region</th>
-                        @if(Auth::user()->rol == 1)
                         <th scope="col" style="width:10%; height:5%">Acciones</th>
-                        @endif
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($municipalities as $municipio)
+                    @foreach($municipalities as $municipality)
                     <tr>
-                        <th scope="row">{{$municipio->id}}</th>
-                        <td>{{$municipio->nameMunicipality}}</td>
-                        <td>{{$municipio->region->nameRegion}}</td>
-                        @if(Auth::user()->rol == 1)
+                        <th scope="row">{{$municipality->id}}</th>
+                        <td>{{$municipality->nameMunicipality}}</td>
+                        <td>{{$municipality->region->nameRegion}}</td>
                         <td class="justify-content-center">
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                 <div class="btn-group" role="group">
@@ -89,9 +87,9 @@
                                         Acciones
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <a class="dropdown-item" href="{{url('/municipality/'.$municipio->id.'/edit')}}">Editar</a>
-                                        <a class="dropdown-item" href="">Reporte</a>
-                                        <form method="post" action="{{url('/municipality/'.$municipio->id)}}">
+                                        <a class="dropdown-item" href="{{url('/municipality/'.$municipality->id.'/edit')}}">Editar</a>
+                                        <a class="dropdown-item" href="{{url('reportMunicipality/'.$municipality->id.'/reportMunicipality/0')}}">Reporte</a>
+                                        <form method="post" action="{{url('/municipality/'.$municipality->id)}}">
                                             @csrf
                                             {{method_field('DELETE')}}
                                             <button type="submit" class="dropdown-item" onclick="return confirm('Esta seguro que quiere eliminar el municipio?');">Borrar</button>
@@ -100,7 +98,6 @@
                                 </div>
                             </div>
                         </td>
-                        @endif
                     </tr>
                     @endforeach
                 </tbody>
@@ -112,11 +109,10 @@
         <div class="col-sm">
             {{ $municipalities->links() }}
         </div>
-        @if(Auth::user()->rol == 1)
         <div class="col-sm">
             <a class="btn btn-success float-right" href="{{url('/municipality/create')}}">Crear Municipio</a>
         </div>
-        @endif
     </div>
 </div>
+@endif
 @endsection
