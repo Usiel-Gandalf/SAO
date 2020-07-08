@@ -9,8 +9,8 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');   
-        $this->middleware('onlyAdmin');   
+        $this->middleware('auth');
+        $this->middleware('onlyAdmin');
         //return $role = Auth::user()->rol;   
     }
     /**
@@ -52,19 +52,33 @@ class AdminController extends Controller
             'password' => 'required|confirmed|min:8',
         ]);
 
-        $rol  = request()->rol;
+        $emailVerification = User::where('email', $request->email)->count();
+        $nameVerification = $request->name;
+        $firstSurnameVerification = $request->firstSurname;
+        $secondSurnameVerification = $request->secondSurname;
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->firstSurname = $request->firstSurname;
-        $user->secondSurname = $request->secondSurname;
-        $user->rol = 1;
-        $user->status = $request->status;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
+        if ($emailVerification == 1) {
+            return back()->with('notEmail', 'El correo ya esta en uso, ingrese otro');
+        } elseif (is_numeric($nameVerification)) {
+            return back()->with('notName', 'El nombre solo puede ser de tipo texto');
+        } elseif (is_numeric($firstSurnameVerification)) {
+            return back()->with('notFirstSurname', 'El primer apellido solo puede ser de tipo texto');
+        } elseif (is_numeric($secondSurnameVerification)) {
+            return back()->with('notSecondSurname', 'El segundo apellido solo puede ser de tipo texto');
+        } else {
 
-        return redirect()->action('AdminController@index')->with('saveAdmin', 'Administrador registrado correctamente');
+            $user = new User();
+            $user->name = $request->name;
+            $user->firstSurname = $request->firstSurname;
+            $user->secondSurname = $request->secondSurname;
+            $user->rol = 1;
+            $user->status = $request->status;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+            return redirect()->action('AdminController@index')->with('saveAdmin', 'Administrador registrado correctamente');
+        }
     }
 
     /**
@@ -123,7 +137,11 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         $data = request()->except(['_token', '_method']);
- 
+        $emailVerification = User::where('email', $request->email)->count();
+        $nameVerification = $request->name;
+        $firstSurnameVerification = $request->firstSurname;
+        $secondSurnameVerification = $request->secondSurname;
+
         $request->validate([
             'name' => 'required|string|max:100',
             'firstSurname' => 'required|string|max:100',
@@ -133,25 +151,42 @@ class AdminController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = new User();
-        $name = $request->name;
-        $firstSurname = $request->firstSurname;
-        $secondSurname = $request->secondSurname;
-        $email = $request->email;
-        $status = $request->status;
-        $rol = $request->rol;
-        //$password = bcrypt($request->password);
 
-        User::where('id', $id)->update([
-            'name' => $name, 
-            'firstSurname' => $firstSurname,
-            'secondSurname' => $secondSurname, 
-            'rol' => $rol, 
-            'status' => $status,
-            'email' => $email
-        ]);
+        if ($emailVerification == 1) {
+            if (User::where('email', $request->email)->where('id', '!=', $id)->count() == 1) {
+                return back()->with('notEmail', 'El correo al que intenta actualizar ya esta en uso, ingrese otro');
+            }
+        }
+        if (is_numeric($nameVerification)) {
+            return back()->with('notName', 'El nombre solo puede ser de tipo texto');
+        } elseif (is_numeric($firstSurnameVerification)) {
+            return back()->with('notFirstSurname', 'El primer apellido solo puede ser de tipo texto');
+        } elseif (is_numeric($secondSurnameVerification)) {
+            return back()->with('notSecondSurname', 'El segundo apellido solo puede ser de tipo texto');
+        } else {
 
-        return redirect()->action('AdminController@index')->with('updateAdmin', 'Administrador actualizado');
+            $name = $request->name;
+            $firstSurname = $request->firstSurname;
+            $secondSurname = $request->secondSurname;
+            $email = $request->email;
+            $status = $request->status;
+            $rol = $request->rol;
+
+            User::where('id', $id)->update([
+                'name' => $name,
+                'firstSurname' => $firstSurname,
+                'secondSurname' => $secondSurname,
+                'rol' => $rol,
+                'status' => $status,
+                'email' => $email
+            ]);
+
+            if ($rol == 1) {
+                return redirect()->action('AdminController@index')->with('updateAdmin', 'Administrador actualizado');
+            }else{
+                return redirect()->action('AdminController@index')->with('updateAdmin', 'Administrador actualizado y descendido a Jefe de region');
+            }
+        }
     }
 
     public function updatePasswordAdmin(Request $request, $id)

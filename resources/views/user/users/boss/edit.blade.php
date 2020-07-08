@@ -1,11 +1,61 @@
 @extends('plantillas.adminApp')
 @section('main')
 <div class="row justify-content-md-center mt-1">
-    <div class="col-6 shadow p-3 mb-5 bg-white rounded mt-3">
-        <div class="col border border-secondary">
+    <div class="col-6 shadow p-3 mb-5 bg-white rounded mt-4 border border-success">
+        <div class="col">
             <div class="row justify-content-center">
                 <h2 class="mt-1">Editar Jefe Juar</h2>
             </div>
+            @if(session('notEmail'))
+            <div class="row justify-content-md-center">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{session('notEmail')}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            @endif
+            @if(session('notName'))
+            <div class="row justify-content-md-center">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{session('notName')}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            @endif
+            @if(session('notFirstSurname'))
+            <div class="row justify-content-md-center">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{session('notFirstSurname')}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            @endif
+            @if(session('notSecondSurname'))
+            <div class="row justify-content-md-center">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{session('notSecondSurname')}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            @endif
+            @if(session('notRol'))
+            <div class="row justify-content-md-center">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{session('notRol')}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            @endif
             <form action="{{url('/boss/'.$boss->id)}}" method="post">
                 @csrf
                 @method('PATCH')
@@ -57,13 +107,12 @@
                     <div class="col">
                         <label for="rol">{{'Rol'}}</label>
                         <select id="rol" name="rol" class="form-control">
-                            <option>Tipo de usuario</option>
                             @if($boss->rol == 1)
-                            <option name="1" value="1" selected>bossistrador</option>
+                            <option name="1" value="1" selected>Administrador</option>
                             <option name="0" value="0">Jefe Juar</option>
                             @elseif($boss->rol == 0)
                             <option name="0" value="0" selected>Jefe Juar</option>
-                            <option name="1" value="1">bossistrador</option>
+                            <option name="1" value="1">Administrador</option>
                             @endif
                             @error('rol')
                             <div class="alert alert-danger">
@@ -76,7 +125,6 @@
                     <div class="col">
                         <label for="status">{{'Estado'}}</label>
                         <select id="status" name="status" class="form-control">
-                            <option>Estado</option>
                             @if($boss->status == 1)
                             <option name="1" value="1" selected>Activo</option>
                             <option name="0" value="0">Inactivo</option>
@@ -95,12 +143,12 @@
                 <div class="form-group">
                     <label for="region_id">{{'Region del jefe juar'}}</label>
                     <select id="region_id" name="region_id" class="form-control">
-                        <option value="{{null}}">Region</option>
+                    <option value="{{null}}">NINGUNA</option>
                         @foreach($regions as $region)
                         @if($region->id == $boss->region_id)
                         <option name="region_id" value="{{$region->id}}" selected>{{$region->nameRegion}}</option>
                         @else
-                        <option name="region_id" value="{{$region->id}}" selected>{{$region->nameRegion}}</option>
+                        <option name="region_id" value="{{$region->id}}">{{$region->nameRegion}}</option>
                         @endif
                         @endforeach
                     </select>

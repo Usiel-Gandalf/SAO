@@ -10,8 +10,8 @@ class BossController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');   
-        $this->middleware('onlyAdmin');   
+        $this->middleware('auth');
+        $this->middleware('onlyAdmin');
         //return $role = Auth::user()->rol;   
     }
     /**
@@ -21,8 +21,9 @@ class BossController extends Controller
      */
     public function index()
     {
-        $bosses = User::where('rol', 0)->paginate(5);
-        return view('user.users.boss.index', compact('bosses'));
+        $regions = Region::all();
+        $bosses = User::where('rol', 0)->paginate(8);
+        return view('user.users.boss.index', compact('bosses', 'regions'));
     }
 
     /**
@@ -51,24 +52,37 @@ class BossController extends Controller
             'secondSurname' => 'required|string|max:100',
             'status' => 'required|integer|max:1',
             'email' => 'required|email',
-            'region_id' => 'required|integer',
+            'region_id' => 'integer|nullable',
             'password' => 'required|confirmed|min:8',
         ]);
 
-        $rol  = request()->rol;
+        $emailVerification = User::where('email', $request->email)->count();
+        $nameVerification = $request->name;
+        $firstSurnameVerification = $request->firstSurname;
+        $secondSurnameVerification = $request->secondSurname;
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->firstSurname = $request->firstSurname;
-        $user->secondSurname = $request->secondSurname;
-        $user->rol = 0;
-        $user->status = $request->status;
-        $user->region_id = $request->region_id;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
+        if ($emailVerification == 1) {
+            return back()->with('notEmail', 'El correo ya esta en uso, ingrese otro');
+        } elseif (is_numeric($nameVerification)) {
+            return back()->with('notName', 'El nombre solo puede ser de tipo texto');
+        } elseif (is_numeric($firstSurnameVerification)) {
+            return back()->with('notFirstSurname', 'El primer apellido solo puede ser de tipo texto');
+        } elseif (is_numeric($secondSurnameVerification)) {
+            return back()->with('notSecondSurname', 'El segundo apellido solo puede ser de tipo texto');
+        } else {
+            $user = new User();
+            $user->name = $request->name;
+            $user->firstSurname = $request->firstSurname;
+            $user->secondSurname = $request->secondSurname;
+            $user->rol = 0;
+            $user->status = $request->status;
+            $user->region_id = $request->region_id;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->save();
 
-        return redirect()->action('BossController@index')->with('saveBoss', 'Jefe juar registrado correctamente');
+            return redirect()->action('BossController@index')->with('saveBoss', 'Jefe juar registrado correctamente');
+        }
     }
 
     /**
@@ -128,38 +142,63 @@ class BossController extends Controller
     public function update(Request $request, $id)
     {
         $data = request()->except(['_token', '_method']);
+        $emailVerification = User::where('email', $request->email)->count();
+        $nameVerification = $request->name;
+        $firstSurnameVerification = $request->firstSurname;
+        $secondSurnameVerification = $request->secondSurname;
 
         $request->validate([
-            'name' => 'required|string|max:100',
-            'firstSurname' => 'required|string|max:100',
-            'secondSurname' => 'required|string|max:100',
+            'name' => 'required|string|max:50',
+            'firstSurname' => 'required|string|max:50',
+            'secondSurname' => 'required|string|max:50',
             'rol' => 'required|integer|max:1',
             'status' => 'required|integer|max:1',
-            'region_id' => 'required|integer',
+            'region_id' => 'integer|nullable',
             'email' => 'required|email',
-        ]);
+        ]);        
 
-        $user = new User();
-        $name = $request->name;
-        $firstSurname = $request->firstSurname;
-        $secondSurname = $request->secondSurname;
-        $email = $request->email;
-        $status = $request->status;
-        $region_id = $request->region_id;
-        $rol = $request->rol;
-        //$password = bcrypt($request->password);
 
-        User::where('id', $id)->update([
-            'name' => $name, 
-            'firstSurname' => $firstSurname,
-            'secondSurname' => $secondSurname, 
-            'rol' => $rol, 
-            'status' => $status,
-            'region_id' => $region_id,
-            'email' => $email
-        ]);
+        if ($emailVerification == 1) {
+            if (User::where('email', $request->email)->where('id', '!=', $id)->count() == 1) {
+                return back()->with('notEmail', 'El correo al que intenta actualizar ya esta en uso, ingrese otro');
+            }
+        }
 
-        return redirect()->action('BossController@index')->with('updateBoss', 'Jefe juar actualizado');
+        if (is_numeric($nameVerification)) {
+            return back()->with('notName', 'El nombre solo puede ser de tipo texto');
+        } elseif (is_numeric($firstSurnameVerification)) {
+            return back()->with('notFirstSurname', 'El primer apellido solo puede ser de tipo texto');
+        } elseif (is_numeric($secondSurnameVerification)) {
+            return back()->with('notSecondSurname', 'El segundo apellido solo puede ser de tipo texto');
+        } else {
+            $name = $request->name;
+            $firstSurname = $request->firstSurname;
+            $secondSurname = $request->secondSurname;
+            $email = $request->email;
+            $status = $request->status;
+            $region_id = $request->region_id;
+            $rol = $request->rol;
+            //$password = bcrypt($request->password);
+
+            User::where('id', $id)->update([
+                'name' => $name,
+                'firstSurname' => $firstSurname,
+                'secondSurname' => $secondSurname,
+                'rol' => $rol,
+                'status' => $status,
+                'region_id' => $region_id,
+                'email' => $email
+            ]);
+                
+            if ($rol == 0) {
+                return redirect()->action('BossController@index')->with('updateBoss', 'Jefe juar actualizado');
+            }else{
+                User::where('id', $id)->update([
+                    'region_id' => null,
+                ]);
+                return redirect()->action('BossController@index')->with('updateBoss', 'Jefe juar actualizado y ascendido a Administrador');
+            }
+        }
     }
 
     public function updatePasswordBoss(Request $request, $id)

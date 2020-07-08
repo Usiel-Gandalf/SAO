@@ -101,7 +101,15 @@
               @endif
             </td>
             <td>{{$boss->email}}</td>
-            <td>{{$boss->region_id}}</td>
+            <td>
+              @if(count($regions->where('id', $boss->region_id)) == 0)
+              {{' Sin region asignada'}}
+              @else
+              @foreach($regions->where('id', $boss->region_id) as $region)
+                {{$region->nameRegion}}
+              @endforeach
+              @endif
+            </td>
             <td class="justify-content-center">
               <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                 <div class="btn-group" role="group">
