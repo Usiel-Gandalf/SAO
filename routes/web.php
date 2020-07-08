@@ -109,4 +109,5 @@ Route::get('editBossEmail', 'BossprofileController@editBossEmail')->name('editBo
 Route::post('editBossEmail/{id}/updateBossEmail', 'BossprofileController@updateBossEmail');
 
 //ruta de reportes por entidades 
-Route::get('reportRegion/{id}/reportRegion', 'RegionController@reportRegion');
+Route::get('reportRegion/{id}/reportRegion/{type}', 'RegionController@reportRegion');
+Route::get('reportRegions/{id}/reportRegions/{type}', 'RegionController@reportRegions');

@@ -22,21 +22,9 @@ class BasicController extends Controller
     public function index()
     {
         $basics = Basic::with('locality')->paginate(5);
-        // Informacion de los estados de entrega de la educacion basica
-        $pending = Basic::where('status', 0)->get();
-        $pendingEntities = $pending->unique('loacality_id')->load('locality.municipality.region');
-        $cermYes = Basic::where('status', 1)->get();
-        $cermYesEntities = $cermYes->unique('locality_id')->load('locality.municipality.region');
-        $cermNot = Basic::where('status', 2)->get();
-        $cermNotEntities = $cermNot->unique('locality_id')->load('locality.municipality.region');
-        $cermDrop = Basic::where('status', 3)->get();
-        $cermDropEntities = $cermDrop->unique('locality_id')->load('locality.municipality.region');
-        //fin de la informacion de la entrega de educacion basica
+        $reports = Basic::all();
 
-        //return $pendingEntities;
-
-        return view('user.basics.index', compact('basics', 'pending', 'cermYes', 'cermNot', 'cermDrop', 
-        'pendingEntities', 'cermYesEntities', 'cermNotEntities', 'cermDropEntities'));
+        return view('user.basics.index', compact('basics', 'reports'));
     }
 
     /**

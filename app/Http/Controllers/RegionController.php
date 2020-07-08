@@ -146,42 +146,59 @@ class RegionController extends Controller
 
     // funciones para los reportes de regiones
 
-    public function reportRegion($id)
+    public function reportRegion($id, $type)
     {
-
         $bossRegion = User::where('region_id', $id)->get();
         $regionInfo = Region::where('id', $id)->get();
 
         $basics = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
             ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('basics', 'localities.id', '=', 'basics.locality_id')
-            ->where('region_id', $id)
-            ->where(function ($query) {
-                $query->select(Basic::get());
-            })->get();
+            ->where('region_id', $id)->get();
 
         $mediums = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
             ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('schools', 'localities.id', '=', 'schools.locality_id')
             ->join('media', 'schools.id', '=', 'media.school_id')
             ->where('region_id', $id)
-            ->where(function ($query) {
-                $query->select(Medium::get());
-            })->get();
+            ->get();
 
         $higers = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
             ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('schools', 'localities.id', '=', 'schools.locality_id')
             ->join('higers', 'schools.id', '=', 'higers.school_id')
             ->where('region_id', $id)
-            ->where(function ($query) {
-                $query->select(Higer::get());
-            })->get();
+            ->get();
 
-        $pdf = App::make('dompdf.wrapper');
-        //$pdf->loadView('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
-            $pdf->loadView('user.regions.pdf', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
-        // return view('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
-       return $pdf->stream();
+        if ($type == 0) {
+            return view('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+        } elseif ($type == 1) {
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('user.regions.regionPdf', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            return $pdf->stream();
+        } else {
+            return back();
+        }
+    }
+
+    public function reportRegions($id, $type)
+    {
+        $basics = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
+            ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', 'localities.id', '=', 'basics.locality_id')->select('regions.*', 'basics.status', 'basics.bimester')->get();
+
+        $regions = Region::all();
+
+        foreach ($regions as $region) {
+            $c =  count($basics->where('id', $region->id)->where('status', 0)->where('bimester', 1));
+            if ($c > 0) {
+                echo $region->nameRegion;
+                echo '<br>';
+                echo $c;
+                echo '<br>';
+            }
+            echo '<br>';
+        }
+        //return view('user.regions.regionsGeneral');
     }
 }

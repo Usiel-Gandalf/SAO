@@ -66,9 +66,6 @@
                         <a class="dropdown-item" href="{{url('/basicEducation')}}">Educacion basica</a>
                         <a class="dropdown-item" href="{{url('/mediumEducation')}}">Educacion media superior</a>
                         <a class="dropdown-item" href="{{url('/higerEducation')}}">Jovenes escribiendo el futuro</a>
-                        <a class="dropdown-item" href="">Reporte EB</a>
-                        <a class="dropdown-item" href="">Reporte EMS</a>
-                        <a class="dropdown-item" href="">Reporte JEF</a>
                     </div>
                 </li>
             </ul>

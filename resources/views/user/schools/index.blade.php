@@ -71,7 +71,7 @@
                         <th scope="col">Nombre de la escuela</th>
                         <th scope="col">localidad</th>
                         @if(Auth::user()->rol == 1)
-                        <th scope="col">Acciones</th>
+                        <th scope="col" style="width:10%; height:5%">Acciones</th>
                         @endif
                     </tr>
                 </thead>
@@ -90,7 +90,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         <a class="dropdown-item" href="{{url('/school/'.$school->id.'/edit')}}">Editar</a>
-
+                                        <a class="dropdown-item" href="">Reporte</a>
                                         <form method="post" action="{{url('/school/'.$school->id)}}">
                                             @csrf
                                             {{method_field('DELETE')}}

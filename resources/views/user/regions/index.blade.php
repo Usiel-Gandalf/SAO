@@ -77,7 +77,7 @@
                         <th scope="col">Numero</th>
                         <th scope="col">Nombre</th>
                         @if(Auth::user()->rol == 1)
-                        <th scope="col">Acciones</th>
+                        <th scope="col" style="width:10%; height:5%">Acciones</th>
                         @endif
                     </tr>
                 </thead>
@@ -96,7 +96,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         <a class="dropdown-item" href="{{url('/region/'.$region->id.'/edit')}}">Editar</a>
-                                        <a class="dropdown-item" href="{{url('reportRegion/'.$region->id.'/reportRegion')}}">Reporte</a>
+                                        <a class="dropdown-item" href="{{url('reportRegion/'.$region->id.'/reportRegion/0')}}">Reporte</a>
                                         <form method="post" action="{{url('/region/'.$region->id)}}">
                                             @csrf
                                             {{method_field('DELETE')}}
@@ -120,7 +120,6 @@
         @if(Auth::user()->rol == 1)
         <div class="col">
             <a class="btn btn-success float-right" href="{{url('/region/create')}}">Crear Region</a>
-            <a class="btn btn-success float-right mr-1" href="">Generar reporte general</a>
         </div>
         @endif
     </div>

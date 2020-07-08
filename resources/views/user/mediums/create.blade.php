@@ -4,7 +4,7 @@
     <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
         <div class="col border border-secondary">
             <div class="row justify-content-center my-2">
-                <h2 class="">Registrar aviso de cobro</h2>
+                <h2 class="">Registrar EMS</h2>
             </div>
             <form action="{{url('/mediumEducation')}}" method="post" enctype="multipart/form-data">
                 @csrf

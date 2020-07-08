@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Higer;
+use App\School;
 
 class HigerController extends Controller
 {
@@ -19,21 +20,8 @@ class HigerController extends Controller
     public function index()
     {
         $higers = Higer::with('school')->paginate(5);
-        // Informacion de los estados de entrega de la educacion basica
-        $pending = Higer::where('status', 0)->get();
-        $pendingEntities = $pending->unique('school_id')->load('school.locality.municipality.region');
-        $cermYes = Higer::where('status', 1)->get();
-        $cermYesEntities = $cermYes->unique('school_id')->load('school.locality.municipality.region');
-        $cermNot = Higer::where('status', 2)->get();
-        $cermNotEntities = $cermNot->unique('school_id')->load('school.locality.municipality.region');
-        $cermDrop = Higer::where('status', 3)->get();
-        $cermDropEntities = $cermDrop->unique('school_id')->load('school.locality.municipality.region');;
-        //fin de la informacion de la entrega de educacion basica
-
-        //return $pendingEntities;
-
-        return view('user.higers.index', compact('higers', 'pending', 'cermYes', 'cermNot', 'cermDrop', 
-        'pendingEntities', 'cermYesEntities', 'cermNotEntities', 'cermDropEntities'));
+        $reports = Higer::all();
+        return view('user.higers.index', compact('higers', 'reports'));
     }
 
     /**
@@ -43,7 +31,8 @@ class HigerController extends Controller
      */
     public function create()
     {
-        //
+        $schools = School::all();
+        return view('user.higers.create', compact('schools'));
     }
 
     /**
@@ -54,7 +43,27 @@ class HigerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'scholar_id' => 'required|integer',
+            'school_id' => 'required|string',
+            'consignment' => 'required|string',
+            'fol_form' => 'required|integer',
+            'bimester' => 'required|integer',
+            'year' => 'required|integer',
+            'status' => 'required|integer',
+        ]);
+
+        $higer = new Higer();
+        $higer->scholar_id = $request->scholar_id;
+        $higer->school_id = $request->school_id;
+        $higer->consignment = $request->consignment;
+        $higer->fol_form = $request->fol_form;
+        $higer->bimester = $request->bimester;
+        $higer->year = $request->year;
+        $higer->status = $request->status;
+        $higer->save();
+
+        return redirect()->action('HigerController@index')->with('saveHiger', 'Nueva registro de jovenes escribiendo el furuto agregado');
     }
 
     /**
@@ -76,7 +85,9 @@ class HigerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $JEF = Higer::findOrfail($id);
+        $schools = School::all();
+        return view('user.higers.edit', compact('schools', 'JEF'));
     }
 
     /**
@@ -88,7 +99,19 @@ class HigerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = request()->except(['_token', '_method']);
+        $request->validate([
+            'scholar_id' => 'required|integer',
+            'school_id' => 'required|string',
+            'consignment' => 'required|string',
+            'fol_form' => 'required|integer',
+            'bimester' => 'required|integer',
+            'year' => 'required|integer',
+            'status' => 'required|integer',
+        ]);
+
+        Higer::where('id', $id)->update($data);
+        return redirect()->action('HigerController@index')->with('updateHiger', 'Informacion de Jovenes escribiendo el futuro actualizada');
     }
 
     /**
@@ -99,6 +122,7 @@ class HigerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Higer::destroy($id);
+        return redirect()->action('HigerController@index')->with('deleteHiger', 'Informacion de Jovenes escribiendo el futuro eliminada');
     }
 }

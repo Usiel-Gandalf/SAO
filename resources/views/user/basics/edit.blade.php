@@ -4,7 +4,7 @@
     <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
         <div class="col border border-secondary">
             <div class="row justify-content-center my-2">
-                <h2 class="">Editar remesa o aviso de cobro</h2>
+                <h2 class="">Editar Beca Basica</h2>
             </div>
             <form action="{{url('/basicEducation/'.$basic->id)}}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -44,10 +44,10 @@
                         <div class="col">
                             <label for="type"></label>
                             <select id="type" name="type" class="form-control">
-                                @if($basic->type = 1)
+                                @if($basic->type == 1)
                                 <option name="1" value="1" selected>CERM</option>
                                 <option name="2" value="2">Aviso de cobro</option>
-                                @elseif($basic->type =2)
+                                @elseif($basic->type == 2)
                                 <option name="1" value="1">CERM</option>
                                 <option name="2" value="2" selected>Aviso de cobro</option>
                                 @endif
@@ -62,22 +62,22 @@
                         <div class="col">
                             <label for="status"></label>
                             <select id="status" name="status" class="form-control">
-                                @if($basic->status = 0)
+                                @if($basic->status == 0)
                                 <option name="0" value="0" selected>Pendiente</option>
                                 <option name="1" value="1">Entregado</option>
                                 <option name="2" value="2">No entregado/no localizado</option>
                                 <option name="3" value="3">No entregado/por baja</option>
-                                @elseif($basic->status = 1)
+                                @elseif($basic->status == 1)
                                 <option name="0" value="0">Pendiente</option>
                                 <option name="1" value="1" selected>Entregado</option>
                                 <option name="2" value="2">No entregado/no localizado</option>
                                 <option name="3" value="3">No entregado/por baja</option>
-                                @elseif($basic->status = 2)
+                                @elseif($basic->status == 2)
                                 <option name="0" value="0">Pendiente</option>
                                 <option name="1" value="1">Entregado</option>
                                 <option name="2" value="2" selected>No entregado/no localizado</option>
                                 <option name="3" value="3">No entregado/por baja</option>
-                                @elseif($basic->status = 3)
+                                @elseif($basic->status == 3)
                                 <option name="0" value="0">Pendiente</option>
                                 <option name="1" value="1">Entregado</option>
                                 <option name="2" value="2">No entregado/no localizado</option>
@@ -98,31 +98,31 @@
                         <div class="col">
                             <label for="bimester"></label>
                             <select id="bimester" name="bimester" class="form-control">
-                                @if($basic->bimester = 1)
+                                @if($basic->bimester == 1)
                                 <option name="1" value="1" selected>Enero-Febrero</option>
                                 <option name="2" value="2">Marzo-Abril</option>
                                 <option name="3" value="3">Mayo-Junio</option>
                                 <option name="4" value="4">Septiembre-Octubre</option>
                                 <option name="5" value="5">Noviembre-Diciembre</option>
-                                @elseif($basic->bimester = 2)
+                                @elseif($basic->bimester == 2)
                                 <option name="1" value="1">Enero-Febrero</option>
                                 <option name="2" value="2" selected>Marzo-Abril</option>
                                 <option name="3" value="3">Mayo-Junio</option>
                                 <option name="4" value="4">Septiembre-Octubre</option>
                                 <option name="5" value="5">Noviembre-Diciembre</option>
-                                @elseif($basic->bimester = 3)
+                                @elseif($basic->bimester == 3)
                                 <option name="1" value="1">Enero-Febrero</option>
                                 <option name="2" value="2">Marzo-Abril</option>
                                 <option name="3" value="3" selected>Mayo-Junio</option>
                                 <option name="4" value="4">Septiembre-Octubre</option>
                                 <option name="5" value="5">Noviembre-Diciembre</option>
-                                @elseif($basic->bimester = 4)
+                                @elseif($basic->bimester == 4)
                                 <option name="1" value="1">Enero-Febrero</option>
                                 <option name="2" value="2">Marzo-Abril</option>
                                 <option name="3" value="3">Mayo-Junio</option>
                                 <option name="4" value="4" selected>Septiembre-Octubre</option>
                                 <option name="5" value="5">Noviembre-Diciembre</option>
-                                @elseif($basic->bimester = 5)
+                                @elseif($basic->bimester == 5)
                                 <option name="1" value="1">Enero-Febrero</option>
                                 <option name="2" value="2">Marzo-Abril</option>
                                 <option name="3" value="3">Mayo-Junio</option>
@@ -157,7 +157,9 @@
                     <label for="locality_id"></label>
                     <select id="locality_id" name="locality_id" class="form-control">
                         @foreach($localities as $locality)
-                        @if($locality->id == $basic->locality_id)
+                        @if($locality->id === $basic->locality_id)
+                        <option name="{{$locality->id}}" value="{{$locality->id}}" style="width:600px" selected>{{$locality->nameLocality}}</option>
+                        @else
                         <option name="{{$locality->id}}" value="{{$locality->id}}" style="width:600px">{{$locality->nameLocality}}</option>
                         @endif
                         @endforeach

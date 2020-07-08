@@ -76,7 +76,7 @@
                         <th scope="col">Apellido materno</th>
                         <th scope="col">Genero</th>
                         @if(Auth::user()->rol == 1)
-                        <th scope="col">Acciones</th>
+                        <th scope="col" style="width:10%; height:5%">Acciones</th>
                         @endif
                     </tr>
                 </thead>

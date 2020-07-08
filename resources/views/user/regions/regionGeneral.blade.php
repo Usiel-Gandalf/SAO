@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded mt-5">
+<div class="main shadow px-5 mb-5 bg-white rounded">
 
     <div class="row justify-content-md-center">
         <img src="https://qroo.gob.mx/sites/default/files/inline-images/BECAS_COORDINACION_logo.png" class="img-fluid" alt="Responsive image" width="40%" height="40%">
@@ -11,29 +11,37 @@
     </div>
 
     <div class="row justify-content-md-center mb-3">
-        <h5>REPORTE GENERAL</h5>
+        <h5>REPORTE GENERAL | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h5>
     </div>
 
     <div class="row justify-content-md-center mb-0">
         <div class="col-12">
             <table class="table table-bordered text-center">
                 <thead class="thead-light">
-                    @foreach($regionInfo as $region)
                     <tr>
+                        @foreach($regionInfo as $region)
                         <td scope="col"><b>REGION:</b> {{$region->nameRegion}}</td>
                         <td scope="col"><b>CLAVE:</b> {{$region->id}}</td>
                         <td scope="col"><b>NUMERO:</b> {{$region->region}}</td>
-                        <td><b>RESPONSABLE: </b>
+                        @endforeach
+                        <td>
                             @if(count($bossRegion) == 0)
                             {{'Sin Jefe'}}
+                            @elseif(count($bossRegion) >= 2)
+                            @foreach($bossRegion as $boss)
+                            <b>{{'Responsables de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}},
+                            @endforeach
                             @else
-                                @foreach($bossRegion as $boss)
-                                    {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}, 
-                                @endforeach
+                            @foreach($bossRegion as $boss)
+                          <b>{{'Responsable de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
+                            @endforeach
                             @endif
                         </td>
+                        <td>
+                            <a class="btn btn-primary" href="{{url('reportRegion/'.$region->id.'/reportRegion/1')}}" target="_blank">PDF</a>
+                            <a class="btn btn-success" href="{{url('/region')}}">Regresar</a>
+                        </td>
                     </tr>
-                    @endforeach
                 </thead>
             </table>
         </div>
@@ -272,5 +280,10 @@
             </table>
         </div>
     </div>
+
+    <div class="row justify-content-md-center mb-4">
+        <p>&copy; {{@date('Y')}} {{'Subdireccion de atencion operativa - Oaxaca, Todos los derechos reservados'}}</p>
+    </div>
+
 </div>
 @endsection
