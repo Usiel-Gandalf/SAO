@@ -17,7 +17,7 @@
     <div class="row justify-content-md-center mb-0">
         <h6>
             @foreach($municipalityInfo as $municipality)
-           <b>REGION:</b> {{$municipality->region->nameRegion}} - <b>NUMERO:</b> {{$municipality->region->region}}
+            <b>REGION:</b> {{$municipality->region->nameRegion}} - <b>NUMERO:</b> {{$municipality->region->region}}
             @endforeach
             <td>
                 @if(count($bossRegion) == 0)
@@ -43,8 +43,12 @@
                 <thead class="thead-light">
                     <tr>
                         @foreach($municipalityInfo as $municipality)
-                        <td scope="col"><h5><b>MUNICIPIO:</b></h5> {{$municipality->nameMunicipality}}</td>
-                        <td scope="col"><h5><b>NUMERO:</b></h5> {{$municipality->id}}</td>
+                        <td scope="col">
+                            <h5><b>MUNICIPIO:</b></h5> {{$municipality->nameMunicipality}}
+                        </td>
+                        <td scope="col">
+                            <h5><b>NUMERO:</b></h5> {{$municipality->id}}
+                        </td>
                         @endforeach
 
                         <td>
@@ -77,40 +81,41 @@
                 <tbody>
                     <tr>
                         <th scope="row">Pendientes</th>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 1)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 2)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 3)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 4)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 5)->where('type', 1))}}</td>
+                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 1))}}</td>
+                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 2))}}</td>
+                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 3))}}</td>
+                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 4))}}</td>
+                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 5))}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Entregados</th>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 1)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 2)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 3)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 4)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 5)->where('type', 1))}}</td>
+                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 1))}}</td>
+                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 2))}}</td>
+                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 3))}}</td>
+                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 4))}}</td>
+                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 5))}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - No localizados</th>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 1)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 2)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 3)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 4)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 5)->where('type', 1))}}</td>
+                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 1))}}</td>
+                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 2))}}</td>
+                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 3))}}</td>
+                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 4))}}</td>
+                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 5))}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - Por baja</th>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 1)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 2)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 3)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 4)->where('type', 1))}}</td>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 5)->where('type', 1))}}</td>
+                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 1))}}</td>
+                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 2))}}</td>
+                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 3))}}</td>
+                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 4))}}</td>
+                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 5))}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
 
     <div class="row justify-content-md-center mt-4">
         <h5>EDUCACION BASICA - AVISOS DE COBRO</h5>
@@ -132,35 +137,35 @@
                 <tbody>
                     <tr>
                         <th scope="row">Pendientes</th>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 1)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 2)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 3)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 4)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 0)->where('bimester', 5)->where('type', 2))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 1))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 2))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 3))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 4))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 5))}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Entregados</th>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 1)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 2)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 3)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 4)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 1)->where('bimester', 5)->where('type', 2))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 1))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 2))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 3))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 4))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 5))}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - No localizados</th>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 1)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 2)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 3)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 4)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 2)->where('bimester', 5)->where('type', 2))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 1))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 2))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 3))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 4))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 5))}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - Por baja</th>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 1)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 2)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 3)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 4)->where('type', 2))}}</td>
-                        <td>{{count($basics->where('status', 3)->where('bimester', 5)->where('type', 2))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 1))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 2))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 3))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 4))}}</td>
+                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 5))}}</td>
                     </tr>
                 </tbody>
             </table>

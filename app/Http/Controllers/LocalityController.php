@@ -148,7 +148,15 @@ class LocalityController extends Controller
         }
 
         $basics = Locality::join('basics', 'localities.id', '=', 'basics.locality_id')
-            ->where('locality_id', $id)->get();
+        ->where('locality_id', $id)->get();
+
+        $basicsCerm = Locality::join('basics', function ($join) {
+            $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1);
+        })->where('locality_id', $id)->get();
+
+        $basicsDelivery = Locality::join('basics', function ($join) {
+            $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2);
+        })->where('locality_id', $id)->get();
 
         $mediums = Locality::join('schools', 'localities.id', '=', 'schools.locality_id')
             ->join('media', 'schools.id', '=', 'media.school_id')
@@ -161,10 +169,10 @@ class LocalityController extends Controller
             ->get();
 
         if ($type == 0) {
-            return view('user.localities.localityGeneral', compact('localityInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            return view('user.localities.localityGeneral', compact('localityInfo', 'bossRegion', 'basicsCerm', 'basicsDelivery', 'mediums', 'higers'));
         } elseif ($type == 1) {
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadView('user.localities.localityPdf', compact('localityInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            $pdf->loadView('user.localities.localityPdf', compact('localityInfo', 'bossRegion', 'basicsCerm', 'basicsDelivery', 'mediums', 'higers'));
             return $pdf->stream();
         } else {
             return back();

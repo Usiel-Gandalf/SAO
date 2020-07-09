@@ -151,9 +151,18 @@ class RegionController extends Controller
         $bossRegion = User::where('region_id', $id)->get();
         $regionInfo = Region::where('id', $id)->get();
 
-        $basics = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
+        $basicsCerm = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
             ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
-            ->join('basics', 'localities.id', '=', 'basics.locality_id')
+            ->join('basics', function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1);
+            })
+            ->where('region_id', $id)->get();
+
+        $basicsDelivery = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
+            ->join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2);
+            })
             ->where('region_id', $id)->get();
 
         $mediums = Region::join('municipalities', 'regions.id', '=', 'municipalities.region_id')
@@ -171,10 +180,10 @@ class RegionController extends Controller
             ->get();
 
         if ($type == 0) {
-            return view('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            return view('user.regions.regionGeneral', compact('regionInfo', 'bossRegion', 'basicsCerm', 'basicsDelivery', 'mediums', 'higers'));
         } elseif ($type == 1) {
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadView('user.regions.regionPdf', compact('regionInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            $pdf->loadView('user.regions.regionPdf', compact('regionInfo', 'bossRegion', 'basicsCerm', 'basicsDelivery', 'mediums', 'higers'));
             return $pdf->stream();
         } else {
             return back();

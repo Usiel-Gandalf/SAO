@@ -138,33 +138,39 @@ class MunicipalityController extends Controller
 
     public function reportMunicipality($id, $type)
     {
-         $municipalityInfo = Municipality::where('id', $id)->with('region')->get();
+        $municipalityInfo = Municipality::where('id', $id)->with('region')->get();
         foreach ($municipalityInfo as $municipality) {
             $idReg =  $municipality->region->id;
             $bossRegion = User::where('region_id', $idReg)->get();
         }
 
-        $basics = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
-            ->join('basics', 'localities.id', '=', 'basics.locality_id')
-            ->where('municipality_id', $id)->get();
+        $basicsCerm = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics',  function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1);
+            })->where('municipality_id', $id)->get();
 
-             $mediums = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+        $basicsDelivery = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2);
+            })->where('municipality_id', $id)->get();
+
+        $mediums = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('schools', 'localities.id', '=', 'schools.locality_id')
             ->join('media', 'schools.id', '=', 'media.school_id')
             ->where('municipality_id', $id)
             ->get();
 
-         $higers = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+        $higers = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('schools', 'localities.id', '=', 'schools.locality_id')
             ->join('higers', 'schools.id', '=', 'higers.school_id')
             ->where('municipality_id', $id)
             ->get();
 
         if ($type == 0) {
-            return view('user.municipalities.municipalityGeneral', compact('municipalityInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            return view('user.municipalities.municipalityGeneral', compact('municipalityInfo', 'bossRegion', 'basicsCerm', 'basicsDelivery', 'mediums', 'higers'));
         } elseif ($type == 1) {
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadView('user.municipalities.municipalityPdf', compact('municipalityInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            $pdf->loadView('user.municipalities.municipalityPdf', compact('municipalityInfo', 'bossRegion', 'basicsCerm', 'basicsDelivery', 'mediums', 'higers'));
             return $pdf->stream();
         } else {
             return back();
