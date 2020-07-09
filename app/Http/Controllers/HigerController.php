@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Higer;
 use App\School;
 
@@ -20,8 +21,13 @@ class HigerController extends Controller
     public function index()
     {
         $higers = Higer::with('school')->paginate(5);
-        $reports = Higer::all();
-        return view('user.higers.index', compact('higers', 'reports'));
+        $higersBim1 = Higer::where('bimester', 1)->get();
+        $higersBim2 = Higer::where('bimester', 2)->get();
+        $higersBim3 = Higer::where('bimester', 3)->get();
+        $higersBim4 = Higer::where('bimester', 4)->get();
+        $higersBim5 = Higer::where('bimester', 5)->get();
+
+        return view('user.higers.index', compact('higers', 'higersBim1', 'higersBim2', 'higersBim3', 'higersBim4', 'higersBim5'));
     }
 
     /**
@@ -124,5 +130,18 @@ class HigerController extends Controller
     {
         Higer::destroy($id);
         return redirect()->action('HigerController@index')->with('deleteHiger', 'Informacion de Jovenes escribiendo el futuro eliminada');
+    }
+
+    public function higerPdf()
+    {
+        $higersBim1 = Higer::where('bimester', 1)->get();
+        $higersBim2 = Higer::where('bimester', 2)->get();
+        $higersBim3 = Higer::where('bimester', 3)->get();
+        $higersBim4 = Higer::where('bimester', 4)->get();
+        $higersBim5 = Higer::where('bimester', 5)->get();
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('user.higers.higerPdf', compact('higersBim1', 'higersBim2', 'higersBim3', 'higersBim4', 'higersBim5'));
+        return $pdf->stream();
     }
 }

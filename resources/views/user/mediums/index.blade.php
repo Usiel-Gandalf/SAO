@@ -1,7 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
 <div class="container shadow p-3 mb-5 bg-white rounded mt-1">
-    <div class="container shadow p-3 mb-5 bg-white rounded ">
+    <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
         <div class="row justify-content-md-center mb-4">
             <h1>EDUCACION MEDIA SUPERIOR</h1>
         </div>
@@ -97,7 +97,7 @@
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                             <a class="dropdown-item" href="{{url('/mediumEducation/'.$medium->id.'/edit')}}">Editar</a>
-                                            
+
                                             <form method="post" action="{{url('/mediumEducation/'.$medium->id)}}">
                                                 @csrf
                                                 @method('DELETE')
@@ -127,6 +127,16 @@
         </div>
     </div>
 
-    @include('user.mediums.mediumDeliveryGeneral')
+    <div class="container shadow p-3 mb-5 bg-white rounded mt-1 border border-success">
+        @include('user.mediums.mediumDeliveryGeneral')
+
+        <div class="row">
+            <div class="col foat-right">
+            <a class="btn btn-success float-right" href="{{url('mediumPdf')}}" target="_blank">PDF</a>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 @endsection

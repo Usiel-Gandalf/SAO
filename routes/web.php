@@ -78,10 +78,6 @@ Route::post('admin/{id}/updatePasswordAdmin', 'AdminController@updatePasswordAdm
 Route::get('boss/{id}/editPasswordBoss', 'BossController@editPasswordBoss');
 Route::post('boss/{id}/updatePasswordBoss', 'BossController@updatePasswordBoss');
 
-// rutas para editar informacion y contraseña de los perfiles propios 
-
-
-
 //rutas para ver los bimestres de los diferentes niveles educativos
 Route::get('basicBimestersCerm', 'RouteController@basicBimestersCerm')->name('basicBimestersCerm');
 Route::get('basicBimestersDelivery', 'RouteController@basicBimestersDelivery')->name('basicBimestersDelivery');
@@ -113,3 +109,6 @@ Route::get('reportRegion/{id}/reportRegion/{type}', 'RegionController@reportRegi
 Route::get('reportMunicipality/{id}/reportMunicipality/{type}', 'MunicipalityController@reportMunicipality');
 Route::get('reportLocality/{id}/reportLocality/{type}', 'LocalityController@reportLocality');
 Route::get('reportSchool/{id}/reportSchool/{type}', 'SchoolController@reportSchool');
+Route::get('basicPdf', 'BasicController@basicPdf');
+Route::get('mediumPdf', 'MediumController@mediumPdf');
+Route::get('higerPdf', 'HigerController@higerPdf');

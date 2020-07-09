@@ -1,7 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
 <div class="container shadow p-3 mb-5 bg-white rounded mt-1">
-    <div class="container shadow p-3 mb-5 bg-white rounded ">
+    <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
         <div class="row justify-content-md-center mb-4">
             <h1>EDUCACION BASICA</h1>
         </div>
@@ -95,7 +95,7 @@
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                             <a class="dropdown-item" href="{{url('/basicEducation/'.$basic->id.'/edit')}}">Editar</a>
-                                           
+
                                             <form method="post" action="{{url('/basicEducation/'.$basic->id)}}">
                                                 @csrf
                                                 @method('DELETE')
@@ -124,8 +124,15 @@
             @endif
         </div>
     </div>
+    <div class="container shadow p-3 mb-5 bg-white rounded mt-5 border border-success">
+        @include('user.basics.basicCermGeneral')
+        @include('user.basics.basicDeliveryGeneral')
 
-    @include('user.basics.basicCermGeneral')
-    @include('user.basics.basicDeliveryGeneral')
+        <div class="row">
+            <div class="col foat-right">
+                <a class="btn btn-success float-right" href="{{url('basicPdf')}}" target="_blank">PDF</a>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

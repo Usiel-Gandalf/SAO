@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Medium;
 use App\School;
 
@@ -20,8 +21,14 @@ class MediumController extends Controller
     public function index()
     {
         $mediums = Medium::with('school')->paginate(5);
-        $reports = Medium::all();
-        return view('user.mediums.index', compact('mediums', 'reports'));
+
+        $mediumsBim1 = Medium::where('bimester', 1)->get();
+        $mediumsBim2 = Medium::where('bimester', 2)->get();
+        $mediumsBim3 = Medium::where('bimester', 3)->get();
+        $mediumsBim4 = Medium::where('bimester', 4)->get();
+        $mediumsBim5 = Medium::where('bimester', 5)->get();
+
+        return view('user.mediums.index', compact('mediums', 'mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5'));
     }
 
     /**
@@ -126,5 +133,18 @@ class MediumController extends Controller
     {
         Medium::destroy($id);
         return redirect()->action('MediumController@index')->with('deleteMedium', 'Registro eliminado correctamente');
+    }
+
+    public function mediumPdf()
+    {
+        $mediumsBim1 = Medium::where('bimester', 1)->get();
+        $mediumsBim2 = Medium::where('bimester', 2)->get();
+        $mediumsBim3 = Medium::where('bimester', 3)->get();
+        $mediumsBim4 = Medium::where('bimester', 4)->get();
+        $mediumsBim5 = Medium::where('bimester', 5)->get();
+        
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('user.mediums.mediumPdf', compact('mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5'));
+        return $pdf->stream();
     }
 }

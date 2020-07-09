@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Basic;
 use App\Locality;
-use App\Region;
-use Illuminate\Validation\Rules\Unique;
 
 class BasicController extends Controller
 {
@@ -19,12 +18,37 @@ class BasicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
         $basics = Basic::with('locality')->paginate(5);
-        $reports = Basic::all();
 
-        return view('user.basics.index', compact('basics', 'reports'));
+        $basicsCermBim1 = Basic::where('type', 1)->where('bimester', 1)->get();
+        $basicsCermBim2 = Basic::where('type', 1)->where('bimester', 2)->get();
+        $basicsCermBim3 = Basic::where('type', 1)->where('bimester', 3)->get();
+        $basicsCermBim4 = Basic::where('type', 1)->where('bimester', 4)->get();
+        $basicsCermBim5 = Basic::where('type', 1)->where('bimester', 5)->get();
+
+        $basicsDeliveryBim1 = Basic::where('type', 2)->where('bimester', 1)->get();
+        $basicsDeliveryBim2 = Basic::where('type', 2)->where('bimester', 2)->get();
+        $basicsDeliveryBim3 = Basic::where('type', 2)->where('bimester', 3)->get();
+        $basicsDeliveryBim4 = Basic::where('type', 2)->where('bimester', 4)->get();
+        $basicsDeliveryBim5 = Basic::where('type', 2)->where('bimester', 5)->get();
+
+        return view('user.basics.index', compact(
+            'basics',
+            'basicsCermBim1',
+            'basicsCermBim2',
+            'basicsCermBim3',
+            'basicsCermBim4',
+            'basicsCermBim5',
+            'basicsDeliveryBim1',
+            'basicsDeliveryBim2',
+            'basicsDeliveryBim3',
+            'basicsDeliveryBim4',
+            'basicsDeliveryBim5'
+        ));
     }
 
     /**
@@ -146,5 +170,35 @@ class BasicController extends Controller
     {
         Basic::destroy($id);
         return redirect()->action('BasicController@index')->with('deleteBasic', 'Informacion de educacion basica eliminada');
+    }
+
+    public function basicPdf()
+    {
+        $basicsCermBim1 = Basic::where('type', 1)->where('bimester', 1)->get();
+        $basicsCermBim2 = Basic::where('type', 1)->where('bimester', 2)->get();
+        $basicsCermBim3 = Basic::where('type', 1)->where('bimester', 3)->get();
+        $basicsCermBim4 = Basic::where('type', 1)->where('bimester', 4)->get();
+        $basicsCermBim5 = Basic::where('type', 1)->where('bimester', 5)->get();
+
+        $basicsDeliveryBim1 = Basic::where('type', 2)->where('bimester', 1)->get();
+        $basicsDeliveryBim2 = Basic::where('type', 2)->where('bimester', 2)->get();
+        $basicsDeliveryBim3 = Basic::where('type', 2)->where('bimester', 3)->get();
+        $basicsDeliveryBim4 = Basic::where('type', 2)->where('bimester', 4)->get();
+        $basicsDeliveryBim5 = Basic::where('type', 2)->where('bimester', 5)->get();
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('user.basics.basicPdf', compact(
+            'basicsCermBim1',
+            'basicsCermBim2',
+            'basicsCermBim3',
+            'basicsCermBim4',
+            'basicsCermBim5',
+            'basicsDeliveryBim1',
+            'basicsDeliveryBim2',
+            'basicsDeliveryBim3',
+            'basicsDeliveryBim4',
+            'basicsDeliveryBim5'
+        ));
+        return $pdf->stream();
     }
 }
