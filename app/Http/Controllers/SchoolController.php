@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Locality;
 use App\School;
+use App\User;
 
 class SchoolController extends Controller
 {
@@ -129,5 +131,32 @@ class SchoolController extends Controller
     {
         Locality::destroy('id', $id);
         return redirect()->action('SchoolController@index')->with('deleteSchool', 'Escuela eliminada');
+    }
+
+    public function reportSchool($id, $type){
+        $schoolInfo = School::where('id', $id)->with('locality.municipality.region')->get();
+        foreach ($schoolInfo as $school) {
+            $idReg =  $school->locality->municipality->region->id;
+            $bossRegion = User::where('region_id', $idReg)->get();
+        }
+
+        $mediums = School::join('media', 'schools.id', '=', 'media.school_id')
+        ->where('school_id', $id)
+        ->get();
+
+        $higers = School::join('higers', 'schools.id', '=', 'higers.school_id')
+        ->where('school_id', $id)
+        ->get();
+
+        if ($type == 0) {
+            return view('user.schools.schoolGeneral', compact('schoolInfo', 'bossRegion', 'mediums', 'higers'));
+        } elseif ($type == 1) {
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('user.schools.schoolPdf', compact('schoolInfo', 'bossRegion', 'mediums', 'higers'));
+            return $pdf->stream();
+        } else {
+            return back();
+        }
+
     }
 }

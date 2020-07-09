@@ -7,12 +7,13 @@
 </center>
 
 <center>
-    <h6><b>REPORTE GENERAL DE MUNICIPIO | {{@date('d-m-Y')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</b></h6>
+    <h6><b>REPORTE GENERAL DE LOCALIDAD | {{@date('d-m-Y')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</b></h6>
 </center>
 
 <center>
-    @foreach($municipalityInfo as $municipality)
-    <h6 style="font-size: 12px;"> REGION: {{$municipality->region->nameRegion}} NUMERO: {{$municipality->region->id}} |
+    @foreach($localityInfo as $locality)
+    <h6 style="font-size: 12px;">REGION: {{$locality->municipality->region->nameRegion}} - NUMERO: {{$locality->municipality->region->region}} |
+        MUNICIPIO: {{$locality->municipality->nameMunicipality}} |
         @if(count($bossRegion) == 0)
         {{'Sin Jefe asignado'}}
         @elseif(count($bossRegion) >= 2)
@@ -21,15 +22,17 @@
         @endforeach
         @else
         @foreach($bossRegion as $boss)
-        {{'Responsable de la region:'}}{{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
+        {{'Responsable de la region:'}} {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
         @endforeach
-        @endif</h6>
-    @endforeach
+        @endif
+        @endforeach</h6>
 </center>
+
 <hr style="color: #0056b2;" width="100%" />
+
 <center>
-    @foreach($municipalityInfo as $municipality)
-    <h6><b>MUNICIPIO:</b> {{$municipality->nameMunicipality}} | <b>NUMERO:</b> {{$municipality->id}}</h6>
+    @foreach($localityInfo as $locality)
+    <h6><b>LOCALIDAD:</b> {{$locality->nameLocality}} | <b>NUMERO:</b> {{$locality->keyLocality}} | <b>CLAVE:</b> {{$locality->id}}</h6>
     @endforeach
 </center>
 <br>

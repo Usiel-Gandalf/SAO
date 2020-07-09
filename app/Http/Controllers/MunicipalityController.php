@@ -22,7 +22,7 @@ class MunicipalityController extends Controller
      */
     public function index()
     {
-        $municipalities = Municipality::with('region')->paginate(5);
+        $municipalities = Municipality::with('region')->paginate(10);
         //$municipalities = Municipality::orderBy('nameMunicipality', 'ASC')->with('region')->paginate(10);
         return view('user.municipalities.index', compact('municipalities'));
     }
@@ -143,7 +143,6 @@ class MunicipalityController extends Controller
             $idReg =  $municipality->region->id;
             $bossRegion = User::where('region_id', $idReg)->get();
         }
-         $bossRegion;
 
         $basics = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('basics', 'localities.id', '=', 'basics.locality_id')

@@ -7,155 +7,140 @@
 </center>
 
 <center>
-  <h6>REPORTE GENERAL-REGION | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h6>
+  <h6>REPORTE GENERAL DE REGION | {{@date('d-m-Y')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h6>
 </center>
-<br>
+
 <center>
   <h6>
     @if(count($bossRegion) == 0)
-    {{'Responsable de la region: Sin Jefe'}}
+    {{'RESPONSABLE DE LA REGION: Sin Jefe'}}
     @elseif(count($bossRegion) >= 2)
     @foreach($bossRegion as $boss)
-    {{'Responsables de la region:'}} {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}},
+    {{'RESPONSABLES DE LA REGION:'}} {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}},
     @endforeach
     @else
     @foreach($bossRegion as $boss)
-    {{'Responsable de la region:'}} {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
+    {{'RESPONSABLE DE LA REGION:'}} {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
     @endforeach
     @endif
   </h6>
 </center>
 
-<center>
-  <table class="table table-bordered text-center">
-    <thead class="thead-light">
-      @foreach($regionInfo as $region)
-      <tr>
-        <td scope="col" class="py-1">
-          <h6><b>REGION:</b> {{$region->nameRegion}}</h6>
-        </td>
-        <td scope="col" class="py-1">
-          <h6><b>CLAVE:</b> {{$region->id}}</h6>
-        </td>
-        <td scope="col" class="py-1">
-          <h6><b>NUMERO:</b> {{$region->region}}</h6>
-        </td>
-      </tr>
-      @endforeach
-    </thead>
-  </table>
-</center>
-
 <hr style="color: #0056b2;" width="100%" />
 
+<center>
+  @foreach($regionInfo as $region)
+  <h6><b>REGION:</b> {{$region->nameRegion}} | <b>CLAVE:</b> {{$region->id}} | <b>NUMERO:</b> {{$region->region}}</h6>
+  @endforeach
+</center>
+<br>
 <center>
   <h6>EDUCACION BASICA - CERM</h6>
 </center>
 
 <center>
   <table class="table table-bordered">
-    <thead class="thead-light">
+    <thead class="thead-dark">
       <tr>
-        <th scope="col" style="width:40%; height:5%">
-          <h6>Estatus</h6>
+        <th scope="col" style="width:30%; height:5%">
+          <h6 style="font-size: 12px;">Estatus</h6>
         </th>
         <th scope="col">
-          <h6>Enero Febrero</h6>
+          <h6 style="font-size: 12px;">Enero Febrero</h6>
         </th>
         <th scope="col">
-          <h6>Marzo Abril</h6>
+          <h6 style="font-size: 12px;">Marzo Abril</h6>
         </th>
         <th scope="col">
-          <h6>Mayo Junio</h6>
+          <h6 style="font-size: 12px;">Mayo Junio</h6>
         </th>
         <th scope="col">
-          <h6>Septiembre Octubre</h6>
+          <h6 style="font-size: 12px;">Septiembre Octubre</h6>
         </th>
         <th scope="col">
-          <h6>Noviembre Diciembre</h6>
+          <h6 style="font-size: 12px;">Noviembre Diciembre</h6>
         </th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">
-          <h6>Pendientes</h6>
+          <h6 style="font-size: 12px;">Pendientes</h6>
         </th>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 1)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 1)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 2)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 2)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 3)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 3)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 4)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 4)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 5)->where('type', 1))}}</h6>
-        </td>
-
-      </tr>
-      <tr>
-        <th scope="row">
-          <h6>Entregados</h6>
-        </th>
-        <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 1)->where('type', 1))}}</h6>
-        </td>
-        <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 2)->where('type', 1))}}</h6>
-        </td>
-        <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 3)->where('type', 1))}}</h6>
-        </td>
-        <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 4)->where('type', 1))}}</h6>
-        </td>
-        <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 5)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 5)->where('type', 1))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>No entregados|No localizados</h6>
+          <h6 style="font-size: 12px;">Entregados</h6>
         </th>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 1)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 1)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 2)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 2)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 3)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 3)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 4)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 4)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 5)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 5)->where('type', 1))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>No entregados|Por baja</h6>
+          <h6 style="font-size: 12px;">No entregados|No localizados</h6>
         </th>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 1)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 1)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 2)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 2)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 3)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 3)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 4)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 4)->where('type', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 5)->where('type', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 5)->where('type', 1))}}</h6>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <h6 style="font-size: 12px;">No entregados|Por baja</h6>
+        </th>
+        <td>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 1)->where('type', 1))}}</h6>
+        </td>
+        <td>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 2)->where('type', 1))}}</h6>
+        </td>
+        <td>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 3)->where('type', 1))}}</h6>
+        </td>
+        <td>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 4)->where('type', 1))}}</h6>
+        </td>
+        <td>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 5)->where('type', 1))}}</h6>
         </td>
       </tr>
     </tbody>
@@ -163,245 +148,247 @@
 </center>
 
 <hr style="color: #0056b2;" width="100%" />
-
+<br>
 <center>
   <h6>EDUCACION BASICA - AVISOS DE COBRO</h6>
 </center>
 
 <center>
   <table class="table table-bordered">
-    <thead class="thead-light">
+    <thead class="thead-dark">
       <tr>
-        <th scope="col" style="width:40%; height:5%">
-          <h6>ESTATUS</h6>
+        <th scope="col" style="width:30%; height:5%">
+          <h6 style="font-size: 12px;">Estatus</h6>
         </th>
         <th scope="col">
-          <h6>Enero Febrero</h6>
+          <h6 style="font-size: 12px;">Enero Febrero</h6>
         </th>
         <th scope="col">
-          <h6>Marzo Abril</h6>
-        </th>
-        <th scope="col">Mayo Junio</th>
-        <th scope="col">
-          <h6>Septiembre Octubre</h6>
+          <h6 style="font-size: 12px;">Marzo Abril</h6>
         </th>
         <th scope="col">
-          <h6>Noviembre Diciembre</h6>
+          <h6 style="font-size: 12px;">Mayo Junio</h6>
+        </th>
+        <th scope="col">
+          <h6 style="font-size: 12px;">Septiembre Octubre</h6>
+        </th>
+        <th scope="col">
+          <h6 style="font-size: 12px;">Noviembre Diciembre</h6>
         </th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">
-          <h6>Pendientes</h6>
+          <h6 style="font-size: 12px;">Pendientes</h6>
         </th>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 1)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 1)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 2)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 2)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 3)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 3)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 4)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 4)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 0)->where('bimester', 5)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 0)->where('bimester', 5)->where('type', 2))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>Entregados</h6>
+          <h6 style="font-size: 12px;">Entregados</h6>
         </th>
         <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 1)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 1)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 2)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 2)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 3)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 3)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 4)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 4)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 1)->where('bimester', 5)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 1)->where('bimester', 5)->where('type', 2))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>No entregados|No localizados</h6>
+          <h6 style="font-size: 12px;">No entregados|No localizados</h6>
         </th>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 1)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 1)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 2)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 2)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 3)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 3)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 4)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 4)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 2)->where('bimester', 5)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 2)->where('bimester', 5)->where('type', 2))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>No entregados|Por baja</h6>
+          <h6 style="font-size: 12px;">No entregados|Por baja</h6>
         </th>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 1)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 1)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 2)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 2)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 3)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 3)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 4)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 4)->where('type', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($basics->where('status', 3)->where('bimester', 5)->where('type', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($basics->where('status', 3)->where('bimester', 5)->where('type', 2))}}</h6>
         </td>
       </tr>
     </tbody>
   </table>
 </center>
-
+<br><br><br>
 <center>
   <h6>EDUCACION MEDIA SUPERIOR</h6>
 </center>
 
 <center>
   <table class="table table-bordered">
-    <thead class="thead-light">
+    <thead class="thead-dark">
       <tr>
-        <th scope="col" style="width:40%; height:5%">
-          <h6>ESTATUS</h6>
+        <th scope="col" style="width:30%; height:5%;">
+          <h6 style="font-size: 12px;">Estatus</h6>
         </th>
         <th scope="col">
-          <h6>Enero Febrero</h6>
+          <h6 style="font-size: 12px;">Enero Febrero</h6>
         </th>
         <th scope="col">
-          <h6>Marzo Abril</h6>
+          <h6 style="font-size: 12px;">Marzo Abril</h6>
         </th>
         <th scope="col">
-          <h6>Mayo Junio</h6>
+          <h6 style="font-size: 12px;">Mayo Junio</h6>
         </th>
         <th scope="col">
-          <h6>Septiembre Octubre</h6>
+          <h6 style="font-size: 12px;">Septiembre Octubre</h6>
         </th>
         <th scope="col">
-          <h6>Noviembre Diciembre</h6>
+          <h6 style="font-size: 12px;">Noviembre Diciembre</h6>
         </th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <th scope="row">
-          <h6>Pendientes</h6>
+          <h6 style="font-size: 12px;">Pendientes</h6>
         </th>
         <td>
-          <h6>{{count($mediums->where('status', 0)->where('bimester', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 0)->where('bimester', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 0)->where('bimester', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 0)->where('bimester', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 0)->where('bimester', 3))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 0)->where('bimester', 3))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 0)->where('bimester', 4))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 0)->where('bimester', 4))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 0)->where('bimester', 5))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 0)->where('bimester', 5))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>Entregados</h6>
+          <h6 style="font-size: 12px;">Entregados</h6>
         </th>
         <td>
-          <h6>{{count($mediums->where('status', 1)->where('bimester', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 1)->where('bimester', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 1)->where('bimester', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 1)->where('bimester', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 1)->where('bimester', 3))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 1)->where('bimester', 3))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 1)->where('bimester', 4))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 1)->where('bimester', 4))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 1)->where('bimester', 5))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 1)->where('bimester', 5))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>No entregados|No localizados</h6>
+          <h6 style="font-size: 12px;">No entregados|No localizados</h6>
         </th>
         <td>
-          <h6>{{count($mediums->where('status', 2)->where('bimester', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 2)->where('bimester', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 2)->where('bimester', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 2)->where('bimester', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 2)->where('bimester', 3))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 2)->where('bimester', 3))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 2)->where('bimester', 4))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 2)->where('bimester', 4))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 2)->where('bimester', 5))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 2)->where('bimester', 5))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>No entregados|Por baja</h6>
+          <h6 style="font-size: 12px;">No entregados|Por baja</h6>
         </th>
         <td>
-          <h6>{{count($mediums->where('status', 3)->where('bimester', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 3)->where('bimester', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 3)->where('bimester', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 3)->where('bimester', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 3)->where('bimester', 3))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 3)->where('bimester', 3))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 3)->where('bimester', 4))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 3)->where('bimester', 4))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 3)->where('bimester', 5))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 3)->where('bimester', 5))}}</h6>
         </td>
       </tr>
       <tr>
         <th scope="row">
-          <h6>Reexpedicion</h6>
+          <h6 style="font-size: 12px;">Reexpedicion</h6>
         </th>
         <td>
-          <h6>{{count($mediums->where('status', 4)->where('bimester', 1))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 4)->where('bimester', 1))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 4)->where('bimester', 2))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 4)->where('bimester', 2))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 4)->where('bimester', 3))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 4)->where('bimester', 3))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 4)->where('bimester', 4))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 4)->where('bimester', 4))}}</h6>
         </td>
         <td>
-          <h6>{{count($mediums->where('status', 4)->where('bimester', 5))}}</h6>
+          <h6 style="font-size: 12px;">{{count($mediums->where('status', 4)->where('bimester', 5))}}</h6>
         </td>
       </tr>
     </tbody>
@@ -415,113 +402,112 @@
 </center>
 
 <table class="table table-bordered">
-  <thead class="thead-light">
+  <thead class="thead-dark">
     <tr>
-      <th scope="col" style="width:40%; height:5%">
-        <h6>ESTATUS</h6>
+      <th scope="col" style="width:30%; height:5%">
+        <h6 style="font-size: 12px;">ESTATUS</h6>
       </th>
       <th scope="col">
-        <h6>Enero Febrero</h6>
+        <h6 style="font-size: 12px;">Enero Febrero</h6>
       </th>
       <th scope="col">
-        <h6>Marzo Abril</h6>
+        <h6 style="font-size: 12px;">Marzo Abril</h6>
       </th>
       <th scope="col">
-        <h6>Mayo Junio</h6>
+        <h6 style="font-size: 12px;">Mayo Junio</h6>
       </th>
       <th scope="col">
-        <h6>Septiembre Octubre</h6>
+        <h6 style="font-size: 12px;">Septiembre Octubre</h6>
       </th>
       <th scope="col">
-        <h6>Noviembre Diciembre</h6>
+        <h6 style="font-size: 12px;">Noviembre Diciembre</h6>
       </th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th scope="row">
-        <h6>Pendientes</h6>
+        <h6 style="font-size: 12px;">Pendientes</h6>
       </th>
       <td>
-        <h6>{{count($higers->where('status', 0)->where('bimester', 1))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 0)->where('bimester', 1))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 0)->where('bimester', 2))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 0)->where('bimester', 2))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 0)->where('bimester', 3))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 0)->where('bimester', 3))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 0)->where('bimester', 4))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 0)->where('bimester', 4))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 0)->where('bimester', 5))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 0)->where('bimester', 5))}}</h6>
       </td>
     </tr>
     <tr>
       <th scope="row">
-        <h6>Entregados</h6>
+        <h6 style="font-size: 12px;">Entregados</h6>
       </th>
       <td>
-        <h6>{{count($higers->where('status', 1)->where('bimester', 1))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 1)->where('bimester', 1))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 1)->where('bimester', 2))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 1)->where('bimester', 2))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 1)->where('bimester', 3))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 1)->where('bimester', 3))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 1)->where('bimester', 4))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 1)->where('bimester', 4))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 1)->where('bimester', 5))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 1)->where('bimester', 5))}}</h6>
       </td>
     </tr>
     <tr>
       <th scope="row">
-        <h6>No entregados|No localizados</h6>
+        <h6 style="font-size: 12px;">No entregados|No localizados</h6>
       </th>
       <td>
-        <h6>{{count($higers->where('status', 2)->where('bimester', 1))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 2)->where('bimester', 1))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 2)->where('bimester', 2))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 2)->where('bimester', 2))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 2)->where('bimester', 3))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 2)->where('bimester', 3))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 2)->where('bimester', 4))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 2)->where('bimester', 4))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 2)->where('bimester', 5))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 2)->where('bimester', 5))}}</h6>
       </td>
     </tr>
     <tr>
       <th scope="row">
-        <h6>No entregados|Por baja</h6>
+        <h6 style="font-size: 12px;">No entregados|Por baja</h6>
       </th>
       <td>
-        <h6>{{count($higers->where('status', 3)->where('bimester', 1))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 3)->where('bimester', 1))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 3)->where('bimester', 2))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 3)->where('bimester', 2))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 3)->where('bimester', 3))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 3)->where('bimester', 3))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 3)->where('bimester', 4))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 3)->where('bimester', 4))}}</h6>
       </td>
       <td>
-        <h6>{{count($higers->where('status', 3)->where('bimester', 5))}}</h6>
+        <h6 style="font-size: 12px;">{{count($higers->where('status', 3)->where('bimester', 5))}}</h6>
       </td>
     </tr>
   </tbody>
 </table>
 
-<br><br><br><br><br><br><br><br>
 <center>
   <FONT FACE="impact" SIZE=2>&copy; {{@date('Y')}} {{'Subdireccion de atencion operativa - Oaxaca, Todos los derechos reservados'}}</FONT>
 </center>

@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow px-5 mb-5 bg-white rounded">
+<div class="container shadow px-5 mb-5 bg-white rounded mt-4 border border-success">
 
     <div class="row justify-content-md-center">
         <img src="https://qroo.gob.mx/sites/default/files/inline-images/BECAS_COORDINACION_logo.png" class="img-fluid" alt="Responsive image" width="40%" height="40%">
@@ -11,8 +11,10 @@
     </div>
 
     <div class="row justify-content-md-center mb-3">
-        <h5>REPORTE GENERAL-REGION | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h5>
+        <h5><b>REPORTE GENERAL DE REGION</b> | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h5>
     </div>
+    <hr style="color: #0056b2;" width="100%" />
+    <hr style="color: #0056b2;" width="100%" />
 
     <div class="row justify-content-md-center mb-0">
         <div class="col-13">
@@ -20,20 +22,20 @@
                 <thead class="thead-light">
                     <tr>
                         @foreach($regionInfo as $region)
-                        <td scope="col"><b>REGION:</b> {{$region->nameRegion}}</td>
-                        <td scope="col"><b>CLAVE:</b> {{$region->id}}</td>
-                        <td scope="col"><b>NUMERO:</b> {{$region->region}}</td>
+                        <td scope="col"><h5><b>REGION</b></h5> {{$region->nameRegion}}</td>
+                        <td scope="col"><h5><b>CLAVE</b></h5> {{$region->id}}</td>
+                        <td scope="col"><h5><b>NUMERO</b></h5> {{$region->region}}</td>
                         @endforeach
                         <td>
                             @if(count($bossRegion) == 0)
-                            {{'Sin Jefe'}}
+                           <h5>{{'Sin Jefe'}}</h5>
                             @elseif(count($bossRegion) >= 2)
                             @foreach($bossRegion as $boss)
-                            <b>{{'Responsables de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}},
+                           <h5><b>{{'Responsables de la region'}}</b></h5> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}},
                             @endforeach
                             @else
                             @foreach($bossRegion as $boss)
-                          <b>{{'Responsable de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
+                          <h5><b>{{'Responsable de la region'}}</b></h5> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
                             @endforeach
                             @endif
                         </td>
@@ -46,8 +48,6 @@
             </table>
         </div>
     </div>
-
-    <hr style="color: #0056b2;" width="100%" />
 
     <div class="row justify-content-md-center mt-3">
         <h5>EDUCACION BASICA - CERM</h5>

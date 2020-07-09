@@ -11,26 +11,24 @@
     </div>
 
     <div class="row justify-content-md-center">
-        <h5><b>REPORTE GENERAL DE MUNICIPIO</b> | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h5>
+        <h5><b>REPORTE GENERAL DE LOCALIDAD</b> | {{@date('Y-m-d')}} | Administrador: {{Auth::user()->name}} {{Auth::user()->firstSurname}} {{Auth::user()->secondSurname}}</h5>
     </div>
 
-    <div class="row justify-content-md-center mb-0">
+    <div class="row justify-content-md-center">
         <h6>
-            @foreach($municipalityInfo as $municipality)
-           <b>REGION:</b> {{$municipality->region->nameRegion}} - <b>NUMERO:</b> {{$municipality->region->region}}
+            @foreach($localityInfo as $locality)
+            <b>REGION:</b> {{$locality->municipality->region->nameRegion}} - <b>NUMERO:</b> {{$locality->municipality->region->region}} | <b>MUNICIPIO:</b> {{$locality->municipality->nameMunicipality}} | @if(count($bossRegion) == 0)
+            {{'Sin Jefe asignado'}}
+            @elseif(count($bossRegion) >= 2)
+            @foreach($bossRegion as $boss)
+            <b>{{'Responsables de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}},
             @endforeach
-            <td>
-                @if(count($bossRegion) == 0)
-                | {{'Sin Jefe asignado'}}
-                @elseif(count($bossRegion) >= 2)
-                @foreach($bossRegion as $boss)
-                | <b>{{'Responsables de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}},
-                @endforeach
-                @else
-                @foreach($bossRegion as $boss)
-                | <b>{{'Responsable de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
-                @endforeach
-                @endif
+            @else
+            @foreach($bossRegion as $boss)
+            <b>{{'Responsable de la region:'}}</b> {{$boss->name}} {{$boss->firstSurname}} {{$boss->secondSurname}}
+            @endforeach
+            @endif
+            @endforeach
         </h6>
     </div>
 
@@ -42,14 +40,20 @@
             <table class="table table-bordered text-center">
                 <thead class="thead-light">
                     <tr>
-                        @foreach($municipalityInfo as $municipality)
-                        <td scope="col"><h5><b>MUNICIPIO:</b></h5> {{$municipality->nameMunicipality}}</td>
-                        <td scope="col"><h5><b>NUMERO:</b></h5> {{$municipality->id}}</td>
+                        @foreach($localityInfo as $locality)
+                        <td scope="col">
+                            <h5><b>LOCALIDAD</b></h5> {{$locality->nameLocality}}
+                        </td>
+                        <td scope="col">
+                            <h5><b>CLAVE</b></h5> {{$locality->id}}
+                        </td>
+                        <td scope="col">
+                            <h5><b>NUMERO</b></h5> {{$locality->keyLocality}}
+                        </td>
                         @endforeach
-
                         <td>
-                            <a class="btn btn-primary" href="{{url('reportMunicipality/'.$municipality->id.'/reportMunicipality/1')}}" target="_blank">PDF</a>
-                            <a class="btn btn-success" href="{{url('/municipality')}}">Regresar</a>
+                            <a class="btn btn-primary" href="{{url('reportLocality/'.$locality->id.'/reportLocality/1')}}" target="_blank">PDF</a>
+                            <a class="btn btn-success" href="{{url('/locality')}}">Regresar</a>
                         </td>
                     </tr>
                 </thead>
@@ -288,11 +292,6 @@
             </table>
         </div>
     </div>
-
-
-
-
-
 
     <div class="row justify-content-md-center mb-4">
         <p>&copy; {{@date('Y')}} {{'Subdireccion de atencion operativa - Oaxaca, Todos los derechos reservados'}}</p>

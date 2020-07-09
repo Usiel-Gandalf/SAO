@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Locality;
 use App\Municipality;
+use App\User;
 
 class LocalityController extends Controller
 {
@@ -20,7 +22,7 @@ class LocalityController extends Controller
      */
     public function index()
     {
-        $localities = Locality::with('municipality')->paginate(5);
+        $localities = Locality::with('municipality')->paginate(10);
         return view('user.localities.index', compact('localities'));
     }
 
@@ -135,5 +137,37 @@ class LocalityController extends Controller
     {
         Locality::destroy($id);
         return redirect()->action('LocalityController@index')->with('deleteLocality', 'Localidad eliminada');
+    }
+
+    public function reportLocality($id, $type)
+    {
+        $localityInfo = Locality::where('id', $id)->with('municipality.region')->get();
+        foreach ($localityInfo as $locality) {
+            $idReg =  $locality->municipality->region->id;
+            $bossRegion = User::where('region_id', $idReg)->get();
+        }
+
+        $basics = Locality::join('basics', 'localities.id', '=', 'basics.locality_id')
+            ->where('locality_id', $id)->get();
+
+        $mediums = Locality::join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('media', 'schools.id', '=', 'media.school_id')
+            ->where('locality_id', $id)
+            ->get();
+
+        $higers = Locality::join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('higers', 'schools.id', '=', 'higers.school_id')
+            ->where('municipality_id', $id)
+            ->get();
+
+        if ($type == 0) {
+            return view('user.localities.localityGeneral', compact('localityInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+        } elseif ($type == 1) {
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadView('user.localities.localityPdf', compact('localityInfo', 'bossRegion', 'basics', 'mediums', 'higers'));
+            return $pdf->stream();
+        } else {
+            return back();
+        }
     }
 }

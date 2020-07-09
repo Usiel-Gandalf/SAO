@@ -111,3 +111,5 @@ Route::post('editBossEmail/{id}/updateBossEmail', 'BossprofileController@updateB
 //ruta de reportes por entidades 
 Route::get('reportRegion/{id}/reportRegion/{type}', 'RegionController@reportRegion');
 Route::get('reportMunicipality/{id}/reportMunicipality/{type}', 'MunicipalityController@reportMunicipality');
+Route::get('reportLocality/{id}/reportLocality/{type}', 'LocalityController@reportLocality');
+Route::get('reportSchool/{id}/reportSchool/{type}', 'SchoolController@reportSchool');

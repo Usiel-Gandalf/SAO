@@ -90,7 +90,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         <a class="dropdown-item" href="{{url('/school/'.$school->id.'/edit')}}">Editar</a>
-                                        <a class="dropdown-item" href="">Reporte</a>
+                                        <a class="dropdown-item" href="{{url('reportSchool/'.$school->id.'/reportSchool/0')}}">Reporte</a>
                                         <form method="post" action="{{url('/school/'.$school->id)}}">
                                             @csrf
                                             {{method_field('DELETE')}}

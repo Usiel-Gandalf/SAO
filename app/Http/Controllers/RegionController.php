@@ -33,7 +33,7 @@ class RegionController extends Controller
 
             return view('user.regions.index', compact('regions'));
         } else {
-            $regions = Region::paginate(5);
+            $regions = Region::paginate(10);
             $regions->sortBy('nameRegion');
             return view('user.regions.index', compact('regions'));
         }
