@@ -124,6 +124,7 @@
             @endif
         </div>
     </div>
+
     <div class="container shadow p-3 mb-5 bg-white rounded mt-5 border border-success">
         @include('user.basics.basicCermGeneral')
         @include('user.basics.basicDeliveryGeneral')
@@ -134,5 +135,6 @@
             </div>
         </div>
     </div>
+    
 </div>
 @endsection

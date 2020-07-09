@@ -143,34 +143,141 @@ class MunicipalityController extends Controller
             $idReg =  $municipality->region->id;
             $bossRegion = User::where('region_id', $idReg)->get();
         }
-
-        $basicsCerm = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+        ///////////////////////////////////////////////////
+        $basicsCermBim1 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('basics',  function ($join) {
-                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1);
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1)->where('basics.bimester', 1);
             })->where('municipality_id', $id)->get();
 
-        $basicsDelivery = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+        $basicsCermBim2 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics',  function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1)->where('basics.bimester', 2);
+            })->where('municipality_id', $id)->get();
+
+        $basicsCermBim3 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics',  function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1)->where('basics.bimester', 3);
+            })->where('municipality_id', $id)->get();
+
+        $basicsCermBim4 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics',  function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1)->where('basics.bimester', 4);
+            })->where('municipality_id', $id)->get();
+
+        $basicsCermBim5 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics',  function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 1)->where('basics.bimester', 5);
+            })->where('municipality_id', $id)->get();
+        //////////////////////////////////////////////////////
+
+        /////////////////////////////////////////////////////////
+        $basicsDeliveryBim1 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('basics', function ($join) {
-                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2);
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2)->where('basics.bimester', 1);
             })->where('municipality_id', $id)->get();
 
-        $mediums = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
-            ->join('schools', 'localities.id', '=', 'schools.locality_id')
-            ->join('media', 'schools.id', '=', 'media.school_id')
-            ->where('municipality_id', $id)
-            ->get();
+        $basicsDeliveryBim2 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2)->where('basics.bimester', 2);
+            })->where('municipality_id', $id)->get();
 
-        $higers = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+        $basicsDeliveryBim3 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2)->where('basics.bimester', 3);
+            })->where('municipality_id', $id)->get();
+
+        $basicsDeliveryBim4 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2)->where('basics.bimester', 4);
+            })->where('municipality_id', $id)->get();
+
+        $basicsDeliveryBim5 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('basics', function ($join) {
+                $join->on('localities.id', '=', 'basics.locality_id')->where('basics.type', 2)->where('basics.bimester', 5);
+            })->where('municipality_id', $id)->get();
+        /////////////////////////////////////////////////////////
+
+        /////////////////////////////////////////////////////////
+        $mediumsBim1 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
             ->join('schools', 'localities.id', '=', 'schools.locality_id')
-            ->join('higers', 'schools.id', '=', 'higers.school_id')
-            ->where('municipality_id', $id)
-            ->get();
+            ->join('media', function ($join) {
+                $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 1);
+            })->where('municipality_id', $id)->get();
+
+        $mediumsBim2 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('media', function ($join) {
+                $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 2);
+            })->where('municipality_id', $id)->get();
+
+        $mediumsBim3 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('media', function ($join) {
+                $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 3);
+            })->where('municipality_id', $id)->get();
+
+        $mediumsBim4 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('media', function ($join) {
+                $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 4);
+            })->where('municipality_id', $id)->get();
+
+        $mediumsBim5 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('media', function ($join) {
+                $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 5);
+            })->where('municipality_id', $id)->get();
+        ///////////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////////////
+        $higersBim1 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('higers', function ($join) {
+                $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 1);
+            })->where('municipality_id', $id)->get();
+
+            $higersBim2 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('higers', function ($join) {
+                $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 2);
+            })->where('municipality_id', $id)->get();
+
+            $higersBim3 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('higers', function ($join) {
+                $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 3);
+            })->where('municipality_id', $id)->get();
+
+            $higersBim4 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('higers', function ($join) {
+                $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 4);
+            })->where('municipality_id', $id)->get();
+
+            $higersBim5 = Municipality::join('localities', 'municipalities.id', '=', 'localities.municipality_id')
+            ->join('schools', 'localities.id', '=', 'schools.locality_id')
+            ->join('higers', function ($join) {
+                $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 5);
+            })->where('municipality_id', $id)->get();
+
+
+        ////////////////////////////////////////////////////////////
 
         if ($type == 0) {
-            return view('user.municipalities.municipalityGeneral', compact('municipalityInfo', 'bossRegion', 'basicsCerm', 'basicsDelivery', 'mediums', 'higers'));
+            return view('user.municipalities.municipalityGeneral', compact('municipalityInfo', 'bossRegion', 
+            'basicsCermBim1', 'basicsCermBim2', 'basicsCermBim3', 'basicsCermBim4', 'basicsCermBim5',
+            'basicsDeliveryBim1', 'basicsDeliveryBim2', 'basicsDeliveryBim3', 'basicsDeliveryBim4', 'basicsDeliveryBim5',
+            'mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5',
+            'higersBim1', 'higersBim2', 'higersBim3', 'higersBim4', 'higersBim5'
+        ));
         } elseif ($type == 1) {
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadView('user.municipalities.municipalityPdf', compact('municipalityInfo', 'bossRegion', 'basicsCerm', 'basicsDelivery', 'mediums', 'higers'));
+            $pdf->loadView('user.municipalities.municipalityPdf', compact('municipalityInfo', 'bossRegion', 
+            'basicsCermBim1', 'basicsCermBim2', 'basicsCermBim3', 'basicsCermBim4', 'basicsCermBim5',
+            'basicsDeliveryBim1', 'basicsDeliveryBim2', 'basicsDeliveryBim3', 'basicsDeliveryBim4', 'basicsDeliveryBim5',
+            'mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5',
+            'higersBim1', 'higersBim2', 'higersBim3', 'higersBim4', 'higersBim5'
+        ));
             return $pdf->stream();
         } else {
             return back();

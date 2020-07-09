@@ -81,35 +81,35 @@
                 <tbody>
                     <tr>
                         <th scope="row">Pendientes</th>
-                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 1))}}</td>
-                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 2))}}</td>
-                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 3))}}</td>
-                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 4))}}</td>
-                        <td>{{count($basicsCerm->where('status', 0)->where('bimester', 5))}}</td>
+                        <td>{{$basicsCermBim1->where('status', 0)->count()}}</td>
+                        <td>{{$basicsCermBim2->where('status', 0)->count()}}</td>
+                        <td>{{$basicsCermBim3->where('status', 0)->count()}}</td>
+                        <td>{{$basicsCermBim4->where('status', 0)->count()}}</td>
+                        <td>{{$basicsCermBim5->where('status', 0)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Entregados</th>
-                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 1))}}</td>
-                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 2))}}</td>
-                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 3))}}</td>
-                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 4))}}</td>
-                        <td>{{count($basicsCerm->where('status', 1)->where('bimester', 5))}}</td>
+                        <td>{{$basicsCermBim1->where('status', 1)->count()}}</td>
+                        <td>{{$basicsCermBim2->where('status', 1)->count()}}</td>
+                        <td>{{$basicsCermBim3->where('status', 1)->count()}}</td>
+                        <td>{{$basicsCermBim4->where('status', 1)->count()}}</td>
+                        <td>{{$basicsCermBim5->where('status', 1)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - No localizados</th>
-                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 1))}}</td>
-                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 2))}}</td>
-                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 3))}}</td>
-                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 4))}}</td>
-                        <td>{{count($basicsCerm->where('status', 2)->where('bimester', 5))}}</td>
+                        <td>{{$basicsCermBim1->where('status', 2)->count()}}</td>
+                        <td>{{$basicsCermBim2->where('status', 2)->count()}}</td>
+                        <td>{{$basicsCermBim3->where('status', 2)->count()}}</td>
+                        <td>{{$basicsCermBim4->where('status', 2)->count()}}</td>
+                        <td>{{$basicsCermBim5->where('status', 2)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - Por baja</th>
-                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 1))}}</td>
-                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 2))}}</td>
-                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 3))}}</td>
-                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 4))}}</td>
-                        <td>{{count($basicsCerm->where('status', 3)->where('bimester', 5))}}</td>
+                        <td>{{$basicsCermBim1->where('status', 3)->count()}}</td>
+                        <td>{{$basicsCermBim2->where('status', 3)->count()}}</td>
+                        <td>{{$basicsCermBim3->where('status', 3)->count()}}</td>
+                        <td>{{$basicsCermBim4->where('status', 3)->count()}}</td>
+                        <td>{{$basicsCermBim5->where('status', 3)->count()}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -136,35 +136,35 @@
                 <tbody>
                     <tr>
                         <th scope="row">Pendientes</th>
-                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 1))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 2))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 3))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 4))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 0)->where('bimester', 5))}}</td>
+                        <td>{{$basicsDeliveryBim1->where('status', 0)->count()}}</td>
+                        <td>{{$basicsDeliveryBim2->where('status', 0)->count()}}</td>
+                        <td>{{$basicsDeliveryBim3->where('status', 0)->count()}}</td>
+                        <td>{{$basicsDeliveryBim4->where('status', 0)->count()}}</td>
+                        <td>{{$basicsDeliveryBim5->where('status', 0)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Entregados</th>
-                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 1))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 2))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 3))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 4))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 1)->where('bimester', 5))}}</td>
+                        <td>{{$basicsDeliveryBim1->where('status', 1)->count()}}</td>
+                        <td>{{$basicsDeliveryBim2->where('status', 1)->count()}}</td>
+                        <td>{{$basicsDeliveryBim3->where('status', 1)->count()}}</td>
+                        <td>{{$basicsDeliveryBim4->where('status', 1)->count()}}</td>
+                        <td>{{$basicsDeliveryBim5->where('status', 1)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - No localizados</th>
-                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 1))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 2))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 3))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 4))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 2)->where('bimester', 5))}}</td>
+                        <td>{{$basicsDeliveryBim1->where('status', 2)->count()}}</td>
+                        <td>{{$basicsDeliveryBim2->where('status', 2)->count()}}</td>
+                        <td>{{$basicsDeliveryBim3->where('status', 2)->count()}}</td>
+                        <td>{{$basicsDeliveryBim4->where('status', 2)->count()}}</td>
+                        <td>{{$basicsDeliveryBim5->where('status', 2)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - Por baja</th>
-                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 1))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 2))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 3))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 4))}}</td>
-                        <td>{{count($basicsDelivery->where('status', 3)->where('bimester', 5))}}</td>
+                        <td>{{$basicsDeliveryBim1->where('status', 3)->count()}}</td>
+                        <td>{{$basicsDeliveryBim2->where('status', 3)->count()}}</td>
+                        <td>{{$basicsDeliveryBim3->where('status', 3)->count()}}</td>
+                        <td>{{$basicsDeliveryBim4->where('status', 3)->count()}}</td>
+                        <td>{{$basicsDeliveryBim5->where('status', 3)->count()}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -193,43 +193,43 @@
                 <tbody>
                     <tr>
                         <th scope="row">Pendientes</th>
-                        <td>{{count($mediums->where('status', 0)->where('bimester', 1))}}</td>
-                        <td>{{count($mediums->where('status', 0)->where('bimester', 2))}}</td>
-                        <td>{{count($mediums->where('status', 0)->where('bimester', 3))}}</td>
-                        <td>{{count($mediums->where('status', 0)->where('bimester', 4))}}</td>
-                        <td>{{count($mediums->where('status', 0)->where('bimester', 5))}}</td>
+                        <td>{{$mediumsBim1->where('status', 0)->count()}}</td>
+                        <td>{{$mediumsBim2->where('status', 0)->count()}}</td>
+                        <td>{{$mediumsBim3->where('status', 0)->count()}}</td>
+                        <td>{{$mediumsBim4->where('status', 0)->count()}}</td>
+                        <td>{{$mediumsBim5->where('status', 0)->count()}}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Entregados</th>
-                        <td>{{count($mediums->where('status', 1)->where('bimester', 1))}}</td>
-                        <td>{{count($mediums->where('status', 1)->where('bimester', 2))}}</td>
-                        <td>{{count($mediums->where('status', 1)->where('bimester', 3))}}</td>
-                        <td>{{count($mediums->where('status', 1)->where('bimester', 4))}}</td>
-                        <td>{{count($mediums->where('status', 1)->where('bimester', 5))}}</td>
+                        <td>{{$mediumsBim1->where('status', 1)->count()}}</td>
+                        <td>{{$mediumsBim2->where('status', 1)->count()}}</td>
+                        <td>{{$mediumsBim3->where('status', 1)->count()}}</td>
+                        <td>{{$mediumsBim4->where('status', 1)->count()}}</td>
+                        <td>{{$mediumsBim5->where('status', 1)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - No localizados</th>
-                        <td>{{count($mediums->where('status', 2)->where('bimester', 1))}}</td>
-                        <td>{{count($mediums->where('status', 2)->where('bimester', 2))}}</td>
-                        <td>{{count($mediums->where('status', 2)->where('bimester', 3))}}</td>
-                        <td>{{count($mediums->where('status', 2)->where('bimester', 4))}}</td>
-                        <td>{{count($mediums->where('status', 2)->where('bimester', 5))}}</td>
+                        <td>{{$mediumsBim1->where('status', 2)->count()}}</td>
+                        <td>{{$mediumsBim2->where('status', 2)->count()}}</td>
+                        <td>{{$mediumsBim3->where('status', 2)->count()}}</td>
+                        <td>{{$mediumsBim4->where('status', 2)->count()}}</td>
+                        <td>{{$mediumsBim5->where('status', 2)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - Por baja</th>
-                        <td>{{count($mediums->where('status', 3)->where('bimester', 1))}}</td>
-                        <td>{{count($mediums->where('status', 3)->where('bimester', 2))}}</td>
-                        <td>{{count($mediums->where('status', 3)->where('bimester', 3))}}</td>
-                        <td>{{count($mediums->where('status', 3)->where('bimester', 4))}}</td>
-                        <td>{{count($mediums->where('status', 3)->where('bimester', 5))}}</td>
+                        <td>{{$mediumsBim1->where('status', 3)->count()}}</td>
+                        <td>{{$mediumsBim2->where('status', 3)->count()}}</td>
+                        <td>{{$mediumsBim3->where('status', 3)->count()}}</td>
+                        <td>{{$mediumsBim4->where('status', 3)->count()}}</td>
+                        <td>{{$mediumsBim5->where('status', 3)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Reexpedicion</th>
-                        <td>{{count($mediums->where('status', 4)->where('bimester', 1))}}</td>
-                        <td>{{count($mediums->where('status', 4)->where('bimester', 2))}}</td>
-                        <td>{{count($mediums->where('status', 4)->where('bimester', 3))}}</td>
-                        <td>{{count($mediums->where('status', 4)->where('bimester', 4))}}</td>
-                        <td>{{count($mediums->where('status', 4)->where('bimester', 5))}}</td>
+                        <td>{{$mediumsBim1->where('status', 4)->count()}}</td>
+                        <td>{{$mediumsBim2->where('status', 4)->count()}}</td>
+                        <td>{{$mediumsBim3->where('status', 4)->count()}}</td>
+                        <td>{{$mediumsBim4->where('status', 4)->count()}}</td>
+                        <td>{{$mediumsBim5->where('status', 4)->count()}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -258,35 +258,35 @@
                 <tbody>
                     <tr>
                         <th scope="row">Pendientes</th>
-                        <td>{{count($higers->where('status', 0)->where('bimester', 1))}}</td>
-                        <td>{{count($higers->where('status', 0)->where('bimester', 2))}}</td>
-                        <td>{{count($higers->where('status', 0)->where('bimester', 3))}}</td>
-                        <td>{{count($higers->where('status', 0)->where('bimester', 4))}}</td>
-                        <td>{{count($higers->where('status', 0)->where('bimester', 5))}}</td>
+                        <td>{{$higersBim1->where('status', 0)->count()}}</td>
+                        <td>{{$higersBim2->where('status', 0)->count()}}</td>
+                        <td>{{$higersBim3->where('status', 0)->count()}}</td>
+                        <td>{{$higersBim4->where('status', 0)->count()}}</td>
+                        <td>{{$higersBim5->where('status', 0)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Entregados</th>
-                        <td>{{count($higers->where('status', 1)->where('bimester', 1))}}</td>
-                        <td>{{count($higers->where('status', 1)->where('bimester', 2))}}</td>
-                        <td>{{count($higers->where('status', 1)->where('bimester', 3))}}</td>
-                        <td>{{count($higers->where('status', 1)->where('bimester', 4))}}</td>
-                        <td>{{count($higers->where('status', 1)->where('bimester', 5))}}</td>
+                        <td>{{$higersBim1->where('status', 1)->count()}}</td>
+                        <td>{{$higersBim2->where('status', 1)->count()}}</td>
+                        <td>{{$higersBim3->where('status', 1)->count()}}</td>
+                        <td>{{$higersBim4->where('status', 1)->count()}}</td>
+                        <td>{{$higersBim5->where('status', 1)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - No localizados</th>
-                        <td>{{count($higers->where('status', 2)->where('bimester', 1))}}</td>
-                        <td>{{count($higers->where('status', 2)->where('bimester', 2))}}</td>
-                        <td>{{count($higers->where('status', 2)->where('bimester', 3))}}</td>
-                        <td>{{count($higers->where('status', 2)->where('bimester', 4))}}</td>
-                        <td>{{count($higers->where('status', 2)->where('bimester', 5))}}</td>
+                        <td>{{$higersBim1->where('status', 2)->count()}}</td>
+                        <td>{{$higersBim2->where('status', 2)->count()}}</td>
+                        <td>{{$higersBim3->where('status', 2)->count()}}</td>
+                        <td>{{$higersBim4->where('status', 2)->count()}}</td>
+                        <td>{{$higersBim5->where('status', 2)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">No entregados - Por baja</th>
-                        <td>{{count($higers->where('status', 3)->where('bimester', 1))}}</td>
-                        <td>{{count($higers->where('status', 3)->where('bimester', 2))}}</td>
-                        <td>{{count($higers->where('status', 3)->where('bimester', 3))}}</td>
-                        <td>{{count($higers->where('status', 3)->where('bimester', 4))}}</td>
-                        <td>{{count($higers->where('status', 3)->where('bimester', 5))}}</td>
+                        <td>{{$higersBim1->where('status', 3)->count()}}</td>
+                        <td>{{$higersBim2->where('status', 3)->count()}}</td>
+                        <td>{{$higersBim3->where('status', 3)->count()}}</td>
+                        <td>{{$higersBim4->where('status', 3)->count()}}</td>
+                        <td>{{$higersBim5->where('status', 3)->count()}}</td>
                     </tr>
                 </tbody>
             </table>

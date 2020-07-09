@@ -133,30 +133,72 @@ class SchoolController extends Controller
         return redirect()->action('SchoolController@index')->with('deleteSchool', 'Escuela eliminada');
     }
 
-    public function reportSchool($id, $type){
+    public function reportSchool($id, $type)
+    {
         $schoolInfo = School::where('id', $id)->with('locality.municipality.region')->get();
         foreach ($schoolInfo as $school) {
             $idReg =  $school->locality->municipality->region->id;
             $bossRegion = User::where('region_id', $idReg)->get();
         }
 
-        $mediums = School::join('media', 'schools.id', '=', 'media.school_id')
-        ->where('school_id', $id)
-        ->get();
+        //////////////////////////////////////////7
+        $mediumsBim1 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 1);
+        })->where('school_id', $id)->get();
 
-        $higers = School::join('higers', 'schools.id', '=', 'higers.school_id')
-        ->where('school_id', $id)
-        ->get();
+        $mediumsBim2 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 2);
+        })->where('school_id', $id)->get();
+
+        $mediumsBim3 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 3);
+        })->where('school_id', $id)->get();
+
+        $mediumsBim4 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 4);
+        })->where('school_id', $id)->get();
+
+        $mediumsBim5 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 5);
+        })->where('school_id', $id)->get();
+        //////////////////////////////////////////
+
+        /////////////////////////////////////////
+        $higersBim1 = School::join('higers',  function ($join) {
+            $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 1);
+        })->where('school_id', $id)->get();
+
+        $higersBim2 = School::join('higers',  function ($join) {
+            $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 2);
+        })->where('school_id', $id)->get();
+
+        $higersBim3 = School::join('higers',  function ($join) {
+            $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 3);
+        })->where('school_id', $id)->get();
+
+        $higersBim4 = School::join('higers',  function ($join) {
+            $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 4);
+        })->where('school_id', $id)->get();
+
+        $higersBim5 = School::join('higers',  function ($join) {
+            $join->on('schools.id', '=', 'higers.school_id')->where('higers.bimester', 5);
+        })->where('school_id', $id)->get();
+        ///////////////////////////////////////
 
         if ($type == 0) {
-            return view('user.schools.schoolGeneral', compact('schoolInfo', 'bossRegion', 'mediums', 'higers'));
+            return view('user.schools.schoolGeneral', compact('schoolInfo', 'bossRegion', 
+            'mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5',
+            'higersBim1', 'higersBim2', 'higersBim3', 'higersBim4', 'higersBim5'
+        ));
         } elseif ($type == 1) {
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadView('user.schools.schoolPdf', compact('schoolInfo', 'bossRegion', 'mediums', 'higers'));
+            $pdf->loadView('user.schools.schoolPdf', compact('schoolInfo', 'bossRegion', 
+            'mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5',
+            'higersBim1', 'higersBim2', 'higersBim3', 'higersBim4', 'higersBim5'
+        ));
             return $pdf->stream();
         } else {
             return back();
         }
-
     }
 }
