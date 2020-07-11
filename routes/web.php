@@ -51,6 +51,10 @@ Route::get('searchHiger', 'HigerController@show')->name('searchHiger');
 
 //Rutas para ir a los formularios de importacion de archivos excel y los reportes o graficas
 Route::get('importEntities', 'RouteController@importEntities')->name('importEntities');
+Route::get('importRegions', 'RouteController@importRegions')->name('importRegions');
+Route::get('importMunicipalities', 'RouteController@importMunicipalities')->name('importMunicipalities');
+Route::get('importLocalities', 'RouteController@importLocalities')->name('importLocalities');
+Route::get('importSchools', 'RouteController@importSchools')->name('importSchools');
 Route::get('importScholars', 'RouteController@importScholars')->name('importScholars');
 Route::get('importBasics', 'RouteController@importBasics')->name('importBasics');
 Route::get('importMediums', 'RouteController@importMediums')->name('importMediums');
@@ -64,6 +68,7 @@ Route::post('importLocality', 'ImportController@importLocality')->name('importLo
 Route::post('importSchool', 'ImportController@importSchool')->name('importSchool');
 Route::post('importScholar', 'ImportController@importScholar')->name('importScholar');
 Route::post('importBasic', 'importController@importBasic')->name('importBasic');
+Route::post('updateBasic', 'importController@updateBasic')->name('updateBasic');
 Route::post('importMedium', 'importController@importMedium')->name('importMedium');
 Route::post('importHiger', 'importController@importHiger')->name('importHiger');
 //Fin de las rutas de importacion de archivos excel 

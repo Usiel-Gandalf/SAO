@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports;
 use App\Imports\RegionsImport;
 use App\Imports\MunicipalitiesImport;
 use App\Imports\LocalitiesImport;
@@ -13,6 +14,7 @@ use App\Imports\TitularsImport;
 use App\Imports\BasicsImport;
 use App\Imports\MediumsImport;
 use App\Imports\HigersImport;
+use Exception;
 
 class ImportController extends Controller
 {
@@ -21,28 +23,7 @@ class ImportController extends Controller
         $this->middleware('auth');
         $this->middleware('onlyAdmin');
     }
-    
-    public function importScholar(Request $request)
-    {
-        $data = request()->except(['_token', '_method']);
-        $request->validate([
-            'universeInformation' => 'required|mimes:xlsx, xls',
-            'level' => 'required',
-        ]);
-        $level = $request->level;
 
-        if ($level == "null") {
-            return back()->with('level', 'Seleccione un nivel educativo');
-        } elseif ($level == 1) {
-            $file = $request->file('universeInformation');
-            Excel::queueImport(new TitularsImport, $file);
-            return back()->with('titularAlert', 'Importacion de titulares con exito');
-        } elseif ($level == 2 || $level == 3) {
-            $file = $request->file('universeInformation');
-            Excel::queueImport(new ScholarsImport($level), $file);
-            return back()->with('scholarAlert', 'Importacion de alumnos exitoso');
-        }
-    }
     public function importRegion(Request $request)
     {
         $data = request()->except(['_token', '_method']);
@@ -51,7 +32,12 @@ class ImportController extends Controller
         ]);
 
         $file = $request->file('region');
-        Excel::Import(new RegionsImport, $file);
+        
+        try {
+            Excel::Import(new RegionsImport, $file);
+        } catch (Exception $e) {
+            return back()->withError($e->getMessage());
+        }
         return back()->with('regionAlert', 'Importacion de regiones exitosa');
     }
 
@@ -63,7 +49,14 @@ class ImportController extends Controller
         ]);
 
         $file = $request->file('municipality');
-        Excel::Import(new MunicipalitiesImport, $file);
+
+        try {
+            Excel::Import(new MunicipalitiesImport, $file);
+            
+        } catch (Exception $e) {
+            return back()->withError($e->getMessage());
+        }
+        
         return back()->with('municipalityAlert', 'Importacion de municipios exitoso');
     }
 
@@ -75,7 +68,13 @@ class ImportController extends Controller
         ]);
 
         $file = $request->file('locality');
-        Excel::queueImport(new LocalitiesImport, $file);
+
+        try {
+            Excel::queueImport(new LocalitiesImport, $file);
+        } catch (Exception $e) {
+            return back()->withError($e->getMessage());
+        }
+        
         return back()->with('localityAlert', 'Importacion de localidades exitosa');
     }
 
@@ -87,11 +86,46 @@ class ImportController extends Controller
         ]);
 
         $file = $request->file('school');
-        Excel::import(new SchoolsImport, $file);
+
+        try {
+            Excel::import(new SchoolsImport, $file);
+        } catch (Exception $e) {
+            return back()->withError($e->getMessage());
+        }
+        
         return back()->with('schoolAlert', 'Importacion de escuelas exitosa');
     }
 
     public function importBasic(Request $request)
+    {
+        $data = request()->except(['_token', '_method']);
+        $request->validate([
+            'basicUniverse' => 'required|mimes:xlsx, xls',
+            'type' => 'required',
+            'bimester' => 'required',
+            'year' => 'required',
+        ]);
+
+        $type = $request->input('type');
+        $status = 0;
+        $bimester = $request->input('bimester');
+        $year = $request->input('year');
+        $file = $request->file('basicUniverse');
+
+        try {
+            Excel::queueImport(new BasicsImport($type, $status, $bimester, $year), $file);
+        } catch (Exception $e) {
+            return back()->withError($e->getMessage());
+        }
+
+        if($type == 1){
+            return back()->with('importBasicAlert', 'La importacion de CERMS de educacion basica fue exitosa');
+        }elseif ($type == 2) {
+            return back()->with('importBasicAlert', 'La importacion de Avisos de cobro de educacion basica fue exitosa');
+        }
+    }
+
+    public function updateBasic(Request $request)
     {
         $data = request()->except(['_token', '_method']);
         $request->validate([
@@ -108,8 +142,17 @@ class ImportController extends Controller
         $year = $request->input('year');
         $file = $request->file('basicUniverse');
 
-        Excel::queueImport(new BasicsImport($type, $status, $bimester, $year), $file);
-        return back()->with('basicAlert', 'Importacion de remesas de educacion basica fue exitosa');
+        try {
+            Excel::queueImport(new BasicsImport($type, $status, $bimester, $year), $file);
+        } catch (Exception $e) {
+            return back()->withError($e->getMessage());
+        }
+
+        if($type == 1){
+            return back()->with('updateBasicAlert', 'La importacion de CERMS de educacion basica fue exitosa');
+        }elseif ($type == 2) {
+            return back()->with('updateBasicAlert', 'La importacion de Avisos de cobro de educacion basica fue exitosa');
+        }
     }
 
     public function importMedium(Request $request)
@@ -146,5 +189,38 @@ class ImportController extends Controller
 
         Excel::queueImport(new HigersImport($status, $bimester, $year), $file);
         return back()->with('higerAlert', 'Informacion procesada exitosamente');
+    }
+
+    public function importScholar(Request $request)
+    {
+        $data = request()->except(['_token', '_method']);
+        $request->validate([
+            'universeInformation' => 'required|mimes:xlsx, xls',
+            'level' => 'required',
+        ]);
+
+        $level = $request->level;
+
+        if ($level == "null") {
+            return back()->with('level', 'Seleccione un nivel educativo');
+        } 
+        elseif ($level == 1) {
+            $file = $request->file('universeInformation');
+            try {
+                Excel::queueImport(new TitularsImport, $file);
+            } catch (Exception $e) {
+                return back()->withError($e->getMessage());
+            }
+            return back()->with('titularAlert', 'Importacion de titulares con exito');
+        } 
+        elseif ($level == 2 || $level == 3) {
+            $file = $request->file('universeInformation');
+            try {
+                Excel::queueImport(new ScholarsImport($level), $file);
+            } catch (Exception $e) {
+                return back()->withError($e->getMessage());
+            }
+            return back()->with('scholarAlert', 'Importacion de alumnos exitoso');
+        }
     }
 }

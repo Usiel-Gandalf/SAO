@@ -1,20 +1,38 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded">
-
-    <div class="row justify-content-md-center mb-2">
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Importante!</strong> Registro de informacion de los becarios o titulares
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+<div class="container shadow p-3 mb-5 bg-white rounded mt-5 ">
+    <div class="row justify-content-md-center mb-5 mt-2">
+        <div class="col-9">
+        @if(session('titularAlert'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <h5><strong>{{session('titularAlert')}}</strong></h5>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+            @if(session('scholarAlert'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <h5><strong>{{session('scholarAlert')}}</strong></h5>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h6><strong>¡Error! </strong>{{session('error')}}</h6>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
         </div>
     </div>
 
-    <div class="row justify-content-md-center">
-        <!-- Scholar -->
+    <div class="row justify-content-md-center mb-5 mt-5">
         <div class="col-7">
-            <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="card shadow-lg p-3 mb-4 bg-white rounded border border-primary">
                 <center>
                     <h4 class="card-header">Becarios ó Titulares</h4>
                 </center>
@@ -42,9 +60,9 @@
                             @endif
 
                             <div class="form-group">
-                                <label for="level"></label>
+                                <label for="level">Nivel Educativo</label>
                                 <select id="level" name="level" class="">
-                                    <option selected value="null">Nivel educativo</option>
+                                    <option selected value="{{null}}">Nivel educativo</option>
                                     <option name="1" value="1">Educacion Basica(Titulares)</option>
                                     <option name="2" value="2">Educacion Media Superior</option>
                                     <option name="3" value="3">Jovenes escribiendo el futuro</option>

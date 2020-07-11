@@ -13,10 +13,21 @@ class RouteController extends Controller
     {
         $this->middleware('auth');
     }
-    
-    public function importEntities()
-    {
-        return view('user.import.importEntities');
+
+    public function importRegions(){
+        return view('user.import.importRegions');
+    }
+
+    public function importMunicipalities(){
+        return view('user.import.importMunicipalities');
+    }
+
+    public function importLocalities(){
+        return view('user.import.importLocalities');
+    }
+
+    public function importSchools(){
+        return view('user.import.importSchools');
     }
 
     public function importScholars()

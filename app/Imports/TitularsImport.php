@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Imports;
+
 ini_set('max_execution_time', 9600);
 
 use App\Titular;
+use Exception;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -14,36 +16,64 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 class TitularsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue, WithValidation
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
-        $Titular = Titular::where('idTitular', $row['fam_id'])->exists();
-        if ($Titular === false) {
-            return new Titular([
-                'idTitular' => $id = $row['FAM_ID'] ?? $row['fam_id'],
-                'nameTitular' => $nameTitular = $row['NOM_TIT'] ?? $row['nom_tit'] ?? $row['NOM_BEC'] ?? $row['nom_bec']  ?? null,
-                'firstSurname' => $firstSurname = $row['AP1'] ?? $row['ap1'] ?? $row['APE1_BEC'] ?? $row['ape1_bec'] ?? null,
-                'secondSurname' => $secondSurname = $row['AP2'] ?? $row['ap2'] ?? $row['APE2_BEC'] ?? $row['ape2_bec'] ?? null,
-                'gender' => $gender = $row['GENERO'] ?? $row['genero'] ?? null,
-                'birthDate' => $birthDate = $row['FEC_NAC'] ?? $row['fec_nac'] ?? $row['FECHA_NACIMIENTO'] ?? $row['fecha_nacimiento'] ?? null,
-                'curp' =>  $curp = $row['CURP'] ?? $row['curp'] ?? null,
-            ]);
-            Titular::connection()->disableQueryLog();
-            print_r('no existe');
+        $fam_id = $row['FAM_ID'] ?? $row['fam_id'] ?? null;
+        $nom_tit = $row['NOM_TIT'] ?? $row['nom_tit'] ?? null;
+        $ap1 = $row['AP1'] ?? $row['ap1'] ?? null;
+        $ap2 = $row['AP2'] ?? $row['ap2'] ?? null;
+        $genero = $row['GENERO'] ?? $row['genero'] ?? null;
+        $fec_nac = $row['FEC_NAC'] ?? $row['fec_nac'] ?? $row['FECHA_NACIMIENTO'] ?? $row['fecha_nacimiento'] ?? null;
+        $curp = $row['CURP'] ?? $row['curp'] ?? null;
+
+        if ($fam_id == null) {
+            throw new Exception('Falta columna: Verifique que su archivo contenga la columna fam_id ó FAM_ID que hace referencia a las claves de las titulares e intente nuevamente');
         }
+
+        if ($nom_tit == null) {
+            throw new Exception('Falta columna: Verifique que su archivo contenga la columna nom_tit ó NOM_TIT que hace referencia a los nombres de las titulares e intente nuevamente');
+        }
+
+        if ($ap1 == null) {
+            throw new Exception('Falta columna: Verifique que su archivo contenga la columna ap1 ó AP1 que hace referencia a los apellidos paternos de las titulares e intente nuevamente');
+        }
+
+        if ($ap2 == null) {
+            throw new Exception('Falta columna: Verifique que su archivo contenga la columna ap2 ó AP2 que hace referencia a los apellidos maternos de las titulares e intente nuevamente');
+        }
+
+        if ($genero == null) {
+            throw new Exception('Falta columna: Verifique que su archivo contenga la columna ap2 ó AP2 que hace referencia a los generos de las titulares e intente nuevamente');
+        }
+
+        if ($fec_nac == null) {
+            throw new Exception('Falta columna: Verifique que su archivo contenga la columna fec_nac ó FEC_NAC que hace referencia a las fechas de macimiento de las titulares e intente nuevamente');
+        }
+
+        if ($curp == null) {
+            throw new Exception('Falta columna: Verifique que su archivo contenga la columna curp ó CURP que hace referencia a las curps de las titulares e intente nuevamente');
+        }
+
+        Titular::firstOrCreate(
+            ['id' => $row['FAM_ID'] ?? $row['fam_id']],
+            [
+                'nameTitular' => $row['NOM_TIT'] ?? $row['nom_tit'],
+                'firstSurname' => $row['AP1'] ?? $row['ap1'],
+                'secondSurname' => $row['AP2'] ?? $row['ap2'],
+                'gender' => $row['GENERO'] ?? $row['genero'],
+                'birthDate' => $row['FEC_NAC'] ?? $row['fec_nac'] ?? $row['FECHA_NACIMIENTO'] ?? $row['fecha_nacimiento'],
+                'curp' =>  $row['CURP'] ?? $row['curp'],
+            ]
+        );
     }
 
     public function rules(): array
     {
         return [
-            'int_id' => function ($attribute, $value, $onFailure) {
-                if ($value == '' || !isset($attribute)) {
-                    $value = null;
-                }
-            },
             'nom_tit' => function ($attribute, $value, $onFailure) {
                 if ($value == '' || !isset($attribute)) {
                     $value = null;
@@ -74,17 +104,21 @@ class TitularsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithC
                     $value = null;
                 }
             },
-
         ];
+    }
+
+    public function headingRow(): int
+    {
+        return 1;
     }
 
     public function batchSize(): int
     {
-        return 900;
+        return 1000;
     }
 
     public function chunkSize(): int
     {
-        return 900;
+        return 1000;
     }
 }

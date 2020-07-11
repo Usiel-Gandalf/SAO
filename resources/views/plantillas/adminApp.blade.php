@@ -52,11 +52,21 @@
                 @if(Auth::user()->rol == 1)
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Subir
+                        Subir Entidades
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{route('importEntities')}}">Entidades</a>
+                        <a class="dropdown-item" href="{{route('importRegions')}}">Regiones</a>
+                        <a class="dropdown-item" href="{{route('importMunicipalities')}}">Municipios</a>
+                        <a class="dropdown-item" href="{{route('importLocalities')}}">Localidades</a>
+                        <a class="dropdown-item" href="{{route('importSchools')}}">Escuelas</a>
                         <a class="dropdown-item" href="{{route('importScholars')}}">Becarios/Titulares</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Subir Becas
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{route('importBasics')}}">Educacion basica</a>
                         <a class="dropdown-item" href="{{route('importMediums')}}">Media superior</a>
                         <a class="dropdown-item" href="{{route('importHigers')}}">Educacion superior</a>

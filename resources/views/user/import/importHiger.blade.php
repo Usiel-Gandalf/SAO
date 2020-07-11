@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="main shadow p-3 mb-5 bg-white rounded">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-2">
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Importante!</strong> Seccion para subir los cerms de los jovenes escribiendo el futuro
@@ -13,7 +13,7 @@
     <div class="row justify-content-md-center">
         <!-- Scholar -->
         <div class="col-7">
-            <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="card shadow-lg p-3 mb-5 bg-white rounded border border-primary">
                 <center>
                     <h5 class="card-header">Jovenes Escribiendo el Fututo</h5>
                     <div class="card-body text-center">
