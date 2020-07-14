@@ -4,7 +4,7 @@
     <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
         <div class="col border border-secondary">
             <div class="row justify-content-center my-2">
-                <h2 class="">Registrar Beca EMS</h2>
+                <h2 class="">Editar Beca EMS</h2>
             </div>
             <form action="{{url('/mediumEducation/'.$medium->id)}}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -151,12 +151,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="school_id"></label>
+                    <label for="school_id">Si no encuentra la escuela, debe de registrarla primeramente en la seccion de escuelas</label>
                     <select id="school_id" name="school_id" class="form-control">
                         <option value="{{null}}">Selecciona la escuela del registro</option>
                         @foreach($schools as $school)
-                        @if($school->id == $medium->school_id)
-                        <option selected name="{{$school->id}}" value="{{$school->id}}" style="width:600px">{{$school->nameSchool}}</option>
+                        @if($school->id === $medium->school_id)
+                        <option name="{{$school->id}}" value="{{$school->id}}" style="width:600px">{{$school->nameSchool}}</option>
                         @else
                         <option name="{{$school->id}}" value="{{$school->id}}" style="width:600px">{{$school->nameSchool}}</option>
                         @endif

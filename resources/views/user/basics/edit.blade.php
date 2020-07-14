@@ -6,6 +6,14 @@
             <div class="row justify-content-center my-2">
                 <h2 class="">Editar Beca Basica</h2>
             </div>
+            @if(session('locNot'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <h5><strong>{{session('locNot')}}</strong></h5>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
             <form action="{{url('/basicEducation/'.$basic->id)}}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
@@ -154,16 +162,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="locality_id"></label>
-                    <select id="locality_id" name="locality_id" class="form-control">
-                        @foreach($localities as $locality)
-                        @if($locality->id === $basic->locality_id)
-                        <option name="{{$locality->id}}" value="{{$locality->id}}" style="width:600px" selected>{{$locality->nameLocality}}</option>
-                        @else
-                        <option name="{{$locality->id}}" value="{{$locality->id}}" style="width:600px">{{$locality->nameLocality}}</option>
-                        @endif
-                        @endforeach
-                    </select>
+                <input type="number" class="form-control" name="locality_id" id="locality_id" placeholder="Ingrese la clave de la localidad" >
+                @error('locality_id')
+                <div class="alert alert-danger">
+                    Ingrese una clave de localidad
+                </div>
+                @enderror
                 </div>
 
                 @error('locality_id')

@@ -5,16 +5,25 @@ namespace App\Imports;
 ini_set('max_execution_time', 4800);
 
 use App\Basic;
+use App\Locality;
 use Exception;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Illuminate\Contracts\Queue\ShouldQueue;
+
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class BasicsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue, WithValidation
+
+
+class BasicsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnError, WithValidation,  WithBatchInserts, WithChunkReading
 {
+    use Importable, SkipsErrors, SkipsFailures;
     private $type;
     private $status;
     private $bimester;
@@ -34,28 +43,8 @@ class BasicsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChu
      */
     public function model(array $row)
     {
-        $fol_form = $row['FOL_FORM'] ?? $row['fol_form'] ?? $row['FOLIO_FORM'] ?? $row['folio_form'] ?? null;
-        $fam_id = $row['FAM_ID'] ?? $row['fam_id'] ?? null;
-        $claveofi = $row['CLAVEOFI'] ?? $row['claveofi'] ?? null;
-        $remesa = $row['REMESA'] ?? $row['remesa'] ?? null;
-
-        if ($fol_form == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna fol_form ó FOL_FORM que hace referencia al folio de formato de las titulares e intente nuevamente');
-        }
-
-        if ($fam_id == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna fam_id ó FAM_ID que hace referencia a las claves de las titulares e intente nuevamente');
-        }
-
-        if ($claveofi == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna claveofi ó CLAVEOFI que hace referencia a las claves de las localidades donde se entrega el aviso o cerm e intente nuevamente');
-        }
-
-        if ($remesa == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna remesa ó REMESA que hace referencia a el aviso o cerm e intente nuevamente');
-        }
-
-        if ($this->status == 0) {
+        if (Locality::where('id', '=', $row['claveofi'])->exists()) {
+            
             Basic::firstOrCreate(
                 ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form'] ?? $row['FOLIO_FORM'] ?? $row['folio_form']],
                 [
@@ -69,56 +58,28 @@ class BasicsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChu
                 ]
             );
         } else {
-            Basic::where('fol_form', $row['FOL_FORM'] ?? $row['fol_form'])
-                ->where('titular_id', $row['FAM_ID'] ?? $row['fam_id'])
-                ->where('consignment', $row['REMESA'] ?? $row['remesa'])
-                ->update(['status' => $this->status]);
+            Basic::firstOrCreate(
+                ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form'] ?? $row['FOLIO_FORM'] ?? $row['folio_form']],
+                [
+                    'titular_id' => $row['FAM_ID'] ?? $row['fam_id'],
+                    'locality_id' => null,
+                    'consignment' =>  $row['REMESA'] ?? $row['remesa'],
+                    'bimester' =>  $this->bimester,
+                    'year' =>  $this->year,
+                    'status' =>  $this->status,
+                    'type' =>  $this->type,
+                ]
+            );
         }
     }
 
     public function rules(): array
     {
         return [
-            'titular_id' => function ($attribute, $value, $onFailure) {
-                if ($value == '') {
-                    $value = null;
-                }
-            },
-            'locality_id' => function ($attribute, $value, $onFailure) {
-                if ($value == '') {
-                    $value = null;
-                }
-            },
-            'consignment' => function ($attribute, $value, $onFailure) {
-                if ($value == '') {
-                    $value = null;
-                }
-            },
-            'fol_form' => function ($attribute, $value, $onFailure) {
-                if ($value == '') {
-                    $value = null;
-                }
-            },
-            'bimester' => function ($attribute, $value, $onFailure) {
-                if ($value == '') {
-                    $value = null;
-                }
-            },
-            'year' => function ($attribute, $value, $onFailure) {
-                if ($value == '') {
-                    $value = null;
-                }
-            },
-            'status' => function ($attribute, $value, $onFailure) {
-                if ($value == '') {
-                    $value = null;
-                }
-            },
-            'type' => function ($attribute, $value, $onFailure) {
-                if ($value == '') {
-                    $value = null;
-                }
-            },
+            'fam_id' => 'required|integer',
+            'claveofi' => 'integer',
+            'remesa' => 'required|string',
+            '*.fol_form' => 'required|integer|unique:basics,fol_form',
         ];
     }
 
@@ -129,11 +90,11 @@ class BasicsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChu
 
     public function batchSize(): int
     {
-        return 1000;
+        return 500;
     }
 
     public function chunkSize(): int
     {
-        return 1000;
+        return 500;
     }
 }

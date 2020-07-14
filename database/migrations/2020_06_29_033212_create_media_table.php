@@ -21,6 +21,7 @@ class CreateMediaTable extends Migration
             $table->char('fol_form', 25)->nullable();
             $table->integer('bimester')->nullable();
             $table->integer('year')->nullable();
+            $table->integer('reissue')->nullable();
             $table->integer('status')->nullable();
             $table->foreign('school_id')->references('id')->on('schools');
             $table->timestamps();

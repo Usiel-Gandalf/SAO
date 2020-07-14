@@ -1,5 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
+@if(Auth::user()->rol == 1)
 <div class="container shadow p-3 mb-5 bg-white rounded mt-1">
     <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
         <div class="row justify-content-md-center mb-4">
@@ -8,7 +9,7 @@
 
         <div class="row justify-content-md-center">
             @if(session('saveBasic'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <h5><strong>{{session('saveBasic')}}</strong></h5>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -16,8 +17,8 @@
             </div>
             @endif
             @if(session('updateBasic'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <h5><strong>{{session('saveBasic')}}</strong></h5>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <h5><strong>{{session('updateBasic')}}</strong></h5>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -41,6 +42,11 @@
             @endif
         </div>
 
+        @if($basics->isNotEmpty())
+        <div class="row justify-content-md-center mb-4">
+            <h5>Registros que no tienen una clave de localidad</h5>
+        </div>
+
         <div class="container mt-2">
             <div class="row">
                 <table class="table table-bordered">
@@ -51,9 +57,7 @@
                             <th scope="col">localidad</th>
                             <th scope="col">Titular</th>
                             <th scope="col">Estado</th>
-                            @if(Auth::user()->rol == 1)
                             <th scope="col" style="width:10%; height:5%">Acciones</th>
-                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -73,7 +77,7 @@
                                 @endif
                             </th>
                             <td>{{$basic->consignment}}</td>
-                            <td>{{$basic->locality->nameLocality}}</td>
+                            <td>Desconocida</td>
                             <td>{{$basic->titular_id}}</td>
                             <td>
                                 @if($basic->status == 0)
@@ -86,7 +90,6 @@
                                 {{'no entregado por baja'}}
                                 @endif
                             </td>
-                            @if(Auth::user()->rol == 1)
                             <td class="justify-content-center">
                                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                     <div class="btn-group" role="group">
@@ -105,7 +108,6 @@
                                     </div>
                                 </div>
                             </td>
-                            @endif
                         </tr>
                         @endforeach
                     </tbody>
@@ -117,12 +119,12 @@
             <div class="col">
                 {{ $basics->links() }}
             </div>
-            @if(Auth::user()->rol == 1)
-            <div class="col foat-right">
-                <a class="btn btn-success float-right" href="{{url('/basicEducation/create')}}">Crear Registro</a>
-            </div>
-            @endif
         </div>
+    </div>
+    @endif
+
+    <div class="row justify-content-md-center">
+        <a class="btn btn-success float-right" href="{{url('/basicEducation/create')}}">Crear Registro</a>
     </div>
 
     <div class="container shadow p-3 mb-5 bg-white rounded mt-5 border border-success">
@@ -135,6 +137,6 @@
             </div>
         </div>
     </div>
-    
 </div>
+@endif
 @endsection

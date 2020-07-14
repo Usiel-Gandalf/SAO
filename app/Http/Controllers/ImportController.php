@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports;
+use Illuminate\Database\QueryException;
 use App\Imports\RegionsImport;
 use App\Imports\MunicipalitiesImport;
 use App\Imports\LocalitiesImport;
@@ -12,8 +12,14 @@ use App\Imports\SchoolsImport;
 use App\Imports\ScholarsImport;
 use App\Imports\TitularsImport;
 use App\Imports\BasicsImport;
+use App\Imports\BasicsupdateImport;
 use App\Imports\MediumsImport;
+use App\Imports\MediumsupdateImport;
+use App\Imports\ReissueImport;
+use App\Imports\ReissueupdateImport;
 use App\Imports\HigersImport;
+use App\Imports\HigersupdateImport;
+
 use Exception;
 
 class ImportController extends Controller
@@ -32,13 +38,20 @@ class ImportController extends Controller
         ]);
 
         $file = $request->file('region');
-        
+
         try {
-            Excel::Import(new RegionsImport, $file);
-        } catch (Exception $e) {
-            return back()->withError($e->getMessage());
+            $import = new RegionsImport();
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        } catch (Exception $ex) {
+            $err = $ex->getMessage();
+            return back()->with('err',$err);
+            die();
         }
-        return back()->with('regionAlert', 'Importacion de regiones exitosa');
+
+        return back()->with('regionAlert', 'Se a completado la importacion de regiones');
     }
 
     public function importMunicipality(Request $request)
@@ -51,13 +64,18 @@ class ImportController extends Controller
         $file = $request->file('municipality');
 
         try {
-            Excel::Import(new MunicipalitiesImport, $file);
-            
-        } catch (Exception $e) {
-            return back()->withError($e->getMessage());
+            $import = new MunicipalitiesImport();
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        } catch (Exception $ex) {
+            $err = $ex->getMessage();
+            return back()->with('err', $err);
+            die();
         }
-        
-        return back()->with('municipalityAlert', 'Importacion de municipios exitoso');
+
+        return back()->with('municipalityAlert', 'Se a completado la importacion de municipios');
     }
 
     public function importLocality(Request $request)
@@ -70,12 +88,17 @@ class ImportController extends Controller
         $file = $request->file('locality');
 
         try {
-            Excel::queueImport(new LocalitiesImport, $file);
-        } catch (Exception $e) {
-            return back()->withError($e->getMessage());
+            $import = new LocalitiesImport();
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        } catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
         }
-        
-        return back()->with('localityAlert', 'Importacion de localidades exitosa');
+
+        return back()->with('localityAlert', 'Se a completado la importacion de localidades');
     }
 
     public function importSchool(Request $request)
@@ -88,18 +111,23 @@ class ImportController extends Controller
         $file = $request->file('school');
 
         try {
-            Excel::import(new SchoolsImport, $file);
-        } catch (Exception $e) {
-            return back()->withError($e->getMessage());
+            $import = new SchoolsImport();
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        }catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
         }
-        
-        return back()->with('schoolAlert', 'Importacion de escuelas exitosa');
+
+        return back()->with('schoolAlert', 'Se a completado la importacion de escuelas');
     }
 
     public function importBasic(Request $request)
     {
         $data = request()->except(['_token', '_method']);
-        $request->validate([
+        $val = $request->validate([
             'basicUniverse' => 'required|mimes:xlsx, xls',
             'type' => 'required',
             'bimester' => 'required',
@@ -113,114 +141,244 @@ class ImportController extends Controller
         $file = $request->file('basicUniverse');
 
         try {
-            Excel::queueImport(new BasicsImport($type, $status, $bimester, $year), $file);
-        } catch (Exception $e) {
-            return back()->withError($e->getMessage());
+            $import = new BasicsImport($type, $status, $bimester, $year);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        }catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
         }
 
-        if($type == 1){
-            return back()->with('importBasicAlert', 'La importacion de CERMS de educacion basica fue exitosa');
-        }elseif ($type == 2) {
-            return back()->with('importBasicAlert', 'La importacion de Avisos de cobro de educacion basica fue exitosa');
+        if ($type == 1) {
+            return back()->with('importBasicAlert', 'Importacion de CERMS completada');
+        } elseif ($type == 2) {
+            return back()->with('importBasicAlert', 'Importacion de Avisos de cobro completada');
         }
     }
+
 
     public function updateBasic(Request $request)
     {
         $data = request()->except(['_token', '_method']);
         $request->validate([
             'basicUniverse' => 'required|mimes:xlsx, xls',
-            'type' => 'required',
+            //'type' => 'required',
             'status' => 'required',
-            'bimester' => 'required',
-            'year' => 'required',
+            //'bimester' => 'required',
+            //'year' => 'required',
         ]);
 
-        $type = $request->input('type');
+        // $type = $request->input('type');
+        //$bimester = $request->input('bimester');
+        //$year = $request->input('year');
         $status = $request->input('status');
-        $bimester = $request->input('bimester');
-        $year = $request->input('year');
         $file = $request->file('basicUniverse');
 
         try {
-            Excel::queueImport(new BasicsImport($type, $status, $bimester, $year), $file);
-        } catch (Exception $e) {
-            return back()->withError($e->getMessage());
+            $import = new BasicsupdateImport($status);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        } catch (Exception $ex) {
+            $err = $ex->getMessage();
+            return back()->with('err',$err);
+            die();
         }
 
-        if($type == 1){
-            return back()->with('updateBasicAlert', 'La importacion de CERMS de educacion basica fue exitosa');
-        }elseif ($type == 2) {
-            return back()->with('updateBasicAlert', 'La importacion de Avisos de cobro de educacion basica fue exitosa');
-        }
+        return back()->with('updateBasicAlert', 'Actualizacion completada');
     }
+
 
     public function importMedium(Request $request)
     {
         $request->validate([
             'mediumUniverse' => 'required|mimes:xlsx, xls',
-            'status' => 'required',
             'bimester' => 'required',
             'year' => 'required',
         ]);
 
-        $status = $request->input('status');
         $bimester = $request->input('bimester');
         $year = $request->input('year');
         $file = $request->file('mediumUniverse');
+        $status = 0;
 
-        Excel::queueImport(new MediumsImport($status, $bimester, $year), $file);
-        return back()->with('mediumAlert', 'Importacion de informacion exitosa');
+        try {
+            $import = new MediumsImport($bimester, $year, $status);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        }catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
+        }
+        return back()->with('importMediumAlert', 'Importacion de informacion exitosa');
+    }
+
+    public function updateMedium(Request $request){
+     
+        $data = request()->except(['_token', '_method']);
+        $request->validate([
+            'mediumUniverse' => 'required|mimes:xlsx, xls',
+            //'type' => 'required',
+            'status' => 'integer',
+            //'bimester' => 'required',
+            //'year' => 'required',
+        ]);
+       
+        // $type = $request->input('type');
+        //$bimester = $request->input('bimester');
+        //$year = $request->input('year');
+        $status = $request->input('status');
+        $file = $request->file('mediumUniverse');
+
+        try {
+            $import = new MediumsupdateImport($status);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        } catch (Exception $ex) {
+            $err = $ex->getMessage();
+            return back()->with('err',$err);
+            die();
+        }
+
+        return back()->with('updateMediumAlert', 'Actualizacion completada');
+    }
+
+    public function importReissue(Request $request){
+        $request->validate([
+            'mediumUniverse' => 'required|mimes:xlsx, xls',
+            'bimester' => 'required',
+            'year' => 'required',
+        ]);
+
+        $bimester = $request->input('bimester');
+        $file = $request->file('mediumUniverse');
+        $status = 0;
+        $year = $request->input('year');
+
+        try {
+            $import = new ReissueImport($bimester, $status, $year);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        }catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
+        }
+        return back()->with('importReissueAlert', 'Inportacion de reexpediciones completada');
+    }
+
+    public function updateReissue(Request $request){
+
+        $request->validate([
+            'mediumUniverse' => 'required|mimes:xlsx, xls',
+            'status' => 'required|integer',
+        ]);
+
+        $file = $request->file('mediumUniverse');
+        $status = $request->input('status');
+
+        try {
+            $import = new ReissueupdateImport($status);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+                die();
+            }
+        }catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
+            die();
+        }
+        return back()->with('updateReissueAlert', 'Actualizacion de informacion exitosa');
+        die();
     }
 
     public function importHiger(Request $request)
     {
         $request->validate([
             'higerUniverse' => 'required|mimes:xlsx, xls',
-            'status' => 'required',
             'bimester' => 'required',
             'year' => 'required',
         ]);
 
-        $status = $request->input('status');
         $bimester = $request->input('bimester');
-        $year = $request->input('year');
         $file = $request->file('higerUniverse');
+        $status = 0;
+        $year = $request->input('year');
 
-        Excel::queueImport(new HigersImport($status, $bimester, $year), $file);
-        return back()->with('higerAlert', 'Informacion procesada exitosamente');
+        try {
+            $import = new HigersImport($bimester, $status, $year);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+            }
+        }catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
+        }
+        return back()->with('importHigerAlert', 'Inportacion de JEF completada');
+    }
+
+    public function updateHiger(Request $request){
+        $request->validate([
+            'higerUniverse' => 'required|mimes:xlsx, xls',
+            'status' => 'required|integer',
+        ]);
+
+        $file = $request->file('higerUniverse');
+        $status = $request->input('status');
+
+        try {
+            $import = new HigersupdateImport($status);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
+                die();
+            }
+        }catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
+            die();
+        }
+        return back()->with('updateHigerAlert', 'Actualizacion de informacion exitosa');
+        die();
     }
 
     public function importScholar(Request $request)
     {
         $data = request()->except(['_token', '_method']);
         $request->validate([
-            'universeInformation' => 'required|mimes:xlsx, xls',
+            'scholarsInformation' => 'required|mimes:xlsx, xls',
             'level' => 'required',
         ]);
 
-        $level = $request->level;
+        $file = $request->file('scholarsInformation');
+        $level = $request->input('level');
+        return $level;
 
-        if ($level == "null") {
-            return back()->with('level', 'Seleccione un nivel educativo');
-        } 
-        elseif ($level == 1) {
-            $file = $request->file('universeInformation');
-            try {
-                Excel::queueImport(new TitularsImport, $file);
-            } catch (Exception $e) {
-                return back()->withError($e->getMessage());
+        try {
+            $import = new ScholarsImport($level);
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                return back()->withFailures($import->failures());
             }
-            return back()->with('titularAlert', 'Importacion de titulares con exito');
-        } 
-        elseif ($level == 2 || $level == 3) {
-            $file = $request->file('universeInformation');
-            try {
-                Excel::queueImport(new ScholarsImport($level), $file);
-            } catch (Exception $e) {
-                return back()->withError($e->getMessage());
-            }
-            return back()->with('scholarAlert', 'Importacion de alumnos exitoso');
+        }catch(Exception $e){
+            $err = $e->getMessage();
+            return back()->with('err', $err);
         }
+        return back()->with('scholarAlert', 'Inportacion de informacion de los becarios completada');
     }
+
+    public function importTitular(){
+        return 'seccion para importar titulares';
+    }
+
 }

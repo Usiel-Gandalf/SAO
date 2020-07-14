@@ -69,6 +69,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{route('importBasics')}}">Educacion basica</a>
                         <a class="dropdown-item" href="{{route('importMediums')}}">Media superior</a>
+                        <a class="dropdown-item" href="{{route('importReissue')}}">Reexpediciones EMS</a>
                         <a class="dropdown-item" href="{{route('importHigers')}}">Educacion superior</a>
                     </div>
                 </li>

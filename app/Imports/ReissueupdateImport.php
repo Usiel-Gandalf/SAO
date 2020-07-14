@@ -2,9 +2,7 @@
 
 namespace App\Imports;
 
-ini_set('max_execution_time', 1200);
-
-use App\Region;
+use App\Medium;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -17,32 +15,35 @@ use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class RegionsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnError, WithValidation,  WithBatchInserts, WithChunkReading
+class ReissueupdateImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnError, WithValidation,  WithBatchInserts, WithChunkReading
 {
     use Importable, SkipsErrors, SkipsFailures;
-    /**
-     * @param array $row
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
 
+
+    private $status;
+
+    public function __construct($status)
+    {
+        $this->status = $status;
+    }
+    /**
+    * @param array $row
+    *
+    * @return \Illuminate\Database\Eloquent\Model|null
+    */
     public function model(array $row)
     {
-        Region::firstOrCreate(
-            ['id' => $row['CVE_REG'] ?? $row['cve_reg']],
-            [
-                'nameRegion' => $row['NOM_REG'] ?? $row['nom_reg'],
-                'region' => $row['REGION'] ?? $row['region'],
-            ]
-        );
+        Medium::where('fol_form', $row['FOL_FORM'] ?? $row['fol_form'])
+         ->where('reissue', 1)
+         //->where('consignment', $row['REMESA'] ?? $row['remesa'])
+         ->update(['status' => $this->status]);
+ 
     }
 
     public function rules(): array
     {
         return [
-            '*.cve_reg' => 'required|integer|unique:regions,id',
-            '*.nom_reg' => 'required|string',
-            '*.region' => 'required|integer',
+            '*.fol_form' => 'required|integer',
         ];
     }
 
@@ -53,11 +54,11 @@ class RegionsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
 
     public function batchSize(): int
     {
-        return 900;
+        return 500;
     }
 
     public function chunkSize(): int
     {
-        return 900;
+        return 500;
     }
 }

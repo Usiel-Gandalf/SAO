@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Imports;
-ini_set('max_execution_time', 4800);
-use Exception;
+
 use App\Medium;
 use App\School;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -17,7 +16,7 @@ use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class MediumsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnError, WithValidation,  WithBatchInserts, WithChunkReading
+class ReissueImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnError, WithValidation,  WithBatchInserts, WithChunkReading
 {
     use Importable, SkipsErrors, SkipsFailures;
 
@@ -25,12 +24,13 @@ class MediumsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
     private $year;
     private $status;
 
-    public function __construct($bimester, $year, $status)
+    public function __construct($bimester, $status, $year)
     {
         $this->bimester = $bimester;
         $this->year = $year;
         $this->status = $status;
     }
+
     /**
     * @param array $row
     *
@@ -39,7 +39,6 @@ class MediumsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
     public function model(array $row)
     {
         if (School::where('id', '=', $row['cve_esc'])->exists()) {
-
             Medium::firstOrCreate(
                 ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form']],
                 [
@@ -49,6 +48,7 @@ class MediumsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
                     'bimester' => $this->bimester,
                     'year' => $this->year,
                     'status' => $this->status,
+                    'reissue' => 1,
                 ]
             );
         } else {
@@ -61,6 +61,7 @@ class MediumsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
                     'bimester' => $this->bimester,
                     'year' => $this->year,
                     'status' => $this->status,
+                    'reissue' => 1,
                 ]
             );
         }

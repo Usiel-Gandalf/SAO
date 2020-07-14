@@ -1,48 +1,59 @@
 <?php
 
 namespace App\Imports;
+
 ini_set('max_execution_time', 1200);
 
+use App\Locality;
 use App\School;
 use Exception;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class SchoolsImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading, ShouldQueue
+class SchoolsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnError, WithValidation,  WithBatchInserts, WithChunkReading
 {
+    use Importable, SkipsErrors, SkipsFailures;
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
-        $cve_esc = $row['CVE_ESC'] ?? $row['cve_esc'] ?? null;
-        $nom_esc = $row['NOM_ESC'] ?? $row['nom_esc'] ?? null;
-        $claveofi = $row['CLAVEOFI'] ?? $row['claveofi'] ?? null;
-
-        if ($cve_esc == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna cve_esc ó CVE_ESC que hace referencia a las claves de las escuelas e intente nuevamente');
+        if (Locality::where('id', '=', $row['claveofi'])->exists()) {
+            School::firstOrCreate(
+                ['id' => $row['CVE_ESC'] ?? $row['cve_esc']],
+                [
+                    'nameSchool' => $row['NOM_ESC'] ?? $row['nom_esc'],
+                    'locality_id' =>  $row['CLAVEOFI'] ?? $row['claveofi'],
+                ]
+            );
+        }else{
+            School::firstOrCreate(
+                ['id' => $row['CVE_ESC'] ?? $row['cve_esc']],
+                [
+                    'nameSchool' => $row['NOM_ESC'] ?? $row['nom_esc'],
+                    'locality_id' => null,
+                ]
+            );
         }
+    }
 
-        if ($nom_esc == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna nom_esc ó NOM_ESC que hace referencia a los nombres de las escuelas e intente nuevamente');
-        }
-
-        if ($claveofi == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna claveofi ó CLAVEOFI que hace referencia a las claves de las localidades a las que pertenecen las escuelas e intente nuevamente');
-        }
-
-        School::firstOrCreate(
-            ['id' => $row['CVE_ESC'] ?? $row['cve_esc']],
-            [
-                'nameSchool' => $row['NOM_ESC'] ?? $row['nom_esc'],
-                'locality_id' =>  $row['CLAVEOFI'] ?? $row['claveofi'],
-            ]
-        );
+    public function rules(): array
+    {
+        return [
+            '*.cve_esc' => 'required|string|unique:schools,id',
+            '*.nom_esc' => 'required|string',
+            '*.claveofi' => 'required|integer',
+        ];
     }
 
     public function headingRow(): int

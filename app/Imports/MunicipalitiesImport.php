@@ -3,14 +3,23 @@
 namespace App\Imports;
 
 use App\Municipality;
-use Exception;
+use App\Region;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class MunicipalitiesImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\WithValidation;
+
+
+class MunicipalitiesImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnError, WithValidation,  WithBatchInserts, WithChunkReading
 {
+    use Importable, SkipsErrors, SkipsFailures;
     /**
      * @param array $row
      *
@@ -18,23 +27,7 @@ class MunicipalitiesImport implements ToModel, WithHeadingRow, WithBatchInserts,
      */
     public function model(array $row)
     {
-        $cve_mun = $row['cve_mun'] ?? $row['CVE_MUN'] ?? null;
-        $nom_mun = $row['nom_mun'] ?? $row['NOM_MUN'] ?? null;
-        $cve_reg = $row['cve_reg'] ?? $row['CVE_REG'] ?? null;
-
-        if ($cve_mun == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna cve_mun ó CVE_MUN que hace referencia a las claves de los municipios e intente nuevamente');
-        }
-
-        if ($nom_mun == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna nom_mun ó NOM_MUN que hace referencia a los nombres de los municipios e intente nuevamente');
-        }
-
-        if ($cve_reg == null) {
-            throw new Exception('Falta columna: Verifique que su archivo contenga la columna cve_reg ó CVE_REG que hace referencia a las claves
-             de las regiones a las que pertenecen los municipios e intente nuevamente');
-        }
-
+        if (Region::where('id', '=', $row['cve_reg'])->exists()) {
         Municipality::firstOrCreate(
             ['id' => $row['cve_mun'] ?? $row['CVE_MUN']],
             [
@@ -42,6 +35,24 @@ class MunicipalitiesImport implements ToModel, WithHeadingRow, WithBatchInserts,
                 'region_id' =>  $row['cve_reg'] ?? $row['CVE_REG'],
             ]
         );
+        }else {
+            Municipality::firstOrCreate(
+                ['id' => $row['cve_mun'] ?? $row['CVE_MUN']],
+                [
+                    'nameMunicipality' => $row['nom_mun'] ?? $row['NOM_MUN'],
+                    'region_id' =>  null,
+                ]
+            );
+        }
+    }
+
+    public function rules(): array
+    {
+        return [
+            '*.cve_mun' => 'required|integer|unique:municipalities,id',
+            '*.nom_mun' => 'required|string',
+            '*.cve_reg' => 'required|integer',
+        ];
     }
 
     public function headingRow(): int

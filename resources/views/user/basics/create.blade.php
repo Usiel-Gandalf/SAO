@@ -6,6 +6,14 @@
             <div class="row justify-content-center my-2">
                 <h2 class="">Registrar Beca Basica</h2>
             </div>
+            @if(session('locNot'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <h5><strong>{{session('locNot')}}</strong></h5>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
             <form action="{{url('/basicEducation')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
@@ -108,19 +116,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="locality_id"></label>
-                    <select id="locality_id" name="locality_id" class="form-control">
-                        <option selected value="{{null}}">Selecciona la localidad perteneciente</option>
-                        @foreach($localities as $locality)
-                        <option name="{{$locality->id}}" value="{{$locality->id}}" style="width:600px">{{$locality->nameLocality}}</option>
-                        @endforeach
-                    </select>
+                    <input type="number" class="form-control" name="locality_id" id="locality_id" placeholder="Ingrese la clave de la localidad">
+                    @error('locality_id')
+                    <div class="alert alert-danger">
+                        Ingrese una clave de localidad
+                    </div>
+                    @enderror
                 </div>
-                @error('locality_id')
-                <div class="alert alert-danger">
-                    Seleccione una localidad
-                </div>
-                @enderror
 
                 <div class="row justify-content-center">
                     <input type="submit" class="btn btn-success mr-1" value="Registrar">

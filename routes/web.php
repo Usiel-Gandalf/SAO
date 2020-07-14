@@ -50,7 +50,6 @@ Route::get('searchHiger', 'HigerController@show')->name('searchHiger');
 //Fin de las rutas de busqueda
 
 //Rutas para ir a los formularios de importacion de archivos excel y los reportes o graficas
-Route::get('importEntities', 'RouteController@importEntities')->name('importEntities');
 Route::get('importRegions', 'RouteController@importRegions')->name('importRegions');
 Route::get('importMunicipalities', 'RouteController@importMunicipalities')->name('importMunicipalities');
 Route::get('importLocalities', 'RouteController@importLocalities')->name('importLocalities');
@@ -58,6 +57,7 @@ Route::get('importSchools', 'RouteController@importSchools')->name('importSchool
 Route::get('importScholars', 'RouteController@importScholars')->name('importScholars');
 Route::get('importBasics', 'RouteController@importBasics')->name('importBasics');
 Route::get('importMediums', 'RouteController@importMediums')->name('importMediums');
+Route::get('importReissue', 'RouteController@importReissue')->name('importReissue');
 Route::get('importHigers', 'RouteController@importHigers')->name('importHigers');
 //Fin de las rutas de formularios
 
@@ -67,10 +67,15 @@ Route::post('importMunicipality', 'ImportController@importMunicipality')->name('
 Route::post('importLocality', 'ImportController@importLocality')->name('importLocality');
 Route::post('importSchool', 'ImportController@importSchool')->name('importSchool');
 Route::post('importScholar', 'ImportController@importScholar')->name('importScholar');
+Route::post('importTitular', 'ImportController@importTitular')->name('importTitular');
 Route::post('importBasic', 'importController@importBasic')->name('importBasic');
 Route::post('updateBasic', 'importController@updateBasic')->name('updateBasic');
 Route::post('importMedium', 'importController@importMedium')->name('importMedium');
+Route::post('updateMedium', 'importController@updateMedium')->name('updateMedium');
+Route::post('importReissue', 'importController@importReissue')->name('importReissue');
+Route::post('updateReissue', 'importController@updateReissue')->name('updateReissue');
 Route::post('importHiger', 'importController@importHiger')->name('importHiger');
+Route::post('updateHiger', 'importController@updateHiger')->name('updateHiger');
 //Fin de las rutas de importacion de archivos excel 
 
 //Rutas para ver informacion de los niveles educativos

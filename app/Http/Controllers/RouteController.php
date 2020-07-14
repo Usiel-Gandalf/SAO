@@ -45,6 +45,11 @@ class RouteController extends Controller
         return view('user.import.importMedium');
     }
 
+    public function importReissue()
+    {
+        return view('user.import.importReissue');
+    }
+
     public function importHigers()
     {
         return view('user.import.importHiger');

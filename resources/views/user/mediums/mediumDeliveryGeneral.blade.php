@@ -48,14 +48,6 @@
                      <td>{{$mediumsBim4->where('status', 3)->count()}}</td>
                      <td>{{$mediumsBim5->where('status', 3)->count()}}</td>
                  </tr>
-                 <tr>
-                     <td>Reexpedicion</td>
-                     <td>{{$mediumsBim1->where('status', 4)->count()}}</td>
-                     <td>{{$mediumsBim2->where('status', 4)->count()}}</td>
-                     <td>{{$mediumsBim3->where('status', 4)->count()}}</td>
-                     <td>{{$mediumsBim4->where('status', 4)->count()}}</td>
-                     <td>{{$mediumsBim5->where('status', 4)->count()}}</td>
-                 </tr>
              </tbody>
          </table>
      </div>

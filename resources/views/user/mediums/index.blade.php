@@ -1,46 +1,52 @@
 @extends('plantillas.adminApp')
 @section('main')
+@if(Auth::user()->rol == 1)
 <div class="container shadow p-3 mb-5 bg-white rounded mt-1">
+    <div class="row justify-content-md-center mb-4">
+        <h1>EDUCACION MEDIA SUPERIOR</h1>
+    </div>
+
+    <div class="row justify-content-md-center">
+        @if(session('saveMedium'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <h5><strong>{{session('saveMedium')}}</strong></h5>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+        @if(session('updateMedium'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <h5><strong>{{session('updateMedium')}}</strong></h5>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+        @if(session('deleteMedium'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h5><strong>{{session('deleteMedium')}}</strong></h5>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+        @if(session('notFound'))
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{session('notFound')}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @endif
+    </div>
+
+    @if($mediums->isNotEmpty())
+    <div class="row justify-content-md-center mb-4">
+        <h5>Registros que no tienen una clave de escuela</h5>
+    </div>
+
     <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
-        <div class="row justify-content-md-center mb-4">
-            <h1>EDUCACION MEDIA SUPERIOR</h1>
-        </div>
-
-        <div class="row justify-content-md-center">
-            @if(session('saveMedium'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <h5><strong>{{session('saveMedium')}}</strong></h5>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-            @if(session('updateMedium'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <h5><strong>{{session('updateMedium')}}</strong></h5>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-            @if(session('deleteMedium'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <h5><strong>{{session('deleteMedium')}}</strong></h5>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-            @if(session('notFound'))
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>{{session('notFound')}}</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            @endif
-        </div>
-
         <div class="container mt-2">
             <div class="row">
                 <table class="table table-bordered">
@@ -48,12 +54,10 @@
                         <tr>
                             <th scope="col">Bimestre</th>
                             <th scope="col">Remesa</th>
-                            <th scope="col">localidad</th>
+                            <th scope="col">Escuela</th>
                             <th scope="col">Becario</th>
                             <th scope="col">Estado</th>
-                            @if(Auth::user()->rol == 1)
                             <th scope="col" style="width:10%; height:5%">Acciones</th>
-                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -73,7 +77,7 @@
                                 @endif
                             </th>
                             <td>{{$medium->consignment}}</td>
-                            <td>{{$medium->school->nameSchool}}</td>
+                            <td>Desconocida</td>
                             <td>{{$medium->scholar_id}}</td>
                             <td>
                                 @if($medium->status == 0)
@@ -88,7 +92,6 @@
                                 {{'Reexpedicion'}}
                                 @endif
                             </td>
-                            @if(Auth::user()->rol == 1)
                             <td class="justify-content-center">
                                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                     <div class="btn-group" role="group">
@@ -107,7 +110,6 @@
                                     </div>
                                 </div>
                             </td>
-                            @endif
                         </tr>
                         @endforeach
                     </tbody>
@@ -119,24 +121,23 @@
             <div class="col">
                 {{ $mediums->links() }}
             </div>
-            @if(Auth::user()->rol == 1)
-            <div class="col foat-right">
-                <a class="btn btn-success float-right" href="{{url('/mediumEducation/create')}}">Crear Registro</a>
-            </div>
-            @endif
         </div>
     </div>
+    @endif
 
-    <div class="container shadow p-3 mb-5 bg-white rounded mt-1 border border-success">
+    <div class="row justify-content-md-center">
+        <a class="btn btn-success float-right" href="{{url('/mediumEducation/create')}}">Crear Registro</a>
+    </div>
+
+    <div class="container shadow p-3 mb-5 bg-white rounded mt-5 border border-success">
         @include('user.mediums.mediumDeliveryGeneral')
-
+        @include('user.mediums.reissueGeneral')
         <div class="row">
             <div class="col foat-right">
-            <a class="btn btn-success float-right" href="{{url('mediumPdf')}}" target="_blank">PDF</a>
+                <a class="btn btn-success float-right" href="{{url('mediumPdf')}}" target="_blank">PDF</a>
             </div>
         </div>
     </div>
-
-
 </div>
+@endif
 @endsection

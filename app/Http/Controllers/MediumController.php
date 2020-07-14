@@ -20,15 +20,33 @@ class MediumController extends Controller
      */
     public function index()
     {
-        $mediums = Medium::with('school')->paginate(5);
+        $mediums = Medium::where('school_id', null)->paginate(5);
 
-        $mediumsBim1 = Medium::where('bimester', 1)->get();
-        $mediumsBim2 = Medium::where('bimester', 2)->get();
-        $mediumsBim3 = Medium::where('bimester', 3)->get();
-        $mediumsBim4 = Medium::where('bimester', 4)->get();
-        $mediumsBim5 = Medium::where('bimester', 5)->get();
+        $mediumsBim1 = Medium::where('bimester', 1)->where('reissue', null)->get();
+        $mediumsBim2 = Medium::where('bimester', 2)->where('reissue', null)->get();
+        $mediumsBim3 = Medium::where('bimester', 3)->where('reissue', null)->get();
+        $mediumsBim4 = Medium::where('bimester', 4)->where('reissue', null)->get();
+        $mediumsBim5 = Medium::where('bimester', 5)->where('reissue', null)->get();
 
-        return view('user.mediums.index', compact('mediums', 'mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5'));
+        $reissueBim1 = Medium::where('reissue', 1)->where('bimester', 1)->get();
+        $reissueBim2 = Medium::where('reissue', 1)->where('bimester', 2)->get();
+        $reissueBim3 = Medium::where('reissue', 1)->where('bimester', 3)->get();
+        $reissueBim4 = Medium::where('reissue', 1)->where('bimester', 4)->get();
+        $reissueBim5 = Medium::where('reissue', 1)->where('bimester', 5)->get();
+
+        return view('user.mediums.index', compact(
+            'mediums',
+            'mediumsBim1',
+            'mediumsBim2',
+            'mediumsBim3',
+            'mediumsBim4',
+            'mediumsBim5',
+            'reissueBim1',
+            'reissueBim2',
+            'reissueBim3',
+            'reissueBim4',
+            'reissueBim5'
+        ));
     }
 
     /**
@@ -72,7 +90,6 @@ class MediumController extends Controller
         $medium->save();
 
         return redirect()->action('MediumController@index')->with('saveMedium', 'Nuevo registro de educacion media superior agregado');
-
     }
 
     /**
@@ -95,7 +112,7 @@ class MediumController extends Controller
     public function edit($id)
     {
         $schools = School::all();
-        $medium = Medium::findOrfail($id)->with('school')->first();
+        $medium = Medium::findOrfail($id);
         return view('user.mediums.edit', compact('medium', 'schools'));
     }
 
@@ -142,7 +159,7 @@ class MediumController extends Controller
         $mediumsBim3 = Medium::where('bimester', 3)->get();
         $mediumsBim4 = Medium::where('bimester', 4)->get();
         $mediumsBim5 = Medium::where('bimester', 5)->get();
-        
+
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadView('user.mediums.mediumPdf', compact('mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5'));
         return $pdf->stream();

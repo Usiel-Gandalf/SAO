@@ -22,7 +22,7 @@ class BasicController extends Controller
 
     public function index()
     {
-        $basics = Basic::with('locality')->paginate(5);
+        $basics = Basic::where('locality_id', null)->paginate(5);
 
         $basicsCermBim1 = Basic::where('type', 1)->where('bimester', 1)->get();
         $basicsCermBim2 = Basic::where('type', 1)->where('bimester', 2)->get();
@@ -58,8 +58,7 @@ class BasicController extends Controller
      */
     public function create()
     {
-        $localities = Locality::all();
-        return view('user.basics.create', compact('localities'));
+        return view('user.basics.create');
     }
 
     /**
@@ -80,6 +79,13 @@ class BasicController extends Controller
             'status' => 'required|integer',
             'type' => 'required|integer',
         ]);
+
+        $loc = $request->input('locality_id');
+
+        $locExist= Locality::where('id', $loc)->first();
+        if ($locExist === null) {
+              return back()->with('locNot', 'La localidad con la que intenta hacer el registro no existe, asegurese de registrarla primero en la seccion de localidades');
+        }
 
         $basic = new Basic();
         $basic->titular_id = $request->titular_id;
@@ -130,9 +136,8 @@ class BasicController extends Controller
      */
     public function edit($id)
     {
-        $localities = Locality::all();
-        $basic = Basic::findOrfail($id)->with('locality')->first();
-        return view('user.basics.edit', compact('basic', 'localities'));
+        $basic = Basic::findOrfail($id);
+        return view('user.basics.edit', compact('basic'));
     }
 
     /**
@@ -156,8 +161,15 @@ class BasicController extends Controller
             'type' => 'required|integer',
         ]);
 
+        $loc = $request->input('locality_id');
+
+        $locExist= Locality::where('id', $loc)->first();
+        if ($locExist === null) {
+              return back()->with('locNot', 'La localidad con la que intenta actualizar el registro no existe, asegurese de registrarla primero en la seccion de localidades');
+        }
+    
         Basic::where('id', $id)->update($data);
-        return redirect()->action('BasicController@index')->with('updateBasic', 'Informacion de educacion basica actualizada');
+        return redirect()->action('BasicController@index')->with('updateBasic', 'Regitro actualizado correctamente');
     }
 
     /**
