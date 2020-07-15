@@ -266,7 +266,7 @@ class ImportController extends Controller
             $import = new ReissueImport($bimester, $status, $year);
             $import->import($file);
             if ($import->failures()->isNotEmpty()) {
-                return back()->withFailures($import->failures());
+                return back()->withFailures($import->failures())->with('importReissueFailures');
             }
         }catch(Exception $e){
             $err = $e->getMessage();
@@ -362,7 +362,6 @@ class ImportController extends Controller
 
         $file = $request->file('scholarsInformation');
         $level = $request->input('level');
-        return $level;
 
         try {
             $import = new ScholarsImport($level);
@@ -377,8 +376,27 @@ class ImportController extends Controller
         return back()->with('scholarAlert', 'Inportacion de informacion de los becarios completada');
     }
 
-    public function importTitular(){
-        return 'seccion para importar titulares';
+    public function importTitular(Request $request){
+        $data = request()->except(['_token', '_method']);
+        $request->validate([
+            'titularsInformation' => 'required|mimes:xlsx, xls',
+        ]);
+
+        $file = $request->file('titularsInformation');
+
+        try {
+            $import = new TitularsImport();
+            $import->import($file);
+            if ($import->failures()->isNotEmpty()) {
+                //return back()->withFailures($import->failures());
+                $failures = $import->failures();
+                return back()->with('failures', $failures);
+            }
+        }catch(Exception $e){
+           return $err = $e->getMessage();
+            return back()->with('err', $err);
+        }
+        return back()->with('titularAlert', 'Inportacion de informacion de titulares completada');
     }
 
 }

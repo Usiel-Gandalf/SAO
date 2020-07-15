@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Imports;
+
 ini_set('max_execution_time', 1200);
 
 use App\Higer;
@@ -31,46 +32,48 @@ class HigersImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnEr
         $this->year = $year;
     }
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
-        if (School::where('id', '=', $row['cve_esc'])->exists()) {
-            Higer::firstOrCreate(
-                ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form']],
-                [
-                    'scholar_id' => $row['INT_ID'] ?? $row['int_id'] ?? $row['INTID'] ?? $row['intid'],
-                    'school_id' => $row['CVE_ESC'] ?? $row['cve_esc'],
-                    'consignment' =>  $row['REMESA'] ?? $row['remesa'] ?? $row['IMPRESION'] ?? $row['impresion'],
-                    'bimester' =>  $this->bimester,
-                    'year' =>  $this->year,
-                    'status' =>  $this->status,
-                ]
-            );
-        } else {
-            Higer::firstOrCreate(
-                ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form']],
-                [
-                    'scholar_id' => $row['INT_ID'] ?? $row['int_id'] ?? $row['INTID'] ?? $row['intid'],
-                    'school_id' => null,
-                    'consignment' =>  $row['REMESA'] ?? $row['remesa'] ?? $row['IMPRESION'] ?? $row['impresion'],
-                    'bimester' =>  $this->bimester,
-                    'year' =>  $this->year,
-                    'status' =>  $this->status,
-                ]
-            );
-        }
+        Higer::firstOrCreate(
+            ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form']],
+            [
+                'scholar_id' => $row['INT_ID'] ?? $row['int_id'] ?? $row['INTID'] ?? $row['intid'],
+                'school_id' => $row['CVE_ESC'] ?? $row['cve_esc'],
+                'consignment' =>  $row['REMESA'] ?? $row['remesa'] ?? $row['IMPRESION'] ?? $row['impresion'],
+                'bimester' =>  $this->bimester,
+                'year' =>  $this->year,
+                'status' =>  $this->status,
+            ]
+        );
     }
 
     public function rules(): array
     {
         return [
-            'int_id' => 'required|integer',
-            'cve_esc' => 'string',
-            'remesa' => 'required|string',
             '*.fol_form' => 'required|integer|unique:higers,fol_form',
+            '*.int_id' => 'required|integer',
+            '*.cve_esc' => 'required|string|exists:schools,id',
+            '*.remesa' => 'required|string',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            'fol_form.unique' => 'EL folio de formato ya esta registrado, se omitio el registro para evitar duplicidad',
+            'fol_form.integer' => 'El folio de formato solo puede ser de tipo numerico, verificar el tipo de dato',
+            'fol_form.required' => 'El folio de formato no puede estar vacio, verificar nuevamente',
+            'int_id.required' => 'la clave del becario no puede estar vacio, verificar nuevamente',
+            'int_id.integer' => 'la clave del becario solo puede ser de tipo numerico, verificar el tipo de dato',
+            'cve_esc.required' => 'la clave de la escuela no puede estar vacia, verificar nuevamente',
+            'cve_esc.string' => 'la clave de la escuela solo puede ser de tipo letras y numeros, verificar el tipo de dato',
+            'cve_esc.exists' => 'Escuela no encontrada(clave), primero debe de registrarla en la seccion de escuelas e intentar nuevamente',
+            'remesa.required' => 'la remesa no puede estar vacia, verificar nuevamente',
+            'remesa.string' => 'la remesa solo puede ser de tipo letras y numeros, verificar el tipo de dato',
         ];
     }
 

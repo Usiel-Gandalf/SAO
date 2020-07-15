@@ -35,7 +35,6 @@ class ReissueupdateImport implements ToModel, WithHeadingRow, SkipsOnFailure, Sk
     {
         Medium::where('fol_form', $row['FOL_FORM'] ?? $row['fol_form'])
          ->where('reissue', 1)
-         //->where('consignment', $row['REMESA'] ?? $row['remesa'])
          ->update(['status' => $this->status]);
  
     }
@@ -43,7 +42,16 @@ class ReissueupdateImport implements ToModel, WithHeadingRow, SkipsOnFailure, Sk
     public function rules(): array
     {
         return [
-            '*.fol_form' => 'required|integer',
+            '*.fol_form' => 'required|integer|exists:media,fol_form',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            '*.fol_form.required' => 'El folio de formato no puede estar vacio, verificar nuevamente',
+            '*.fol_form.integer' => 'El folio de formato solo puede ser de tipo numerico, verificar el tipo de dato',
+            '*.fol_form.exists' => 'Folio de formato no encontrado, primero debe de registrar para poder actualizar',
         ];
     }
 

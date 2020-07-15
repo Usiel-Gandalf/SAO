@@ -52,12 +52,31 @@ class ScholarsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOn
     {
         return [
             '*.int_id' => 'required|integer|unique:scholars,id',
-            'nom_bec' => 'required|string',
-            'ap1' => 'required|string',
-            'ap2' => 'required|string',
-            'genero' => 'required|string',
-            'fec_nac' => 'required|integer',
-            'curp' => 'required|string',
+            '*.nom_bec' => 'required|string',
+            '*.ap1' => 'required|string',
+            '*.ap2' => 'required|string',
+            '*.genero' => 'required|string',
+            '*.fec_nac' => 'required|integer',
+            '*.curp' => 'required|string',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            'int_id.unique' => 'El becario ya esta registrado, se omitio el registro para evitar duplicidad',
+            'int_id.integer' => 'La clave del becario(int_id) solo puede ser de tipo numerico, verificar el tipo de dato',
+            'int_id.required' => 'La clave del becario no puede estar vacio, verificar nuevamente',
+            'nom_bec.required' => 'El nombre del becario no puede estar vacio, verificar nuevamente',
+            'nom_bec.string' => 'la clave del becario solo puede ser de tipo texto, verificar el tipo de dato',
+            'ap1.required' => 'El apellido paterno del becario no puede estar vacio, verificar nuevamente',
+            'ap1.string' => 'El apellido paterno del becario solo puede ser de tipo texto, verificar el tipo de dato',
+            'ap2.required' => 'El apellido materno del becario no puede estar vacio, verificar nuevamente',
+            'ap2.string' => 'El apellido materno del becario solo puede ser de tipo texto, verificar el tipo de dato',
+            'genero.required' => 'El genero del becario no puede estar vacio, verificar nuevamente',
+            'genero.string' => 'El genero del becario solo puede ser de tipo texto(M-F), verificar el tipo de dato',
+            'curp.required' => 'La curp del becario no puede estar vacio, verificar nuevamente',
+            'curp.string' => 'La curp del becario solo puede ser de tipo texto, verificar el tipo de dato',
         ];
     }
 

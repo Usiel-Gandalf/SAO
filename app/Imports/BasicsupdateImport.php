@@ -34,18 +34,22 @@ class BasicsupdateImport implements ToModel, WithHeadingRow, SkipsOnFailure, Ski
     public function model(array $row)
     {
         Basic::where('fol_form', $row['FOL_FORM'] ?? $row['fol_form'])
-           // ->where('titular_id', $row['FAM_ID'] ?? $row['fam_id'])
-            //->where('consignment', $row['REMESA'] ?? $row['remesa'])
             ->update(['status' => $this->status]);
     }
 
     public function rules(): array
     {
         return [
-            //'fam_id' => 'required|integer',
-            //'claveofi' => 'required|integer',
-            //'remesa' => 'required|string',
-            '*.fol_form' => 'required|integer',
+            '*.fol_form' => 'required|integer|exists:basics,fol_form',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            '*.fol_form.required' => 'El folio de formato no puede estar vacio, verificar nuevamente',
+            '*.fol_form.integer' => 'El folio de formato solo puede ser de tipo numerico, verificar el tipo de dato',
+            '*.fol_form.exists' => 'Folio de formato no encontrado, primero debe de registrar para poder actualizar',
         ];
     }
 
@@ -56,11 +60,11 @@ class BasicsupdateImport implements ToModel, WithHeadingRow, SkipsOnFailure, Ski
 
     public function batchSize(): int
     {
-        return 500;
+        return 700;
     }
 
     public function chunkSize(): int
     {
-        return 500;
+        return 700;
     }
 }

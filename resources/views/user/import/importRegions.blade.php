@@ -15,17 +15,10 @@
     </div>
 
     <div class="row justify-content-md-center mb-4 mt-2">
-        @if(session()->has('failures'))
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Se han detectado errores en su informacion,
-            clic para ver reporte</button>
-        @include('modals.failuresRegions')
-        @endif
-        @if(isset($err) && $err->any())
-        <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-            Error con alguna llave foranea, clic para ver reporte
-        </button>
-        @include('modals.sqlerrorsBasics')
-        @endif
+    @if(session('failures'))
+    <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Informacion procesada, sin embargo se detectaron errores, clic para ver reporte</button>
+    @include('modals.failuresImports')
+    @endif
     </div>
 
     <div class="row justify-content-md-center mb-5 mt-3">

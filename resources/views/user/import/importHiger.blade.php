@@ -23,10 +23,9 @@
     </div>
 
     <div class="row justify-content-md-center mb-4 mt-2">
-        @if(session()->has('failures'))
-        <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Se han detectado errores en su informacion,
-            clic para ver reporte</button>
-        @include('modals.failuresMediums')
+        @if(session('failures'))
+        <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".bd-example-modal-lg">Informacion procesada, sin embargo se detectaron errores, clic para ver reporte</button>
+        @include('modals.failuresImports')
         @endif
     </div>
 

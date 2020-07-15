@@ -154,14 +154,31 @@ class MediumController extends Controller
 
     public function mediumPdf()
     {
-        $mediumsBim1 = Medium::where('bimester', 1)->get();
-        $mediumsBim2 = Medium::where('bimester', 2)->get();
-        $mediumsBim3 = Medium::where('bimester', 3)->get();
-        $mediumsBim4 = Medium::where('bimester', 4)->get();
-        $mediumsBim5 = Medium::where('bimester', 5)->get();
+        $mediumsBim1 = Medium::where('bimester', 1)->where('reissue', null)->get();
+        $mediumsBim2 = Medium::where('bimester', 2)->where('reissue', null)->get();
+        $mediumsBim3 = Medium::where('bimester', 3)->where('reissue', null)->get();
+        $mediumsBim4 = Medium::where('bimester', 4)->where('reissue', null)->get();
+        $mediumsBim5 = Medium::where('bimester', 5)->where('reissue', null)->get();
+
+        $reissueBim1 = Medium::where('reissue', 1)->where('bimester', 1)->get();
+        $reissueBim2 = Medium::where('reissue', 1)->where('bimester', 2)->get();
+        $reissueBim3 = Medium::where('reissue', 1)->where('bimester', 3)->get();
+        $reissueBim4 = Medium::where('reissue', 1)->where('bimester', 4)->get();
+        $reissueBim5 = Medium::where('reissue', 1)->where('bimester', 5)->get();
 
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('user.mediums.mediumPdf', compact('mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5'));
+        $pdf->loadView('user.mediums.mediumPdf', compact(
+            'mediumsBim1',
+            'mediumsBim2',
+            'mediumsBim3',
+            'mediumsBim4',
+            'mediumsBim5',
+            'reissueBim1',
+            'reissueBim2',
+            'reissueBim3',
+            'reissueBim4',
+            'reissueBim5'
+        ));
         return $pdf->stream();
     }
 }

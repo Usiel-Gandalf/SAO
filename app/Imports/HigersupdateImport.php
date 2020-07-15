@@ -40,7 +40,16 @@ class HigersupdateImport implements ToModel, WithHeadingRow, SkipsOnFailure, Ski
             //'fam_id' => 'required|integer',
             //'claveofi' => 'required|integer',
             //'remesa' => 'required|string',
-            '*.fol_form' => 'required|integer',
+            '*.fol_form' => 'required|integer|exists:higers,fol_form',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            '*.fol_form.required' => 'El folio de formato no puede estar vacio, verificar nuevamente',
+            '*.fol_form.integer' => 'El folio de formato solo puede ser de tipo numerico, verificar el tipo de dato',
+            '*.fol_form.exists' => 'Folio de formato no encontrado, primero debe de registrar para poder actualizar',
         ];
     }
 

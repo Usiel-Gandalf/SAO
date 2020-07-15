@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Scholar extends Model
 {
-    protected $fillable = ['id', 'nameScholar', 'firstSurname', 'secondSurname', 'gender', 'birthDate', 'curp'];
+    protected $fillable = ['id', 'nameScholar', 'firstSurname', 'secondSurname', 'gender', 'birthDate', 'curp', 'level'];
 
     public function scopeIdScholar($query, $idScholar)
     {

@@ -42,10 +42,8 @@ class BasicsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnEr
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function model(array $row)
-    {
-        if (Locality::where('id', '=', $row['claveofi'])->exists()) {
-            
-            Basic::firstOrCreate(
+    {         
+        Basic::firstOrCreate(
                 ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form'] ?? $row['FOLIO_FORM'] ?? $row['folio_form']],
                 [
                     'titular_id' => $row['FAM_ID'] ?? $row['fam_id'],
@@ -57,29 +55,31 @@ class BasicsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnEr
                     'type' =>  $this->type,
                 ]
             );
-        } else {
-            Basic::firstOrCreate(
-                ['fol_form' => $row['FOL_FORM'] ?? $row['fol_form'] ?? $row['FOLIO_FORM'] ?? $row['folio_form']],
-                [
-                    'titular_id' => $row['FAM_ID'] ?? $row['fam_id'],
-                    'locality_id' => null,
-                    'consignment' =>  $row['REMESA'] ?? $row['remesa'],
-                    'bimester' =>  $this->bimester,
-                    'year' =>  $this->year,
-                    'status' =>  $this->status,
-                    'type' =>  $this->type,
-                ]
-            );
-        }
     }
 
     public function rules(): array
     {
         return [
-            'fam_id' => 'required|integer',
-            'claveofi' => 'integer',
-            'remesa' => 'required|string',
+            '*.fam_id' => 'required|integer',
+            '*.claveofi' => 'required|integer|exists:localities,id',
+            '*.remesa' => 'required|string',
             '*.fol_form' => 'required|integer|unique:basics,fol_form',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            'fol_form.unique' => 'EL folio de formato ya esta registrado, se omitio el registro para evitar duplicidad',
+            'fol_form.integer' => 'El folio de formato solo puede ser de tipo numerico, verificar el tipo de dato',
+            'fol_form.required' => 'El folio de formato no puede estar vacio, verificar nuevamente',
+            'fam_id.required' => 'la clave de la titular no puede estar vacio, verificar nuevamente',
+            'fam_id.integer' => 'la clave de la titular solo puede ser de tipo numerico, verificar el tipo de dato',
+            'claveofi.required' => 'la clave de la localidad no puede estar vacia, verificar nuevamente',
+            'claveofi.integer' => 'la clave de la escuela solo puede ser de tipo numerico, verificar el tipo de dato',
+            'claveofi.exists' => 'Localidad no encontrada(clave), primero debe de registrarla en la seccion de localidades e intentar nuevamente',
+            'remesa.required' => 'la remesa no puede estar vacia, verificar nuevamente',
+            'remesa.string' => 'la remesa solo puede ser de tipo letras y numeros, verificar el tipo de dato',
         ];
     }
 
@@ -90,11 +90,11 @@ class BasicsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnEr
 
     public function batchSize(): int
     {
-        return 500;
+        return 700;
     }
 
     public function chunkSize(): int
     {
-        return 500;
+        return 700;
     }
 }

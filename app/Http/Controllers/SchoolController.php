@@ -143,23 +143,45 @@ class SchoolController extends Controller
 
         //////////////////////////////////////////7
         $mediumsBim1 = School::join('media', function ($join) {
-            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 1);
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 1)->where('media.reissue', null);
         })->where('school_id', $id)->get();
 
         $mediumsBim2 = School::join('media', function ($join) {
-            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 2);
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 2)->where('media.reissue', null);
         })->where('school_id', $id)->get();
 
         $mediumsBim3 = School::join('media', function ($join) {
-            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 3);
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 3)->where('media.reissue', null);
         })->where('school_id', $id)->get();
 
         $mediumsBim4 = School::join('media', function ($join) {
-            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 4);
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 4)->where('media.reissue', null);
         })->where('school_id', $id)->get();
 
         $mediumsBim5 = School::join('media', function ($join) {
-            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 5);
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 5)->where('media.reissue', null);
+        })->where('school_id', $id)->get();
+        //////////////////////////////////////////
+
+        //////////////////////////////////////////7
+        $reissueBim1 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 1)->where('media.reissue', 1);
+        })->where('school_id', $id)->get();
+
+        $reissueBim2 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 2)->where('media.reissue', 1);
+        })->where('school_id', $id)->get();
+
+        $reissueBim3 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 3)->where('media.reissue', 1);
+        })->where('school_id', $id)->get();
+
+        $reissueBim4 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 4)->where('media.reissue', 1);
+        })->where('school_id', $id)->get();
+
+        $reissueBim5 = School::join('media', function ($join) {
+            $join->on('schools.id', '=', 'media.school_id')->where('media.bimester', 5)->where('media.reissue', 1);
         })->where('school_id', $id)->get();
         //////////////////////////////////////////
 
@@ -186,16 +208,46 @@ class SchoolController extends Controller
         ///////////////////////////////////////
 
         if ($type == 0) {
-            return view('user.schools.schoolGeneral', compact('schoolInfo', 'bossRegion', 
-            'mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5',
-            'higersBim1', 'higersBim2', 'higersBim3', 'higersBim4', 'higersBim5'
-        ));
+            return view('user.schools.schoolGeneral', compact(
+                'schoolInfo',
+                'bossRegion',
+                'mediumsBim1',
+                'mediumsBim2',
+                'mediumsBim3',
+                'mediumsBim4',
+                'mediumsBim5',
+                'reissueBim1',
+                'reissueBim2',
+                'reissueBim3',
+                'reissueBim4',
+                'reissueBim5',
+                'higersBim1',
+                'higersBim2',
+                'higersBim3',
+                'higersBim4',
+                'higersBim5'
+            ));
         } elseif ($type == 1) {
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadView('user.schools.schoolPdf', compact('schoolInfo', 'bossRegion', 
-            'mediumsBim1', 'mediumsBim2', 'mediumsBim3', 'mediumsBim4', 'mediumsBim5',
-            'higersBim1', 'higersBim2', 'higersBim3', 'higersBim4', 'higersBim5'
-        ));
+            $pdf->loadView('user.schools.schoolPdf', compact(
+                'schoolInfo',
+                'bossRegion',
+                'mediumsBim1',
+                'mediumsBim2',
+                'mediumsBim3',
+                'mediumsBim4',
+                'mediumsBim5',
+                'reissueBim1',
+                'reissueBim2',
+                'reissueBim3',
+                'reissueBim4',
+                'reissueBim5',
+                'higersBim1',
+                'higersBim2',
+                'higersBim3',
+                'higersBim4',
+                'higersBim5'
+            ));
             return $pdf->stream();
         } else {
             return back();

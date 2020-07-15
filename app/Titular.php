@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Titular extends Model
 {
-    protected $fillable = ['id', 'idTitular','nameTitular', 'firstSurname', 'secondSurname', 'gender', 'birthDate', 'curp'];
+    protected $fillable = ['id', 'nameTitular', 'firstSurname', 'secondSurname', 'gender', 'birthDate', 'curp'];
     //protected $attributes = ['delayed' => false,]; valores predeterminados
 
     public function basics(){

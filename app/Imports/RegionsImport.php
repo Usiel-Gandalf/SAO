@@ -46,6 +46,19 @@ class RegionsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
         ];
     }
 
+    public function customValidationMessages()
+    {
+        return [
+            'cve_reg.unique' => 'La region ya esta registrada, se omitio el registro para evitar duplicidad',
+            'cve_reg.required' => 'La clave de la region no puede estar vacia, verificar nuevamente',
+            'cve_reg.integer' => 'La clave de la region solo puede ser de tipo numerico, verificar el tipo de dato',
+            'nom_reg.string' => 'El nombre de la region solo puede ser de tipo texto(Letras y numeros), verificar el tipo de dato',
+            'nom_reg.required' => 'El nombre de la region no puede estar vacio, verificar nuevamente',
+            'region.integer' => 'El numero de la region solo puede ser de tipo numerico, verificar el tipo de dato',
+            'region.required' => 'El numero de la region no puede estar vacio, verificar nuevamente',
+        ];
+    }
+
     public function headingRow(): int
     {
         return 1;
@@ -53,11 +66,11 @@ class RegionsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
 
     public function batchSize(): int
     {
-        return 900;
+        return 700;
     }
 
     public function chunkSize(): int
     {
-        return 900;
+        return 700;
     }
 }

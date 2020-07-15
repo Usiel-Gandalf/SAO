@@ -28,7 +28,6 @@ class SchoolsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
      */
     public function model(array $row)
     {
-        if (Locality::where('id', '=', $row['claveofi'])->exists()) {
             School::firstOrCreate(
                 ['id' => $row['CVE_ESC'] ?? $row['cve_esc']],
                 [
@@ -36,15 +35,6 @@ class SchoolsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
                     'locality_id' =>  $row['CLAVEOFI'] ?? $row['claveofi'],
                 ]
             );
-        }else{
-            School::firstOrCreate(
-                ['id' => $row['CVE_ESC'] ?? $row['cve_esc']],
-                [
-                    'nameSchool' => $row['NOM_ESC'] ?? $row['nom_esc'],
-                    'locality_id' => null,
-                ]
-            );
-        }
     }
 
     public function rules(): array
@@ -52,7 +42,22 @@ class SchoolsImport implements ToModel, WithHeadingRow, SkipsOnFailure, SkipsOnE
         return [
             '*.cve_esc' => 'required|string|unique:schools,id',
             '*.nom_esc' => 'required|string',
-            '*.claveofi' => 'required|integer',
+            '*.claveofi' => 'required|integer|exists:localities,id',
+        ];
+    }
+
+    public function customValidationMessages()
+    {
+        return [
+            'cve_esc.unique' => 'La escuela ya esta registrada, se omitio el registro para evitar duplicidad',
+            'cve_esc.string' => 'La clave de la escuela solo puede ser de tipo texto(Letras y numeros), verificar el tipo de dato',
+            'cve_esc.required' => 'La clave de la escuela no puede estar vacia, verificar nuevamente',
+            'claveofi.required' => 'la clave de la localidad no puede estar vacia, verificar nuevamente',
+            'claveofi.integer' => 'la clave de la escuela solo puede ser de tipo numerico, verificar el tipo de dato',
+            'claveofi.exists' => 'Localidad no encontrada(clave), primero debe de registrarla en la seccion de localidades e intentar nuevamente',
+            'remesa.required' => 'la remesa no puede estar vacia, verificar nuevamente',
+            'nom_esc.string' => 'la remesa solo puede ser de tipo texto(Letras y numeros), verificar el tipo de dato',
+            'nom_esc.required' => 'El nombre de la escuela no puede estar vacia, verificar nuevamente',
         ];
     }
 

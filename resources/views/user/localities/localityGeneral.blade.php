@@ -197,7 +197,7 @@
                         <td>{{$mediumsBim2->where('status', 0)->count()}}</td>
                         <td>{{$mediumsBim3->where('status', 0)->count()}}</td>
                         <td>{{$mediumsBim4->where('status', 0)->count()}}</td>
-                        <td>{{$mediumsBim5->where('status', 0)->count()}}}</td>
+                        <td>{{$mediumsBim5->where('status', 0)->count()}}</td>
                     </tr>
                     <tr>
                         <th scope="row">Entregados</th>
@@ -223,13 +223,60 @@
                         <td>{{$mediumsBim4->where('status', 3)->count()}}</td>
                         <td>{{$mediumsBim5->where('status', 3)->count()}}</td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row justify-content-md-center mt-5">
+        <h5>REEXPEDICION MEDIA SUPERIOR</h5>
+    </div>
+
+    <div class="row justify-content-md-center mb-4">
+        <div class="col">
+            <table class="table table-bordered">
+                <thead class="thead-light">
                     <tr>
-                        <th scope="row">Reexpedicion</th>
-                        <td>{{$mediumsBim1->where('status', 4)->count()}}</td>
-                        <td>{{$mediumsBim2->where('status', 4)->count()}}</td>
-                        <td>{{$mediumsBim3->where('status', 4)->count()}}</td>
-                        <td>{{$mediumsBim4->where('status', 4)->count()}}</td>
-                        <td>{{$mediumsBim5->where('status', 4)->count()}}</td>
+                        <th scope="col">ESTATUS</th>
+                        <th scope="col">ENERO-FEBRERO</th>
+                        <th scope="col">MARZO-ABRIL</th>
+                        <th scope="col">MAYO-JUNIO</th>
+                        <th scope="col">SEPTIEMBRE-OCTUBRE</th>
+                        <th scope="col">NOVIEMBRE-DICIEMBRE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Pendientes</th>
+                        <td>{{$reissueBim1->where('status', 0)->count()}}</td>
+                        <td>{{$reissueBim2->where('status', 0)->count()}}</td>
+                        <td>{{$reissueBim3->where('status', 0)->count()}}</td>
+                        <td>{{$reissueBim4->where('status', 0)->count()}}</td>
+                        <td>{{$reissueBim5->where('status', 0)->count()}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Entregados</th>
+                        <td>{{$reissueBim1->where('status', 1)->count()}}</td>
+                        <td>{{$reissueBim2->where('status', 1)->count()}}</td>
+                        <td>{{$reissueBim3->where('status', 1)->count()}}</td>
+                        <td>{{$reissueBim4->where('status', 1)->count()}}</td>
+                        <td>{{$reissueBim5->where('status', 1)->count()}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">No entregados - No localizados</th>
+                        <td>{{$reissueBim1->where('status', 2)->count()}}</td>
+                        <td>{{$reissueBim2->where('status', 2)->count()}}</td>
+                        <td>{{$reissueBim3->where('status', 2)->count()}}</td>
+                        <td>{{$reissueBim4->where('status', 2)->count()}}</td>
+                        <td>{{$reissueBim5->where('status', 2)->count()}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">No entregados - Por baja</th>
+                        <td>{{$reissueBim1->where('status', 3)->count()}}</td>
+                        <td>{{$reissueBim2->where('status', 3)->count()}}</td>
+                        <td>{{$reissueBim3->where('status', 3)->count()}}</td>
+                        <td>{{$reissueBim4->where('status', 3)->count()}}</td>
+                        <td>{{$reissueBim5->where('status', 3)->count()}}</td>
                     </tr>
                 </tbody>
             </table>
