@@ -12,7 +12,6 @@ class BossController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('onlyAdmin');
-        //return $role = Auth::user()->rol;   
     }
     /**
      * Display a listing of the resource.
@@ -178,7 +177,6 @@ class BossController extends Controller
             $status = $request->status;
             $region_id = $request->region_id;
             $rol = $request->rol;
-            //$password = bcrypt($request->password);
 
             User::where('id', $id)->update([
                 'name' => $name,

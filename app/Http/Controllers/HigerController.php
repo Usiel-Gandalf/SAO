@@ -20,7 +20,7 @@ class HigerController extends Controller
      */
     public function index()
     {
-        $higers = Higer::where('school_id', null)->paginate(5);
+        $higers = Higer::with('school')->paginate(5);
         $higersBim1 = Higer::where('bimester', 1)->get();
         $higersBim2 = Higer::where('bimester', 2)->get();
         $higersBim3 = Higer::where('bimester', 3)->get();

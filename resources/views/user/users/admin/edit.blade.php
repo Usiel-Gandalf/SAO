@@ -1,7 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
 <div class="row justify-content-md-center mt-4">
-    <div class="col-6 shadow p-3 mb-5 bg-white rounded mt-4  border border-success">
+    <div class="col-6 shadow p-3 mb-5 bg-white rounded mt-4 border border-success">
         <div class="col">
             <div class="row justify-content-center">
                 <h2 class="mt-1">Editar Administrador</h2>

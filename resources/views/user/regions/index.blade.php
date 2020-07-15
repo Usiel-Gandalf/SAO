@@ -1,7 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
-    <div class="container shadow p-3 mb-5 bg-white rounded border border-primary">
+<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
+    <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
         <div class="row justify-content-md-center mb-4">
             <h1>Regiones</h1>
         </div>

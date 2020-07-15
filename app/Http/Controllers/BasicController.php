@@ -22,7 +22,7 @@ class BasicController extends Controller
 
     public function index()
     {
-        $basics = Basic::where('locality_id', null)->paginate(5);
+        $basics = Basic::with('locality')->paginate(10);
 
         $basicsCermBim1 = Basic::where('type', 1)->where('bimester', 1)->get();
         $basicsCermBim2 = Basic::where('type', 1)->where('bimester', 2)->get();

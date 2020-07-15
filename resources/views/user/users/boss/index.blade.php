@@ -1,6 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
+<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
+<div class="container shadow p-3 mb-5 bg-white rounded border border-success">
   <div class="row justify-content-md-center mb-4">
     <h1>Jefes Juar</h1>
   </div>
@@ -143,5 +144,6 @@
       <a class="btn btn-success float-right mr-1" href="{{url('/boss/create')}}">Registrar Jefe Juar</a>
     </div>
   </div>
+</div>
 </div>
 @endsection

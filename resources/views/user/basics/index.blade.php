@@ -1,7 +1,7 @@
 @extends('plantillas.adminApp')
 @section('main')
 @if(Auth::user()->rol == 1)
-<div class="container shadow p-3 mb-5 bg-white rounded mt-1">
+<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
     <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
         <div class="row justify-content-md-center mb-4">
             <h1>EDUCACION BASICA</h1>
@@ -42,11 +42,7 @@
             @endif
         </div>
 
-        @if($basics->isNotEmpty())
-        <div class="row justify-content-md-center mb-4">
-            <h5>Registros que no tienen una clave de localidad</h5>
-        </div>
-
+        <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
         <div class="container mt-2">
             <div class="row">
                 <table class="table table-bordered">
@@ -77,7 +73,7 @@
                                 @endif
                             </th>
                             <td>{{$basic->consignment}}</td>
-                            <td>Desconocida</td>
+                            <td>{{$basic->locality->nameLocality}}</td>
                             <td>{{$basic->titular_id}}</td>
                             <td>
                                 @if($basic->status == 0)
@@ -117,14 +113,17 @@
 
         <div class="row">
             <div class="col">
-                {{ $basics->links() }}
+                {{$basics->links()}}
+            </div>
+            <div class="col float-right">
+                <a class="btn btn-success float-right" href="{{url('/basicEducation/create')}}">Crear Registro</a>
             </div>
         </div>
     </div>
-    @endif
+    </div>
 
     <div class="row justify-content-md-center">
-        <a class="btn btn-success float-right" href="{{url('/basicEducation/create')}}">Crear Registro</a>
+        
     </div>
 
     <div class="container shadow p-3 mb-5 bg-white rounded mt-5 border border-success">

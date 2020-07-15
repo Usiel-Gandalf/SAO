@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow p-3 mb-5 bg-white rounded mt-3">
+<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-1 mt-2">
         <div class="col-9">
             @if(session('localityAlert'))
@@ -35,7 +35,7 @@
                 <center>
                     <h4 class="card-header">Localidades</h4>
                     <div class="card-body">
-                        <h5 class="card-title">Subir y/o actualizar localidades</h5>
+                        <h5 class="card-title">Registrar localidades</h5>
                         <p class="card-text">Se actualizaran o agregaran nuevas localidades sin afectar a las ya existentes
                             la primera fila del excel tienen que ser los titulos de las columnas que serian: cve_loc, key_loc, nom_loc e cve_mun
                         </p>

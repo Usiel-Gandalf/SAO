@@ -27,16 +27,9 @@ class RegionController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->rol == 0) {
-            $region_id = Auth::user()->region_id;
-            $regions = Region::where('id', $region_id)->paginate(1);
-
-            return view('user.regions.index', compact('regions'));
-        } else {
             $regions = Region::paginate(10);
             $regions->sortBy('nameRegion');
             return view('user.regions.index', compact('regions'));
-        }
     }
 
     /**

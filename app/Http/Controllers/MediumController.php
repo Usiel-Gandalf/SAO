@@ -20,7 +20,7 @@ class MediumController extends Controller
      */
     public function index()
     {
-        $mediums = Medium::where('school_id', null)->paginate(5);
+        $mediums = Medium::with('school')->paginate(5);
 
         $mediumsBim1 = Medium::where('bimester', 1)->where('reissue', null)->get();
         $mediumsBim2 = Medium::where('bimester', 2)->where('reissue', null)->get();

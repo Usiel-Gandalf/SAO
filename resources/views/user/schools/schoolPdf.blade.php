@@ -379,6 +379,7 @@
 </center>
 
 <center>
-    <FONT FACE="impact" SIZE=2>&copy; {{@date('Y')}} {{'Subdireccion de atencion operativa - Oaxaca, Todos los derechos reservados'}}</FONT>
+<small>Copyright &copy; {{@date('Y')}}  Subdireccion de atencion operativa, Coordinacion Nacional de Becas Para el Bienestar
+                "Benito Juarez" en el Estado de Oaxaca</small>
 </center>
 @endsection

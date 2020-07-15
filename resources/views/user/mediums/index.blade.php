@@ -1,7 +1,8 @@
 @extends('plantillas.adminApp')
 @section('main')
 @if(Auth::user()->rol == 1)
-<div class="container shadow p-3 mb-5 bg-white rounded mt-1">
+<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
+<div class="container shadow p-3 mb-5 bg-white rounded border border-success">
     <div class="row justify-content-md-center mb-4">
         <h1>EDUCACION MEDIA SUPERIOR</h1>
     </div>
@@ -39,11 +40,6 @@
             </button>
         </div>
         @endif
-    </div>
-
-    @if($mediums->isNotEmpty())
-    <div class="row justify-content-md-center mb-4">
-        <h5>Registros que no tienen una clave de escuela</h5>
     </div>
 
     <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
@@ -121,12 +117,11 @@
             <div class="col">
                 {{ $mediums->links() }}
             </div>
+            <div class="col float-right">
+            <a class="btn btn-success float-right" href="{{url('/mediumEducation/create')}}">Crear Registro</a>
+            </div>
         </div>
     </div>
-    @endif
-
-    <div class="row justify-content-md-center">
-        <a class="btn btn-success float-right" href="{{url('/mediumEducation/create')}}">Crear Registro</a>
     </div>
 
     <div class="container shadow p-3 mb-5 bg-white rounded mt-5 border border-success">

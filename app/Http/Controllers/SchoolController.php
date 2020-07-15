@@ -22,7 +22,7 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $schools = School::with('locality')->paginate(5);
+        $schools = School::with('locality')->paginate(10);
         return view('user.schools.index', compact('schools'));
     }
 

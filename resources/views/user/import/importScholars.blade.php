@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow p-3 mb-5 bg-white rounded mt-3">
+<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-3 mt-2">
         <div class="col-9">
             @if(session('titularAlert'))

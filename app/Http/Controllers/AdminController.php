@@ -11,7 +11,6 @@ class AdminController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('onlyAdmin');
-        //return $role = Auth::user()->rol;   
     }
     /**
      * Display a listing of the resource.

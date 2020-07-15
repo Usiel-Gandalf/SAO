@@ -2,7 +2,7 @@
 @section('main')
 <div class="row justify-content-md-center">
     <div class="col-7 shadow p-3 mb-5 bg-white rounded mt-4">
-        <div class="col border border-secondary">
+        <div class="col border border-primary">
             <div class="row justify-content-center my-2">
                 <h2 class="">Registrar Beca Basica</h2>
             </div>

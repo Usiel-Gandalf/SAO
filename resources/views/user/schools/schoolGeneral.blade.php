@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow px-5 mb-5 bg-white rounded mt-4 border border-success">
+<div class="container shadow px-5 mb-2 mt-2 bg-white rounded mt-4 border border-success">
 
     <div class="row justify-content-md-center">
         <img src="https://qroo.gob.mx/sites/default/files/inline-images/BECAS_COORDINACION_logo.png" class="img-fluid" alt="Responsive image" width="40%" height="40%">
@@ -227,7 +227,8 @@
     </div>
 
     <div class="row justify-content-md-center mb-4">
-        <p>&copy; {{@date('Y')}} {{'Subdireccion de atencion operativa - Oaxaca, Todos los derechos reservados'}}</p>
+    <small>Copyright &copy; {{@date('Y')}}  Subdireccion de atencion operativa, Coordinacion Nacional de Becas Para el Bienestar
+                "Benito Juarez" en el Estado de Oaxaca</small>
     </div>
 </div>
 @endsection

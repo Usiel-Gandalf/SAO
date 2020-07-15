@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow p-3 mb-5 bg-white rounded mt-3">
+<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-1 mt-2">
         <div class="col-9">
             @if(session('municipalityAlert'))
@@ -28,7 +28,7 @@
                 <center>
                     <h4 class="card-header">Municipios</h4>
                     <div class="card-body">
-                        <h5 class="card-title">Subir y/o actualizar municipio</h5>
+                        <h5 class="card-title">Registrar municipio</h5>
                         <p class="card-text">Se actualizaran o agregaran nuevos municipios sin afectar a los ya existentes,
                             los titulos de las columnas que serian: cve_mun, nom_mun e cve_reg</p>
                         <div class="col ">

@@ -164,15 +164,9 @@ class ImportController extends Controller
         $data = request()->except(['_token', '_method']);
         $request->validate([
             'basicUniverse' => 'required|mimes:xlsx, xls',
-            //'type' => 'required',
             'status' => 'required',
-            //'bimester' => 'required',
-            //'year' => 'required',
         ]);
 
-        // $type = $request->input('type');
-        //$bimester = $request->input('bimester');
-        //$year = $request->input('year');
         $status = $request->input('status');
         $file = $request->file('basicUniverse');
 
@@ -223,15 +217,9 @@ class ImportController extends Controller
         $data = request()->except(['_token', '_method']);
         $request->validate([
             'mediumUniverse' => 'required|mimes:xlsx, xls',
-            //'type' => 'required',
             'status' => 'integer',
-            //'bimester' => 'required',
-            //'year' => 'required',
         ]);
        
-        // $type = $request->input('type');
-        //$bimester = $request->input('bimester');
-        //$year = $request->input('year');
         $status = $request->input('status');
         $file = $request->file('mediumUniverse');
 

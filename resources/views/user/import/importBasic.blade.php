@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow p-3 mb-5 bg-white rounded mt-1">
+<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
     <div class="row justify-content-md-center mb-1 mt-2">
         <div class="col-7">
             @if(session('importBasicAlert'))
@@ -29,7 +29,7 @@
     @endif
     </div>
 
-    <div class="row justify-content-md-center mb-2 mt-1">
+    <div class="row justify-content-md-center mb-2 mt-2">
         <div class="col-6">
             <div class="card shadow-lg p-3 mb-5 bg-white rounded border border-primary">
                 <center>
