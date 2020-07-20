@@ -10,7 +10,6 @@
             <hr style="color: #0056b2;" width="100%" />
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-
                 <div class="form-group row mt-2">
                     <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Correo Electronico') }}</label>
 
@@ -24,7 +23,6 @@
                         @enderror
                     </div>
                 </div>
-
                 <div class="form-group row">
                     <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
 
