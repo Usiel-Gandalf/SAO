@@ -45,31 +45,24 @@ class User extends Authenticatable
         return $this->belongsTo(Region::class);
     }
 
-    public function scopeNameUser($query, $nameUser)
+    public function scopeName($query, $nameUser)
     {
         if ($nameUser) {
-            return $query->where('nameUser', 'LIKE', "%$nameUser%");
+            return $query->where('name', 'LIKE', "%$nameUser%");
         }
     }
 
-    public function scopeFirstSurnameUser($query, $firstSurnameUser)
+    public function scopeFirstSurname($query, $firstSurnameUser)
     {
         if ($firstSurnameUser) {
             return $query->where('firstSurname', 'LIKE', "%$firstSurnameUser%");
         }
     }
 
-    public function scopeSecondSurnameUser($query, $secondSurnameUser)
+    public function scopeSecondSurname($query, $secondSurnameUser)
     {
         if ($secondSurnameUser) {
             return $query->where('secondSurname', 'LIKE', "%$secondSurnameUser%");
-        }
-    }
-
-    public function scopeRol($query, $rol)
-    {
-        if ($rol) {
-            return $query->where('rol', 'LIKE', "%$rol%");
         }
     }
 

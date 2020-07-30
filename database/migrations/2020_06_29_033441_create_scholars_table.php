@@ -14,15 +14,14 @@ class CreateScholarsTable extends Migration
     public function up()
     {
         Schema::create('scholars', function (Blueprint $table) {
-            $table->integer('id')->unique();
-            $table->primary('id');
+            $table->integer('id')->unique()
+            ->primary('id');
             $table->string('nameScholar', 100)->nullable();
             $table->string('firstSurname', 100)->nullable();
             $table->string('secondSurname', 100)->nullable();
             $table->string('gender', 1)->nullable();
-            $table->integer('birthDate', 25)->nullable();
             $table->string('curp', 25)->nullable();
-            $table->integer('level', 1)->nullable();
+            $table->char('level', 1)->nullable();
             $table->timestamps();
         });
     }

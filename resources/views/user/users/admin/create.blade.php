@@ -1,51 +1,11 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="row justify-content-md-center mt-3">
-    <div class="col-6 shadow p-3 mb-5 bg-white rounded mt-4 border border-success">
-        <div class="col">
+<div class="container justify-content-md-center mt-3">
+    <div class="row justify-content-md-center mt-3">
+    <div class="col-8 shadow p-3 mb-5 bg-white rounded mt-4 border border-success">
             <div class="row justify-content-center">
                 <h2 class="mt-1">Registrar Administrador</h2>
             </div>
-            @if(session('notEmail'))
-            <div class="row justify-content-md-center">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>{{session('notEmail')}}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            @endif
-            @if(session('notName'))
-            <div class="row justify-content-md-center">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>{{session('notName')}}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            @endif
-            @if(session('notFirstSurname'))
-            <div class="row justify-content-md-center">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>{{session('notFirstSurname')}}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            @endif
-            @if(session('notSecondSurname'))
-            <div class="row justify-content-md-center">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>{{session('notSecondSurname')}}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            @endif
             <form action="{{url('/admin')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row form-group">
@@ -53,9 +13,7 @@
                         <label for="name">{{'Nombre'}}</label>
                         <input type="text" class="form-control" name="name" id="name" value="{{old('name')}}">
                         @error('name')
-                        <div class="alert alert-danger">
-                            Error en el nombre, comprobar nuevamente(nombre valido, no numeros, no vacio).
-                        </div>
+                           <p class="text-danger">{{$message}}</p>
                         @enderror
                     </div>
 
@@ -63,9 +21,7 @@
                         <label for="firstSurname">{{'Apellido Paterno'}}</label>
                         <input type="text" class="form-control" name="firstSurname" id="firstSurname" value="{{old('firstSurname')}}">
                         @error('firstSurname')
-                        <div class="alert alert-danger">
-                            Error en el primer apellido, comprobar nuevamente(nombre valido, no numeros, no vacio).
-                        </div>
+                            <p class="text-danger">{{$message}}</p>
                         @enderror
                     </div>
                 </div>
@@ -75,33 +31,27 @@
                         <label for="secondSurname">{{'Apellido Materno'}}</label>
                         <input type="text" class="form-control" name="secondSurname" id="secondSurname" value="{{old('secondSurname')}}">
                         @error('secondSurname')
-                        <div class="alert alert-danger">
-                            Error en el segundo apellido, comprobar nuevamente(nombre valido, no numeros, no vacio).
-                        </div>
+                             <p class="text-danger">{{$message}}</p>
                         @enderror
                     </div>
 
                     <div class="col">
-                        <label for="email">{{'Escibre el correo electronico del usuario'}}</label>
+                        <label for="email">{{'Correo electronico'}}</label>
                         <input type="email" class="form-control" name="email" id="email" value="{{old('email')}}">
                         @error('email')
-                        <div class="alert alert-danger">
-                            Error en el email, comprobar nuevamente(correo valido, no vacio, sintaxis valida).
-                        </div>
+                            <p class="text-danger">{{$message}}</p>
                         @enderror
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="status"></label>
+                    <label for="status">{{'Estado del administrador'}}</label>
                     <select id="status" name="status" class="form-control">
                         <option value="1">Activo</option>
                         <option value="0">Inactivo</option>
                     </select>
                     @error('status')
-                    <div class="alert alert-danger">
-                        Seleccione un estado para el administrador.
-                    </div>
+                         <p class="text-danger">{{$message}}</p>
                     @enderror
                 </div>
 
@@ -117,11 +67,9 @@
                     </div>
                 </div>
 
-                <div class="row form-group">
+                <div class="row justify-content-md-center">
                     @error('password')
-                    <div class="alert alert-danger">
-                        Algo ha salido mal con la contraseña, revisa nuevamente, minima 8, Asegurate de confirmar correctamente
-                    </div>
+                     <p class="text-danger ">{{$message}}</p>
                     @enderror
                 </div>
 

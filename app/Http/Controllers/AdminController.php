@@ -42,42 +42,46 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $data = request()->except('_token');
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'firstSurname' => 'required|string|max:100',
-            'secondSurname' => 'required|string|max:100',
-            'status' => 'required|integer|max:1',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8',
-        ]);
+        $rules = [
+            'name' => 'required|alpha|max:50',
+            'firstSurname' => 'required|alpha|max:50',
+            'secondSurname' => 'required|alpha|max:50',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|alpha_num|confirmed|min:8',
+        ];
 
-        $emailVerification = User::where('email', $request->email)->count();
-        $nameVerification = $request->name;
-        $firstSurnameVerification = $request->firstSurname;
-        $secondSurnameVerification = $request->secondSurname;
+        $message = [
+            'name.required' => 'El campo del nombre no se admite vacío',
+            'name.alpha' => 'El campo nombre solo puede ser de tipo texto',
+            'name.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'firstSurname.required' => 'El campo del apellido paterno no se admite vacío',
+            'firstSurname.alpha' => 'El campo del apellido paterno solo puede ser de tipo texto',
+            'firstSurname.max' => 'El campo del apellido paterno solo puede contener 50 caracteres',
+            'secondSurname.required' => 'El campo del apellido materno no se admite vacío',
+            'secondSurname.alpha' => 'El campo del apellido materno solo puede ser de tipo texto',
+            'secondSurname.max' => 'El campo del apellido materno solo puede contener 50 caracteres',
+            'email.required' => 'El campo email no se admite vacío',
+            'email.email' => 'Verifique que su correo sea valido',
+            'email.unique' => 'El correo ya esta en uso, porfavor ingrese otro',
+            'password.required' => 'Ingrese una contraseña',
+            'password.alpha_num' => 'Su password debe de contener letras y numeros',
+            'password.confirmed' => 'Confirme su contraseña',
+            'password.min' => 'Su contraseña debe de ser minimo de 8 caracteres',
+        ];
 
-        if ($emailVerification == 1) {
-            return back()->with('notEmail', 'El correo ya esta en uso, ingrese otro');
-        } elseif (is_numeric($nameVerification)) {
-            return back()->with('notName', 'El nombre solo puede ser de tipo texto');
-        } elseif (is_numeric($firstSurnameVerification)) {
-            return back()->with('notFirstSurname', 'El primer apellido solo puede ser de tipo texto');
-        } elseif (is_numeric($secondSurnameVerification)) {
-            return back()->with('notSecondSurname', 'El segundo apellido solo puede ser de tipo texto');
-        } else {
+        $request->validate($rules, $message);
 
-            $user = new User();
-            $user->name = $request->name;
-            $user->firstSurname = $request->firstSurname;
-            $user->secondSurname = $request->secondSurname;
-            $user->rol = 1;
-            $user->status = $request->status;
-            $user->email = $request->email;
-            $user->password = bcrypt($request->password);
-            $user->save();
+        $user = new User();
+        $user->name = $request->name;
+        $user->firstSurname = $request->firstSurname;
+        $user->secondSurname = $request->secondSurname;
+        $user->rol = 1;
+        $user->status = 1;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->save();
 
-            return redirect()->action('AdminController@index')->with('saveAdmin', 'Administrador registrado correctamente');
-        }
+        return redirect()->action('AdminController@index')->with('saveAdmin', 'Administrador registrado correctamente');
     }
 
     /**
@@ -93,18 +97,17 @@ class AdminController extends Controller
         $secondSurnameAdmin = $request->get('secondSurnameAdmin');
         $email = $request->get('email');
 
-        $admin = User::orderBy('id', 'ASC')
-            ->nameUser($nameAdmin)
-            ->firstSurnameUser($firstSurnameAdmin)
-            ->secondSurnameUser($secondSurnameAdmin)
-            ->rol(1)
+        $admins = User::orderBy('id', 'ASC')
+            ->name($nameAdmin)
+            ->firstSurname($firstSurnameAdmin)
+            ->secondSurname($secondSurnameAdmin)
             ->email($email)
             ->paginate(5);
 
-        if (count($admin) == 0) {
+        if (count($admins) == 0) {
             return back()->with('notFound', 'No se encontraron resultados');
         } else {
-            return view('user.users.admin.index', compact('admin'));
+            return view('user.users.admin.index', compact('admins'));
         }
     }
 
@@ -136,64 +139,86 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         $data = request()->except(['_token', '_method']);
-        $emailVerification = User::where('email', $request->email)->count();
-        $nameVerification = $request->name;
-        $firstSurnameVerification = $request->firstSurname;
-        $secondSurnameVerification = $request->secondSurname;
 
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'firstSurname' => 'required|string|max:100',
-            'secondSurname' => 'required|string|max:100',
-            'rol' => 'required|integer|max:1',
-            'status' => 'required|integer|max:1',
+        $rules = [
+            'name' => 'required|alpha|max:50',
+            'firstSurname' => 'required|alpha|max:50',
+            'secondSurname' => 'required|alpha|max:50',
             'email' => 'required|email',
-        ]);
+            'rol' => 'required|numeric|max:1',
+            'status' => 'required|numeric|max:1',
+        ];
 
+        $message = [
+            'name.required' => 'El campo del nombre no se admite vacío',
+            'name.alpha' => 'El campo nombre solo puede ser de tipo texto',
+            'name.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'firstSurname.required' => 'El campo del apellido paterno no se admite vacío',
+            'firstSurname.alpha' => 'El campo del apellido paterno solo puede ser de tipo texto',
+            'firstSurname.max' => 'El campo del apellido paterno solo puede contener 50 caracteres',
+            'secondSurname.required' => 'El campo del apellido materno no se admite vacío',
+            'secondSurname.alpha' => 'El campo del apellido materno solo puede ser de tipo texto',
+            'secondSurname.max' => 'El campo del apellido materno solo puede contener 50 caracteres',
+            'email.required' => 'El campo email no se admite vacío',
+            'email.email' => 'Verifique que su correo sea valido',
+            'rol.required' => 'El rol no puede estar vacio',
+            'rol.numeric' => 'El rol solo puede ser de tipo numerico',
+            'rol.max' => 'El rol es maximo de una logitud',
+            'status.required' => 'El estado no puede estar vacio',
+            'status.numeric' => 'El estado solo puede ser de tipo numerico',
+            'status.max' => 'El estado es maximo de una longitud',
+        ];
+
+        $request->validate($rules, $message);
+
+        $emailVerification = User::where('email', $request->email)->count();
 
         if ($emailVerification == 1) {
             if (User::where('email', $request->email)->where('id', '!=', $id)->count() == 1) {
                 return back()->with('notEmail', 'El correo al que intenta actualizar ya esta en uso, ingrese otro');
             }
         }
-        if (is_numeric($nameVerification)) {
-            return back()->with('notName', 'El nombre solo puede ser de tipo texto');
-        } elseif (is_numeric($firstSurnameVerification)) {
-            return back()->with('notFirstSurname', 'El primer apellido solo puede ser de tipo texto');
-        } elseif (is_numeric($secondSurnameVerification)) {
-            return back()->with('notSecondSurname', 'El segundo apellido solo puede ser de tipo texto');
+
+        $name = $request->name;
+        $firstSurname = $request->firstSurname;
+        $secondSurname = $request->secondSurname;
+        $email = $request->email;
+        $status = $request->status;
+        $rol = $request->rol;
+
+        User::where('id', $id)->update([
+            'name' => $name,
+            'firstSurname' => $firstSurname,
+            'secondSurname' => $secondSurname,
+            'rol' => $rol,
+            'status' => $status,
+            'email' => $email
+        ]);
+
+        if ($rol == 1) {
+            return redirect()->action('AdminController@index')->with('updateAdmin', 'Administrador actualizado');
         } else {
-
-            $name = $request->name;
-            $firstSurname = $request->firstSurname;
-            $secondSurname = $request->secondSurname;
-            $email = $request->email;
-            $status = $request->status;
-            $rol = $request->rol;
-
-            User::where('id', $id)->update([
-                'name' => $name,
-                'firstSurname' => $firstSurname,
-                'secondSurname' => $secondSurname,
-                'rol' => $rol,
-                'status' => $status,
-                'email' => $email
-            ]);
-
-            if ($rol == 1) {
-                return redirect()->action('AdminController@index')->with('updateAdmin', 'Administrador actualizado');
-            }else{
-                return redirect()->action('AdminController@index')->with('updateAdmin', 'Administrador actualizado y descendido a Jefe de region');
-            }
+            return redirect()->action('AdminController@index')->with('updateAdmin', 'Administrador actualizado y descendido a Jefe de region');
         }
     }
 
     public function updatePasswordAdmin(Request $request, $id)
     {
-        $request->validate([
-            'password' => 'required|confirmed|string|min:8',
-        ]);
+        $rules = [
+            'password' => 'required|alpha_num|confirmed|min:8',
+        ];
+
+        $message = [
+            'password.required' => 'Ingrese una contraseña',
+            'password.alpha_num' => 'Su password debe de contener letras y numeros',
+            'password.confirmed' => 'Confirme su contraseña',
+            'password.min' => 'Su contraseña debe de ser minimo de 8 caracteres',
+        ];
+
+        $request->validate($rules, $message);
+
         $password = $request->input('password');
+
         $password = bcrypt($password);
 
         User::where('id', $id)->update([

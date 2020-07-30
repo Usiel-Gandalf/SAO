@@ -55,13 +55,13 @@
         <form action="{{route('searchAdmin')}}" method="get" class="form-inline float-right">
           @csrf
           <div class="form-group">
-            <input id="nameadmin" class="form-control mx-1" type="text" name="nameadmin" placeholder="Buscar por nombre">
+            <input id="nameAdmin" class="form-control mx-1" type="text" name="nameAdmin" placeholder="Buscar por nombre">
           </div>
           <div class="form-group">
-            <input id="firstSurnameadmin" class="form-control mx-1" type="text" name="firstSurnameadmin" placeholder="Primer apellido">
+            <input id="firstSurnameAdmin" class="form-control mx-1" type="text" name="firstSurnameAdmin" placeholder="Primer apellido">
           </div>
           <div class="form-group">
-            <input id="secondSurnameadmin" class="form-control mx-1" type="text" name="secondSurnameadmin" placeholder="Segundo apellido">
+            <input id="secondSurnameAdmin" class="form-control mx-1" type="text" name="secondSurnameAdmin" placeholder="Segundo apellido">
           </div>
           <div class="form-group">
             <input id="email" class="form-control mx-1" type="text" name="email" placeholder="E-mail">
