@@ -66,6 +66,13 @@ class User extends Authenticatable
         }
     }
 
+    public function scopeRol($query, $rol)
+    {
+        if ($rol) {
+            return $query->where('rol', 'LIKE', "%$rol%");
+        }
+    }
+
     public function scopeEmail($query, $email)
     {
         if ($email) {

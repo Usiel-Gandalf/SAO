@@ -48,6 +48,7 @@ class AdminController extends Controller
             'secondSurname' => 'required|alpha|max:50',
             'email' => 'required|email|unique:users',
             'password' => 'required|alpha_num|confirmed|min:8',
+            'status' => 'required|numeric|max:1',
         ];
 
         $message = [
@@ -67,6 +68,9 @@ class AdminController extends Controller
             'password.alpha_num' => 'Su password debe de contener letras y numeros',
             'password.confirmed' => 'Confirme su contraseña',
             'password.min' => 'Su contraseña debe de ser minimo de 8 caracteres',
+            'status.required' => 'El estado no puede estar vacio',
+            'status.numeric' => 'El estado solo puede ser de tipo numerico',
+            'status.max' => 'El estado es maximo de una longitud',
         ];
 
         $request->validate($rules, $message);
@@ -102,6 +106,7 @@ class AdminController extends Controller
             ->firstSurname($firstSurnameAdmin)
             ->secondSurname($secondSurnameAdmin)
             ->email($email)
+            ->rol(1)
             ->paginate(5);
 
         if (count($admins) == 0) {
