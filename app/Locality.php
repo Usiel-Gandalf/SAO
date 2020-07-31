@@ -42,10 +42,10 @@ class Locality extends Model
         }
     }
 
-    public function scopeIdMunicipality($query, $idMunicipality){
-        if($idMunicipality)
+    public function scopeIdMunicipality($query, $municipality_id){
+        if($municipality_id)
         {
-            return $query->where('municipality_id', 'LIKE',"%$idMunicipality%");
+            return $query->where('municipality_id', 'LIKE',"%$municipality_id%");
         }
     }
 }

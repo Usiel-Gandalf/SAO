@@ -42,12 +42,36 @@ class AdminprofileController extends Controller
 
     public function updateAdminProfile(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:50',
-            'firstSurname' => 'required|string|max:50',
-            'secondSurname' => 'required|string|max:50',
-            'email' => 'required|email|max:20',
-        ]);
+        $rules = [
+            'name' => 'required|alpha|max:50',
+            'firstSurname' => 'required|alpha|max:50',
+            'secondSurname' => 'required|alpha|max:50',
+            'email' => 'required|email',
+        ];
+
+        $message = [
+            'name.required' => 'El campo del nombre no se admite vacío',
+            'name.alpha' => 'El campo nombre solo puede ser de tipo texto',
+            'name.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'firstSurname.required' => 'El campo del apellido paterno no se admite vacío',
+            'firstSurname.alpha' => 'El campo del apellido paterno solo puede ser de tipo texto',
+            'firstSurname.max' => 'El campo del apellido paterno solo puede contener 50 caracteres',
+            'secondSurname.required' => 'El campo del apellido materno no se admite vacío',
+            'secondSurname.alpha' => 'El campo del apellido materno solo puede ser de tipo texto',
+            'secondSurname.max' => 'El campo del apellido materno solo puede contener 50 caracteres',
+            'email.required' => 'El campo email no se admite vacío',
+            'email.email' => 'Verifique que su correo sea valido',
+        ];
+
+        $request->validate($rules, $message);
+
+        $emailVerification = User::where('email', $request->email)->count();
+
+        if ($emailVerification == 1) {
+            if (User::where('email', $request->email)->where('id', '!=', $id)->count() == 1) {
+                return back()->with('notEmail', 'El correo al que intenta actualizar ya esta en uso, ingrese otro');
+            }
+        }
 
         $name = $request->name;
         $firstSurname = $request->firstSurname;
@@ -66,9 +90,18 @@ class AdminprofileController extends Controller
 
     public function updateAdminPassword(Request $request, $id)
     {
-        $request->validate([
-            'password' => 'required|confirmed|string|min:8',
-        ]);
+        $rules = [
+            'password' => 'required|alpha_num|confirmed|min:8',
+        ];
+
+        $message = [
+            'password.required' => 'Ingrese una contraseña',
+            'password.alpha_num' => 'Su password debe de contener letras y numeros',
+            'password.confirmed' => 'Confirme su contraseña',
+            'password.min' => 'Su contraseña debe de ser minimo de 8 caracteres',
+        ];
+
+        $request->validate($rules, $message);
 
         $password = $request->password;
         $password = bcrypt($password);
@@ -81,9 +114,16 @@ class AdminprofileController extends Controller
 
     public function updateAdminEmail(Request $request, $id)
     {
-        $request->validate([
-            'email' => 'required|email|min:8',
-        ]);
+        $rules = [
+            'email' => 'required|email',
+        ];
+
+        $message = [
+            'email.required' => 'El campo email no se admite vacío',
+            'email.email' => 'Verifique que su correo sea valido',
+        ];
+
+        $request->validate($rules, $message);
 
         $email = $request->email;
         $verifiedEmail = User::where('email', $email)->count();

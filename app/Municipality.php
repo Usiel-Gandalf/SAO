@@ -35,10 +35,10 @@ class Municipality extends Model
         }
     }
 
-    public function scopeIdRegion($query, $idRegion){
-        if($idRegion)
+    public function scopeIdRegion($query, $region_id){
+        if($region_id)
         {
-            return $query->where('region_id', 'LIKE',"%$idRegion%");
+            return $query->where('region_id', 'LIKE',"%$region_id%");
         }
     }
 }

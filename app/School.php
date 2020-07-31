@@ -33,10 +33,10 @@ class School extends Model
         }
     }
 
-    public function scopeIdLocality($query, $idLocality)
+    public function scopeIdLocality($query, $locality_id)
     {
-        if ($idLocality) {
-            return $query->where('locality_id', 'LIKE', "%$idLocality%");
+        if ($locality_id) {
+            return $query->where('locality_id', 'LIKE', "%$locality_id%");
         }
     }
 }

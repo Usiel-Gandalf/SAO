@@ -40,9 +40,7 @@
                                         <label for="email">{{'Correo electronico'}}</label>
                                         <input type="mail" class="form-control" name="email" id="email" placeholder="Ingresar el nuevo correo electronico">
                                         @error('email')
-                                        <label for="email" class="text-danger">
-                                            Error en el nuevo correro, verificar nuevamente
-                                        </label>
+                                        <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>

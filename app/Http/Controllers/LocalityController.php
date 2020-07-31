@@ -46,19 +46,37 @@ class LocalityController extends Controller
     public function store(Request $request)
     {
         request()->except('_token');
+        $rules = [
+            'id' => 'required|integer|numeric|unique:localities,id',
+            'keyLocality' => 'required|integer|numeric',
+            'nameLocality' => 'required|string|max:50',
+            'municipality_id' => 'required|integer|numeric|exists:municipalities,id',
+        ];
 
-        $request->validate([
-            'id' => 'required|integer',
-            'keyLocality' => 'required|integer',
-            'nameLocality' => 'required|string',
-            'idMunicipality' => 'required|integer',
-        ]);
+        $message = [
+            'id.required' => 'La clave oficial no se admite vacío',
+            'id.integer' => 'La clave oficial solo puede ser un numero entero',
+            'id.numeric' => 'La clave oficial solo puede ser de tipo numerico',
+            'id.unique' => 'La clave oficial ya se encuentra registrada',
+            'keyLocality.required' => 'El numero de la localidad no se admite vacío',
+            'keyLocality.integer' => 'El numero de la localidad solo puede ser un numero entero',
+            'keyLocality.numeric' => 'El numero de la localidad solo puede ser de tipo numerico',
+            'nameLocality.required' => 'El campo del nombre no se admite vacío',
+            'nameLocality.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameLocality.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'municipality_id.required' => 'Debe seleccionar un municipio para la localidad',
+            'municipality_id.integer' => 'El numero del municipio solo puede ser un numero entero',
+            'municipality_id.numeric' => 'El numero del municipio solo puede ser de tipo numerico',
+            'municipality_id.unique' => 'El numero del municipio no existe, ingrese otro o registrela en la seccion de municipios',
+        ];
+
+        $request->validate($rules, $message);
 
         $locality = new Locality();
         $locality->id = $request->id;
         $locality->keyLocality = $request->keyLocality;
         $locality->nameLocality = $request->nameLocality;
-        $locality->municipality_id = $request->idMunicipality;
+        $locality->municipality_id = $request->municipality_id;
         $locality->save();
 
         return redirect()->action('LocalityController@index')->with('saveLocality', 'Nueva localidad agregada');
@@ -75,14 +93,14 @@ class LocalityController extends Controller
         $idLocality = $request->get('id');
         $numberLocality = $request->get('numberLocality');
         $nameLocality = $request->get('nameLocality');
-        $idMunicipality = $request->get('idMunicipality');
+        $municipality_id = $request->get('municipality_id');
         // return $request;
 
         $localities = Locality::orderBy('id', 'ASC')
             ->idLocality($idLocality)
             ->numberLocality($numberLocality)
             ->nameLocality($nameLocality)
-            ->idMunicipality($idMunicipality)
+            ->idMunicipality($municipality_id)
             ->paginate(5);
 
         if (count($localities) == 0) {
@@ -116,12 +134,30 @@ class LocalityController extends Controller
     public function update(Request $request, $id)
     {
         $data = request()->except(['_token', '_method']);
-        $request->validate([
-            'id' => 'required|integer',
-            'keyLocality' => 'required|integer',
-            'nameLocality' => 'required|string',
-            'municipality_id' => 'required|integer',
-        ]);
+        $rules = [
+            'id' => 'required|integer|numeric',
+            'keyLocality' => 'required|integer|numeric',
+            'nameLocality' => 'required|string|max:50',
+            'municipality_id' => 'required|integer|numeric|exists:municipalities,id',
+        ];
+
+        $message = [
+            'id.required' => 'La clave oficial no se admite vacío',
+            'id.integer' => 'La clave oficial solo puede ser un numero entero',
+            'id.numeric' => 'La clave oficial solo puede ser de tipo numerico',
+            'keyLocality.required' => 'El numero de la localidad no se admite vacío',
+            'keyLocality.integer' => 'El numero de la localidad solo puede ser un numero entero',
+            'keyLocality.numeric' => 'El numero de la localidad solo puede ser de tipo numerico',
+            'nameLocality.required' => 'El campo del nombre no se admite vacío',
+            'nameLocality.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameLocality.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'municipality_id.required' => 'Debe seleccionar un municipio para la localidad',
+            'municipality_id.integer' => 'El numero del municipio solo puede ser un numero entero',
+            'municipality_id.numeric' => 'El numero del municipio solo puede ser de tipo numerico',
+            'municipality_id.unique' => 'El numero del municipio no existe, ingrese otro o registrela en la seccion de municipios',
+        ];
+
+        $request->validate($rules, $message);
 
         Locality::where('id', $id)->update($data);
         return redirect()->action('LocalityController@index')->with('updateLocality', 'Localidad actualizada');

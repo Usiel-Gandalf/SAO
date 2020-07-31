@@ -23,7 +23,6 @@ class MunicipalityController extends Controller
     public function index()
     {
         $municipalities = Municipality::with('region')->paginate(10);
-        //$municipalities = Municipality::orderBy('nameMunicipality', 'ASC')->with('region')->paginate(10);
         return view('user.municipalities.index', compact('municipalities'));
     }
 
@@ -48,16 +47,32 @@ class MunicipalityController extends Controller
     {
         request()->except('_token');
 
-        $request->validate([
-            'id' => 'required|integer',
-            'nameMunicipality' => 'required|string|max:100',
-            'idRegion' => 'required|integer',
-        ]);
+        $rules = [
+            'id' => 'required|integer|numeric|unique:municipalities,id',
+            'nameMunicipality' => 'required|string|max:50',
+            'region_id' => 'required|integer|numeric|exists:regions,id',
+        ];
+
+        $message = [
+            'id.required' => 'El id del municipio no se admite vacío',
+            'id.integer' => 'El id del municipio solo puede ser un numero entero',
+            'id.numeric' => 'El id del municipio solo puede ser de tipo numerico',
+            'id.unique' => 'El id del municipio ya existe, ¿Seguro que es el id correcto?',
+            'nameMunicipality.required' => 'El campo del nombre no se admite vacío',
+            'nameMunicipality.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameMunicipality.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'region_id.required' => 'Debe seleccionar una region para el municipio',
+            'region_id.integer' => 'El numero de la region solo puede ser un numero entero',
+            'region_id.numeric' => 'El numero de la region solo puede ser de tipo numerico',
+            'region_id.unique' => 'El numero de la region no existe, ingrese otro o registrela en la seccion de regiones',
+        ];
+
+        $request->validate($rules, $message);
 
         $municipality = new Municipality();
         $municipality->id = $request->id;
         $municipality->nameMunicipality = $request->nameMunicipality;
-        $municipality->region_id = $request->idRegion;
+        $municipality->region_id = $request->region_id;
         $municipality->save();
 
         return redirect()->action('MunicipalityController@index')->with('saveMunicipality', 'Nuevo municipio agregado');
@@ -73,13 +88,12 @@ class MunicipalityController extends Controller
     {
         $idMunicipality = $request->get('id');
         $nameMunicipality = $request->get('nameMunicipality');
-        $idRegion = $request->get('idRegion');
-        // return $request;
+        $region_id = $request->get('region_id');
 
         $municipalities = Municipality::orderBy('id', 'ASC')
             ->id($idMunicipality)
             ->nameMunicipality($nameMunicipality)
-            ->idRegion($idRegion)
+            ->idRegion($region_id)
             ->paginate(5);
 
         if (count($municipalities) == 0) {
@@ -98,7 +112,6 @@ class MunicipalityController extends Controller
     public function edit($id)
     {
         $municipality = Municipality::findOrfail($id)->with('region')->first();
-        //return json_encode($municipality);
         $regions = Region::all();
 
         return view('user.municipalities.edit', compact('municipality', 'regions'));
@@ -114,11 +127,26 @@ class MunicipalityController extends Controller
     public function update(Request $request, $id)
     {
         $data = request()->except(['_token', '_method']);
-        $request->validate([
-            'id' => 'required|integer',
-            'nameMunicipality' => 'required|string',
-            'region_id' => 'required|integer',
-        ]);
+        $rules = [
+            'id' => 'required|integer|numeric',
+            'nameMunicipality' => 'required|string|max:50',
+            'region_id' => 'required|integer|numeric|exists:regions,id',
+        ];
+
+        $message = [
+            'id.required' => 'El id del municipio no se admite vacío',
+            'id.integer' => 'El id del municipio solo puede ser un numero entero',
+            'id.numeric' => 'El id del municipio solo puede ser de tipo numerico',
+            'nameMunicipality.required' => 'El campo del nombre no se admite vacío',
+            'nameMunicipality.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameMunicipality.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'region_id.required' => 'Debe seleccionar una region para el municipio',
+            'region_id.integer' => 'El numero de la region solo puede ser un numero entero',
+            'region_id.numeric' => 'El numero de la region solo puede ser de tipo numerico',
+            'region_id.unique' => 'El numero de la region no existe, ingrese otro o registrela en la seccion de regiones',
+        ];
+
+        $request->validate($rules, $message);
 
         Municipality::where('id', $id)->update($data);
         return redirect()->action('MunicipalityController@index')->with('updateMunicipality', 'Municipio actualizado');

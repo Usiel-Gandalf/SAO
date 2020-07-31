@@ -3,13 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade\PDF;
 use App\Region;
-use App\Basic;
-use App\Medium;
-use App\Higer;
 use App\User;
 use Illuminate\Support\Facades\App;
 
@@ -52,11 +46,29 @@ class RegionController extends Controller
     {
         $data = request()->except('_token');
 
-        $request->validate([
-            'id' => 'required|integer',
-            'region' => 'required|integer|max:100',
-            'name' => 'required|string',
-        ]);
+        $rules = [
+            'id' => 'required|integer|numeric|unique:regions,id',
+            'region' => 'required|integer|numeric|unique:regions,region',
+            'name' => 'required|string|max:50',
+        ];
+
+        $message = [
+            'id.required' => 'El id de la region no se admite vacío',
+            'id.integer' => 'El id de la region solo puede ser un numero entero',
+            'id.numeric' => 'El id de la region solo puede ser de tipo numerico',
+            'id.max' => 'El id de la region solo puede tener una longitud maxima de 2 digitos',
+            'id.unique' => 'El id de la region ya existe, ¿Seguro que es el id correcto?',
+            'region.required' => 'El numero de la region no se admite vacío',
+            'region.integer' => 'El numero de la region solo puede ser un numero entero',
+            'region.numeric' => 'El numero de la region solo puede ser de tipo numerico',
+            'region.max' => 'El numero de la region solo puede tener una longitud maxima de 2 digitos',
+            'region.unique' => 'El numero de la region ya existe, ¿Seguro que es el id correcto?',
+            'name.required' => 'El campo del nombre no se admite vacío',
+            'name.string' => 'El campo nombre solo puede ser de tipo texto',
+            'name.max' => 'El campo nombre solo puede contener 50 caracteres',
+        ];
+
+        $request->validate($rules, $message);
 
         $region = new Region();
         $region->id = $request->id;
@@ -114,12 +126,26 @@ class RegionController extends Controller
     public function update(Request $request, $id)
     {
         $data = request()->except(['_token', '_method']);
-        $request->validate([
-            'id' => 'required|numeric',
-            'region' => 'required|integer',
-            'name' => 'required|string',
-        ]);
+        $rules = [
+            'id' => 'required|integer|numeric',
+            'region' => 'required|integer|numeric|unique:regions,region',
+            'name' => 'required|string|max:50',
+        ];
 
+        $message = [
+            'id.required' => 'El id de la region no se admite vacío',
+            'id.integer' => 'El id de la region solo puede ser un numero entero',
+            'id.numeric' => 'El id de la region solo puede ser de tipo numerico',
+            'region.required' => 'El numero de la region no se admite vacío',
+            'region.integer' => 'El numero de la region solo puede ser un numero entero',
+            'region.numeric' => 'El numero de la region solo puede ser de tipo numerico',
+            'region.unique' => 'El numero de la region ya existe, ¿Seguro que es el id correcto?',
+            'name.required' => 'El campo del nombre no se admite vacío',
+            'name.string' => 'El campo nombre solo puede ser de tipo texto',
+            'name.max' => 'El campo nombre solo puede contener 50 caracteres',
+        ];
+
+        $request->validate($rules, $message);
 
         Region::where('id', $id)->update($data);
         return redirect()->action('RegionController@index')->with('updateRegion', 'Region actualizada');

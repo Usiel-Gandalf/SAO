@@ -47,16 +47,31 @@ class SchoolController extends Controller
     {
         request()->except('_token');
 
-        $request->validate([
-            'idSchool' => 'required|string',
-            'nameSchool' => 'required|string',
-            'idLocality' => 'required|integer',
-        ]);
+        $rules = [
+            'id' => 'required|string|unique:schools,id',
+            'nameSchool' => 'required|string|max:50',
+            'locality_id' => 'required|integer|numeric|exists:localities,id',
+        ];
+
+        $message = [
+            'id.required' => 'Ingrese una clave para la escuela',
+            'id.string' => 'La clave de la escuela debe de ser de tipo texto',
+            'id.unique' => 'La clave de la escuela ya existe',
+            'nameSchool.required' => 'El campo del nombre no se admite vacío',
+            'nameSchool.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameSchool.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'locality_id.required' => 'Debe seleccionar una localidad para la escuela',
+            'locality_id.integer' => 'El numero de la localidad solo puede ser un numero entero',
+            'locality_id.numeric' => 'El numero de la localidad solo puede ser de tipo numerico',
+            'locality_id.unique' => 'El numero de la localidad no existe, ingrese otro o registrela en la seccion de localidades',
+        ];
+
+        $request->validate($rules, $message);
 
         $school = new School();
-        $school->idSchool = $request->idSchool;
+        $school->id = $request->id;
         $school->nameSchool = $request->nameSchool;
-        $school->locality_id = $request->idLocality;
+        $school->locality_id = $request->locality_id;
         $school->save();
 
         return redirect()->action('SchoolController@index')->with('saveSchool', 'Nueva escuela agregada');
@@ -72,13 +87,12 @@ class SchoolController extends Controller
     {
         $idSchool = $request->get('id');
         $nameSchool = $request->get('nameSchool');
-        $idLocality = $request->get('idLocality');
-        // return $request;
+        $locality_id = $request->get('locality_id');
 
         $schools = School::orderBy('id', 'ASC')
             ->idSchool($idSchool)
             ->nameSchool($nameSchool)
-            ->idLocality($idLocality)
+            ->idLocality($locality_id)
             ->paginate(5);
 
         if (count($schools) == 0) {
@@ -111,11 +125,26 @@ class SchoolController extends Controller
     public function update(Request $request, $id)
     {
         $data = request()->except(['_token', '_method']);
-        $request->validate([
-            'idSchool' => 'required|string',
-            'nameSchool' => 'required|string',
-            'locality_id' => 'required',
-        ]);
+        $rules = [
+            'id' => 'required|string|unique:schools,id',
+            'nameSchool' => 'required|string|max:50',
+            'locality_id' => 'required|integer|numeric|exists:localities,id',
+        ];
+
+        $message = [
+            'id.required' => 'Ingrese una clave para la escuela',
+            'id.string' => 'La clave de la escuela debe de ser de tipo texto',
+            'id.unique' => 'La clave de la escuela ya existe',
+            'nameSchool.required' => 'El campo del nombre no se admite vacío',
+            'nameSchool.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameSchool.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'locality_id.required' => 'Debe seleccionar una localidad para la escuela',
+            'locality_id.integer' => 'El numero de la localidad solo puede ser un numero entero',
+            'locality_id.numeric' => 'El numero de la localidad solo puede ser de tipo numerico',
+            'locality_id.unique' => 'El numero de la localidad no existe, ingrese otro o registrela en la seccion de localidades',
+        ];
+
+        $request->validate($rules, $message);
 
         School::where('id', $id)->update($data);
         return redirect()->action('SchoolController@index')->with('updateSchool', 'Escuela actualizada');

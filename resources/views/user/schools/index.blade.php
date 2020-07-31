@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow p-3 mb-2 bg-white rounded mt-2">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-5">
     <div class="container shadow p-3 mb-5 bg-white rounded border border-success">
         <div class="row justify-content-md-center mb-4">
             <h1>Escuelas</h1>
@@ -53,7 +53,7 @@
                             <input id="nameSchool" class="form-control mx-1" type="text" name="nameSchool" placeholder="Buscar por nombre">
                         </div>
                         <div class="form-group">
-                            <input id="idLocality" class="form-control mx-1" type="number" name="idLocalidad" placeholder="Buscar por localidad">
+                            <input id="locality_id" class="form-control mx-1" type="number" name="locality_id" placeholder="Buscar por localidad">
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" value="Buscar">

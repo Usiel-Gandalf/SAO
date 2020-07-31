@@ -1,6 +1,6 @@
 @extends('plantillas.adminApp')
 @section('main')
-<div class="container shadow p-3 mb-5 bg-white rounded mt-2">
+<div class="container shadow p-3 mb-5 bg-white rounded mt-5">
     <div class="row justify-content-md-center">
         <!-- endImportBasic -->
         <div class="col-8 mt-5">
@@ -22,6 +22,14 @@
                     </ul>
                 </div>
                 <div class="card-body">
+                    @if(session('notEmail'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{session('notEmail')}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @endif
                     <h4 class="card-title">ACTUALIZAR PERFIL</h4>
                     <div class="container border-danger">
                         <form action="{{url('/editAdminProfile/'.$admin->id.'/updateAdminProfile')}}" method="post" enctype="multipart/form-data" class="">
@@ -32,9 +40,7 @@
                                         <label for="name">{{'Nombre'}}</label>
                                         <input type="text" class="form-control" name="name" id="name" value="{{$admin->name}}">
                                         @error('name')
-                                        <label for="email" class="text-danger">
-                                            Error en el nombre, comprobar nuevamente(nombre valido, no numeros, no vacio).
-                                        </label>
+                                        <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
 
@@ -42,9 +48,7 @@
                                         <label for="firstSurname">{{'Apellido Paterno'}}</label>
                                         <input type="text" class="form-control" name="firstSurname" id="firstSurname" value="{{$admin->firstSurname}}">
                                         @error('firstSurname')
-                                        <label for="email" class="text-danger">
-                                            Error en el primer apellido, comprobar nuevamente(nombre valido, no numeros, no vacio).
-                                        </label>
+                                        <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
@@ -54,9 +58,7 @@
                                         <label for="secondSurname">{{'Apellido Materno'}}</label>
                                         <input type="text" class="form-control" name="secondSurname" id="secondSurname" value="{{$admin->secondSurname}}">
                                         @error('secondSurname')
-                                        <label for="email" class="text-danger">
-                                            Error en el segundo apellido, comprobar nuevamente(nombre valido, no numeros, no vacio).
-                                        </label>
+                                        <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
 
@@ -64,9 +66,7 @@
                                         <label for="email">{{'Correo electronico'}}</label>
                                         <input type="email" class="form-control" name="email" id="email" value="{{$admin->email}}">
                                         @error('email')
-                                        <label for="email" class="text-danger">
-                                            Error en el email, comprobar nuevamente(correo valido, no vacio, sintaxis valida).
-                                        </label>
+                                        <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
