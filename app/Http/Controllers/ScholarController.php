@@ -41,24 +41,50 @@ class ScholarController extends Controller
      */
     public function store(Request $request)
     {
-        request()->except('_token');
+        request()->except('_token', 'birthDate');
 
-        $request->validate([
-            'id' => 'required|integer',
-            'nameScholar' => 'required|string',
-            'firstSurname' => 'required|string',
-            'secondSurname' => 'required|string',
+        $rules = [
+            'id' => 'required|integer|numeric|unique:scholars,id',
+            'nameScholar' => 'required|string|max:50',
+            'firstSurname' => 'required|string|max:50',
+            'secondSurname' => 'required|string|max:50',
             'gender' => 'required',
-            'birthDate' => 'required|date',
-            'curp' => 'required|string',
-        ]);
+            //'birthDate' => 'nullable',
+            'curp' => 'required|string|min:18|max:18',
+        ];
+
+        $message = [
+            'id.required' => 'Ingrese una clave para el becario',
+            'id.integer' => 'La clave del becario debe de ser tipo numerico entero(sin puntos decimales)',
+            'id.numeric ' => 'La clave del becario debe de ser de tipo numerico',
+            'id.unique' => 'La clave con la que intenta registrar al becario ya existe, ingrese otra clave para registrar al becario',
+            'nameScholar.required' => 'El campo del nombre no se admite vacío',
+            'nameScholar.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameScholar.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'firstSurname.required' => 'El campo del del primer apellido no se admite vacío',
+            'firstSurname.string' => 'El campo del primer apellido solo puede ser de tipo texto',
+            'firstSurname.max' => 'El campo del primer apellido solo puede contener 50 caracteres',
+            'secondSurname.required' => 'El campo del del segundo apellido no se admite vacío',
+            'secondSurname.string' => 'El campo del segundo apellido solo puede ser de tipo texto',
+            'secondSurname.max' => 'El campo del segundo apellido solo puede contener 50 caracteres',
+            'gender.required' => 'Debe seleccionar un genero para el becario',
+            //'birthDate.required' => 'Debe ingresar una fecha de nacimiento para el becario',
+            //'birthDate.date' => 'Debe ingresar una fecha de nacimiento valida para el becario',
+            'curp.required' => 'Debe ingresar una curp para el becario',
+            'curp.string' => 'El campo curp debe de contener letras y numeros',
+            'curp.min' => 'El campo curp debe de contener minimo 18 caracteres',
+            'curp.max' => 'El campo curp debe de contener maximo 18 caracteres',
+        ];
+
+        $request->validate($rules, $message);
+
         $scholar = new Scholar();
         $scholar->id = $request->id;
         $scholar->nameScholar = $request->nameScholar;
         $scholar->firstSurname = $request->firstSurname;
         $scholar->secondSurname = $request->secondSurname;
         $scholar->gender = $request->gender;
-        $scholar->birthDate = $request->birthDate;
+        //$scholar->birthDate = $request->birthDate;
         $scholar->curp = $request->curp;
         $scholar->save();
 
@@ -106,7 +132,6 @@ class ScholarController extends Controller
     public function edit($id)
     {
         $scholar = Scholar::findOrfail($id);
-        // return $scholar;
         return view('user.scholars.edit', compact('scholar'));
     }
 
@@ -119,20 +144,54 @@ class ScholarController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = request()->except(['_token', '_method']);
+        $data = request()->except(['_token', '_method', 'birthDate']);
 
-        $request->validate([
-            'id' => 'required|integer',
-            'nameScholar' => 'required|string',
-            'firstSurname' => 'required|string',
-            'secondSurname' => 'required|string',
+        $rules = [
+            'id' => 'required|integer|numeric',
+            'nameScholar' => 'required|string|max:50',
+            'firstSurname' => 'required|string|max:50',
+            'secondSurname' => 'required|string|max:50',
             'gender' => 'required',
-            'birthDate' => 'required',
-            'curp' => 'required|string',
-        ]);
+            //'birthDate' => 'nullable',
+            'curp' => 'required|string|min:18|max:18',
+        ];
 
-        Scholar::where('id', $id)->update($data);
-        return redirect()->action('ScholarController@index')->with('updateScholar', 'Becario actualizado');
+        $message = [
+            'id.required' => 'Ingrese una clave para el becario',
+            'id.integer' => 'La clave del becario debe de ser tipo numerico entero(sin puntos decimales)',
+            'id.numeric ' => 'La clave del becario debe de ser de tipo numerico',
+            //'id.unique' => 'La clave con la que intenta registrar al becario ya existe, ingrese otra clave para registrar al becario',
+            'nameScholar.required' => 'El campo del nombre no se admite vacío',
+            'nameScholar.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameScholar.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'firstSurname.required' => 'El campo del del primer apellido no se admite vacío',
+            'firstSurname.string' => 'El campo del primer apellido solo puede ser de tipo texto',
+            'firstSurname.max' => 'El campo del primer apellido solo puede contener 50 caracteres',
+            'secondSurname.required' => 'El campo del del segundo apellido no se admite vacío',
+            'secondSurname.string' => 'El campo del segundo apellido solo puede ser de tipo texto',
+            'secondSurname.max' => 'El campo del segundo apellido solo puede contener 50 caracteres',
+            'gender.required' => 'Debe seleccionar un genero para el becario',
+            //'birthDate.required' => 'Debe ingresar una fecha de nacimiento para el becario',
+            //'birthDate.date' => 'Debe ingresar una fecha de nacimiento valida para el becario',
+            'curp.required' => 'Debe ingresar una curp para el becario',
+            'curp.string' => 'El campo curp debe de contener letras y numeros',
+            'curp.min' => 'El campo curp debe de contener minimo 18 caracteres',
+            'curp.max' => 'El campo curp debe de contener maximo 18 caracteres',
+        ];
+
+        $request->validate($rules, $message);
+
+        if ($id ==  $request->id) {
+            Scholar::where('id', $id)->update($data);
+            return redirect()->action('ScholarController@index')->with('updateScholar', 'Becario actualizado');
+        } else {
+            if (Scholar::where('id', $request->id)->count() == 1) {
+                return back()->with('notScholar', 'El id con el que intenta actualizar al becario ya esta en uso, ingrese otro');
+            } else {
+                Scholar::where('id', $id)->update($data);
+                return redirect()->action('ScholarController@index')->with('updateScholar', 'Becario actualizado');
+            }
+        }
     }
 
     /**

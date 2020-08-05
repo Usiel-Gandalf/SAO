@@ -43,15 +43,40 @@ class TitularController extends Controller
     {
         request()->except('_token');
 
-        $request->validate([
-            'id' => 'required|integer',
-            'nameTitular' => 'required|string',
-            'firstSurname' => 'required|string',
-            'secondSurname' => 'required|string',
+        $rules = [
+            'id' => 'required|integer|numeric|unique:titulars,id',
+            'nameTitular' => 'required|string|max:50',
+            'firstSurname' => 'required|string|max:50',
+            'secondSurname' => 'required|string|max:50',
             'gender' => 'required',
-            'birthDate' => 'required|string',
-            'curp' => 'required|string',
-        ]);
+            'birthDate' => 'nullable',
+            'curp' => 'required|string|min:18|max:18',
+        ];
+
+        $message = [
+            'id.required' => 'Ingrese una clave para la titular',
+            'id.integer' => 'La clave de la titular debe de ser tipo numerico entero(sin puntos decimales)',
+            'id.numeric ' => 'La clave de la titular debe de ser de tipo numerico',
+            'id.unique' => 'La clave con la que intenta registrar a la titular ya existe, ingrese otra clave para registrar al becario',
+            'nameTitular.required' => 'El campo del nombre no se admite vacío',
+            'nameTitular.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameTitular.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'firstSurname.required' => 'El campo del del primer apellido no se admite vacío',
+            'firstSurname.string' => 'El campo del primer apellido solo puede ser de tipo texto',
+            'firstSurname.max' => 'El campo del primer apellido solo puede contener 50 caracteres',
+            'secondSurname.required' => 'El campo del del segundo apellido no se admite vacío',
+            'secondSurname.string' => 'El campo del segundo apellido solo puede ser de tipo texto',
+            'secondSurname.max' => 'El campo del segundo apellido solo puede contener 50 caracteres',
+            'gender.required' => 'Debe seleccionar un genero para la titular',
+            //'birthDate.required' => 'Debe ingresar una fecha de nacimiento para el becario',
+            //'birthDate.date' => 'Debe ingresar una fecha de nacimiento valida para el becario',
+            'curp.required' => 'Debe ingresar una curp para la titular',
+            'curp.string' => 'El campo curp debe de contener letras y numeros',
+            'curp.min' => 'El campo curp debe de contener minimo 18 caracteres',
+            'curp.max' => 'El campo curp debe de contener maximo 18 caracteres',
+        ];
+
+        $request->validate($rules, $message);
 
         $titular = new Titular();
         $titular->id = $request->id;
@@ -116,18 +141,52 @@ class TitularController extends Controller
     {
         $data = request()->except(['_token', '_method']);
 
-        $request->validate([
-            'id' => 'required|integer',
-            'nameTitular' => 'required|string',
-            'firstSurname' => 'required|string',
-            'secondSurname' => 'required|string',
+        $rules = [
+            'id' => 'required|integer|numeric',
+            'nameTitular' => 'required|string|max:50',
+            'firstSurname' => 'required|string|max:50',
+            'secondSurname' => 'required|string|max:50',
             'gender' => 'required',
-            'birthDate' => 'required|string',
-            'curp' => 'required|string',
-        ]);
-        
-        Titular::where('id', $id)->update($data);
-        return redirect()->action('TitularController@index')->with('updateTitular', 'Titular actualizado');
+            'birthDate' => 'nullable',
+            'curp' => 'required|string|min:18|max:18',
+        ];
+
+        $message = [
+            'id.required' => 'Ingrese una clave para la titular',
+            'id.integer' => 'La clave de la titular debe de ser tipo numerico entero(sin puntos decimales)',
+            'id.numeric ' => 'La clave de la titular debe de ser de tipo numerico',
+            'id.unique' => 'La clave con la que intenta registrar a la titular ya existe, ingrese otra clave para registrar al becario',
+            'nameTitular.required' => 'El campo del nombre no se admite vacío',
+            'nameTitular.string' => 'El campo nombre solo puede ser de tipo texto',
+            'nameTitular.max' => 'El campo nombre solo puede contener 50 caracteres',
+            'firstSurname.required' => 'El campo del del primer apellido no se admite vacío',
+            'firstSurname.string' => 'El campo del primer apellido solo puede ser de tipo texto',
+            'firstSurname.max' => 'El campo del primer apellido solo puede contener 50 caracteres',
+            'secondSurname.required' => 'El campo del del segundo apellido no se admite vacío',
+            'secondSurname.string' => 'El campo del segundo apellido solo puede ser de tipo texto',
+            'secondSurname.max' => 'El campo del segundo apellido solo puede contener 50 caracteres',
+            'gender.required' => 'Debe seleccionar un genero para la titular',
+            //'birthDate.required' => 'Debe ingresar una fecha de nacimiento para el becario',
+            //'birthDate.date' => 'Debe ingresar una fecha de nacimiento valida para el becario',
+            'curp.required' => 'Debe ingresar una curp para la titular',
+            'curp.string' => 'El campo curp debe de contener letras y numeros',
+            'curp.min' => 'El campo curp debe de contener minimo 18 caracteres',
+            'curp.max' => 'El campo curp debe de contener maximo 18 caracteres',
+        ];
+
+        $request->validate($rules, $message);
+
+        if ($id ==  $request->id) {
+            Titular::where('id', $id)->update($data);
+            return redirect()->action('TitularController@index')->with('updateTitular', 'Titular actualizado');
+        } else {
+            if (Titular::where('id', $request->id)->count() == 1) {
+                return back()->with('notTitular', 'El id con el que intenta actualizar a la titular ya esta en uso, ingrese otro');
+            } else {
+                Titular::where('id', $id)->update($data);
+                return redirect()->action('TitularController@index')->with('updateTitular', 'Titular actualizado');
+            }
+        }
     }
 
     /**
